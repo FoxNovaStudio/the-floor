@@ -15,7 +15,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 
 /* HOME */
 #home{position:relative;overflow:hidden}
-#home::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 28%,#c8a84b18,transparent 65%);pointer-events:none}
+#home::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 28%,#c8a84b1a,transparent 65%);pointer-events:none}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(76px,23vw,112px);color:var(--gold);line-height:.88;text-align:center;letter-spacing:.04em}
 .logo-sub{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;margin-bottom:2.5rem;text-align:center}
 .hbtn{width:100%;max-width:300px;padding:17px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;border:none;transition:transform .1s;margin-bottom:10px;position:relative;z-index:1}
@@ -39,7 +39,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 @keyframes dot{0%,80%,100%{opacity:0}40%{opacity:1}}
 .back-btn{margin-top:1rem;background:transparent;color:var(--muted);border:1px solid var(--gray3);border-radius:6px;padding:11px 26px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
 
-/* SETUP (add players + cats on judge phone) */
+/* SETUP */
 #setup{align-items:stretch;justify-content:flex-start;padding:0;overflow:hidden}
 .setup-scroll{flex:1;overflow-y:auto;padding:1.25rem 1rem}
 .stitle{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:.08em;margin-bottom:.2rem}
@@ -53,7 +53,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .rm-btn{background:transparent;border:1px solid var(--gray3);border-radius:6px;color:var(--muted);padding:7px 11px;font-size:14px;cursor:pointer;flex-shrink:0}
 .add-player-btn{background:transparent;border:1px dashed var(--gray3);border-radius:6px;color:var(--muted);padding:10px;font-size:14px;cursor:pointer;width:100%;margin-top:4px}
 .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
-.cat-card{background:var(--gray);border:1.5px solid var(--gray2);border-radius:8px;padding:13px 10px;cursor:pointer;display:flex;flex-direction:column;gap:3px}
+.cat-card{background:var(--gray);border:1.5px solid var(--gray2);border-radius:8px;padding:13px 10px;cursor:pointer;display:flex;flex-direction:column;gap:3px;user-select:none}
 .cat-card.sel{border-color:var(--gold);background:#1b1500}
 .cicon{font-size:26px}.cname{font-size:13px;font-weight:600}.ccount{font-size:11px;color:var(--muted)}
 .start-bar{padding:1rem;border-top:1px solid var(--gray2);flex-shrink:0;width:100%}
@@ -63,69 +63,61 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 /* WAITING */
 #waiting{gap:1.5rem;text-align:center}
 
-/* ══ PLAYER GAME SCREEN ══
-   Layout: left timer | image | right timer
-   Top shows whose turn it is */
+/* ══ PLAYER SCREEN ══
+   Top: two player timers side by side
+   Middle: big image
+   Active player highlighted
+*/
 #playerscreen{align-items:stretch;justify-content:flex-start;padding:0}
 
-.turn-banner{
-  display:flex;align-items:center;justify-content:center;
-  padding:.55rem 1rem;background:var(--gray2);flex-shrink:0;gap:8px
-}
-.turn-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.turn-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em}
-.turn-vs{font-size:12px;color:var(--muted);padding:0 4px}
+/* Timer strip at top */
+.timer-strip{display:flex;flex-direction:row;flex-shrink:0;height:110px}
+.p-timer{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 4px;position:relative;transition:background .3s}
+.p-timer.active-side{background:var(--gray2)}
+.p-timer.inactive-side{opacity:0.45}
+.p-timer-name{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:center;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-timer-num{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1}
+.arc-svg{width:44px;height:44px}
+.arc-track{fill:none;stroke:var(--gray3);stroke-width:5}
+.arc-fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
+.vs-divider{width:1px;background:var(--gray3);flex-shrink:0;align-self:stretch;margin:12px 0}
+.active-indicator{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:var(--gold)}
 
-.play-area{
-  flex:1;display:flex;flex-direction:row;min-height:0;overflow:hidden
-}
-
-/* Side timers */
-.side-timer{
-  width:52px;flex-shrink:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;padding:8px 0;gap:6px;
-  background:var(--gray)
-}
-.side-timer.left{border-right:1px solid var(--gray3)}
-.side-timer.right{border-left:1px solid var(--gray3)}
-.side-name{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg)}
-.side-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
-.side-arc{width:36px;height:36px;flex-shrink:0}
-.arc-track{fill:none;stroke:var(--gray3);stroke-width:4}
-.arc-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .5s}
-
-/* Center image */
-.center-img{
-  flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:.75rem;overflow:hidden;min-width:0
-}
+/* Image area */
+.img-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem;overflow:hidden;min-height:0}
 .qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none}
-.img-ph{width:100%;aspect-ratio:4/3;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.img-ph{width:100%;aspect-ratio:4/3;max-height:220px;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
 .cat-badge{font-size:11px;color:var(--muted);margin-top:.4rem;letter-spacing:.08em;text-transform:uppercase}
 
 /* ══ JUDGE SCREEN ══ */
 #judgescreen{align-items:stretch;justify-content:flex-start;padding:0}
-.judge-turn{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:var(--gray2);flex-shrink:0}
-.jturn-left{display:flex;align-items:center;gap:6px}
-.jscore-right{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:.06em}
+.judge-header{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:var(--gray2);flex-shrink:0}
+.jactive-wrap{display:flex;align-items:center;gap:6px}
+.jactive-dot{width:10px;height:10px;border-radius:50%}
+.jactive-name{font-size:14px;font-weight:600}
+.jactive-sub{font-size:11px;color:var(--muted)}
+.jscore-txt{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);letter-spacing:.04em;text-align:right;max-width:160px;line-height:1.3}
 
 .answer-box{margin:.75rem 1rem .35rem;background:var(--gray);border-radius:10px;padding:1.1rem 1rem;text-align:center;flex-shrink:0}
 .albl{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
-.aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,11vw,60px);color:var(--gold);letter-spacing:.05em;line-height:1.05}
+.aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,11vw,58px);color:var(--gold);letter-spacing:.05em;line-height:1.05}
 
 .judge-img{flex:1;min-height:0;overflow:hidden;padding:0 1.25rem;display:flex;align-items:center;justify-content:center}
 .judge-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.35;display:none}
 
-.jtimer-row{display:flex;justify-content:center;padding:.3rem 0;flex-shrink:0;position:relative}
-.jtimer-row svg{transform:rotate(-90deg)}
-.jt-track{fill:none;stroke:var(--gray2);stroke-width:6}
-.jt-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .5s}
-.jt-num{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--white)}
+/* Judge dual timers - small */
+.judge-timers{display:flex;align-items:center;justify-content:center;gap:20px;padding:.4rem 1rem;flex-shrink:0}
+.jt-block{display:flex;flex-direction:column;align-items:center;gap:2px}
+.jt-name{font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.jt-num{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1}
+.jt-arc{width:36px;height:36px}
+.jt-track{fill:none;stroke:var(--gray3);stroke-width:4}
+.jt-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
 
 .judge-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:.75rem 1rem 1rem;flex-shrink:0}
-.jbtn{padding:18px 8px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .1s,opacity .15s}
+.jbtn{padding:18px 8px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .1s}
 .jbtn:active{transform:scale(.94)}.jbtn:disabled{opacity:.35;cursor:not-allowed}
-.jbtn .bi{font-size:24px}
+.jbtn .bi{font-size:22px}
 .jok{background:var(--green);color:#fff}.jno{background:var(--red);color:#fff}
 
 /* SCOREBOARD */
@@ -140,7 +132,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .next-btn:active{transform:scale(.97)}
 
 /* FLASH */
-.flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:76px;letter-spacing:.05em;z-index:200;pointer-events:none;opacity:0;transition:opacity .12s}
+.flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:.05em;z-index:200;pointer-events:none;opacity:0;transition:opacity .12s;text-align:center;padding:1rem}
 .flash.show{opacity:1}
 .flash.ok{background:#2d8a4ecc;color:#fff}
 .flash.no{background:#d63b2fcc;color:#fff}
@@ -173,23 +165,22 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     </div>
   </div>
 
-  <!-- LOBBY (judge waits) -->
+  <!-- LOBBY -->
   <div id="lobby" class="screen">
     <div class="lbl">Pelin koodi – jaa pelaajille</div>
     <div class="room-code" id="lobbyCode">----</div>
-    <div class="lbl" id="lobbyStatus" style="margin-top:.5rem">Odotetaan pelaajia...</div>
-    <div class="dots"><span>●</span><span>●</span><span>●</span></div>
-    <div id="lobbyPlayers" style="margin-top:1rem;font-size:14px;color:var(--muted);text-align:center"></div>
-    <button class="hbtn hbtn-gold" id="lobbyNextBtn" onclick="judgeSetup()" style="display:none;margin-top:1.5rem;max-width:260px">Jatka →</button>
+    <div class="lbl" id="lobbyStatus" style="margin-top:.5rem">Odotetaan pelaajapuhelinta...</div>
+    <div class="dots" id="lobbyDots"><span>●</span><span>●</span><span>●</span></div>
+    <button class="hbtn hbtn-gold" id="lobbyNext" onclick="judgeSetup()" style="display:none;margin-top:1.5rem;max-width:240px">Jatka →</button>
     <button class="back-btn" onclick="goHome()">← Peruuta</button>
   </div>
 
-  <!-- SETUP (judge: add player names + pick cats) -->
+  <!-- SETUP (judge only) -->
   <div id="setup" class="screen">
     <div class="setup-scroll">
       <div class="stitle">Peliasetukset</div>
-      <div class="ssub">Tuomari asettaa pelin</div>
-      <div class="section-lbl">Pelaajat</div>
+      <div class="ssub">Tuomari määrittää pelin</div>
+      <div class="section-lbl">Pelaajat (pelaajapuhelimella)</div>
       <div class="player-rows" id="playerRows"></div>
       <button class="add-player-btn" onclick="addPlayerRow()">+ Lisää pelaaja</button>
       <div class="section-lbl">Kategoriat (1–4)</div>
@@ -203,59 +194,36 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
   <!-- WAITING (player phone) -->
   <div id="waiting" class="screen">
     <div style="font-size:64px">✅</div>
-    <div class="lbl" style="font-size:15px;letter-spacing:.1em">Liitytty peliin!</div>
+    <div class="lbl" style="font-size:15px;letter-spacing:.1em;margin-bottom:.5rem">Liitytty peliin!</div>
     <div class="lbl">Tuomari käynnistää pelin...</div>
     <div class="dots"><span>●</span><span>●</span><span>●</span></div>
   </div>
 
-  <!-- PLAYER GAME SCREEN -->
+  <!-- PLAYER SCREEN (player phone) -->
   <div id="playerscreen" class="screen">
-    <!-- Top bar: whose turn -->
-    <div class="turn-banner">
-      <div class="turn-dot" id="p1dot"></div>
-      <div class="turn-name" id="p1name">–</div>
-      <div class="turn-vs">VS</div>
-      <div class="turn-name" id="p2name">–</div>
-      <div class="turn-dot" id="p2dot"></div>
+    <!-- Two timers at top -->
+    <div class="timer-strip" id="timerStrip">
+      <!-- filled dynamically -->
     </div>
-    <!-- Main play area: left timer | image | right timer -->
-    <div class="play-area">
-      <!-- Left player timer -->
-      <div class="side-timer left" id="leftTimer">
-        <div class="side-name" id="leftName">P1</div>
-        <svg class="side-arc" viewBox="0 0 36 36">
-          <circle class="arc-track" cx="18" cy="18" r="14"/>
-          <circle class="arc-fill" id="leftArc" cx="18" cy="18" r="14"/>
-        </svg>
-        <div class="side-num" id="leftNum">60</div>
-      </div>
-      <!-- Center: image -->
-      <div class="center-img">
-        <img class="qimg" id="playerImg" alt="Tunnista!"/>
-        <div class="img-ph" id="playerPh">📷</div>
-        <div class="cat-badge" id="playerCatBadge"></div>
-      </div>
-      <!-- Right player timer -->
-      <div class="side-timer right" id="rightTimer">
-        <div class="side-name" id="rightName">P2</div>
-        <svg class="side-arc" viewBox="0 0 36 36">
-          <circle class="arc-track" cx="18" cy="18" r="14"/>
-          <circle class="arc-fill" id="rightArc" cx="18" cy="18" r="14"/>
-        </svg>
-        <div class="side-num" id="rightNum">60</div>
-      </div>
+    <!-- Image -->
+    <div class="img-area">
+      <img class="qimg" id="playerImg" alt="Tunnista!"/>
+      <div class="img-ph" id="playerPh">📷</div>
+      <div class="cat-badge" id="playerCat"></div>
     </div>
   </div>
 
   <!-- JUDGE SCREEN -->
   <div id="judgescreen" class="screen">
-    <div class="judge-turn">
-      <div class="jturn-left">
-        <div class="turn-dot" id="jActiveDot" style="width:10px;height:10px;border-radius:50%"></div>
-        <div style="font-size:14px;font-weight:600" id="jActiveName">–</div>
-        <div style="font-size:12px;color:var(--muted);margin-left:4px">vuorossa</div>
+    <div class="judge-header">
+      <div class="jactive-wrap">
+        <div class="jactive-dot" id="jActiveDot"></div>
+        <div>
+          <div class="jactive-name" id="jActiveName">–</div>
+          <div class="jactive-sub">vuorossa</div>
+        </div>
       </div>
-      <div class="jscore-right" id="jScores">–</div>
+      <div class="jscore-txt" id="jScores"></div>
     </div>
 
     <div class="answer-box">
@@ -263,23 +231,14 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
       <div class="aval" id="jAnswer">–</div>
     </div>
 
-    <div class="judge-img">
-      <img id="judgeImg" alt=""/>
-    </div>
+    <div class="judge-img"><img id="judgeImg" alt=""/></div>
 
-    <div class="jtimer-row">
-      <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
-        <svg width="76" height="76" viewBox="0 0 76 76" style="transform:rotate(-90deg)">
-          <circle class="jt-track" cx="38" cy="38" r="31"/>
-          <circle class="jt-fill" id="jFill" cx="38" cy="38" r="31"/>
-        </svg>
-        <div class="jt-num" id="jNum">60</div>
-      </div>
-    </div>
+    <!-- Small dual timers for judge -->
+    <div class="judge-timers" id="judgeTimers"></div>
 
     <div class="judge-actions">
       <button class="jbtn jok" id="btnOk" onclick="judgeResult('correct')"><span class="bi">✓</span>Oikein</button>
-      <button class="jbtn jno" id="btnNo" onclick="judgeResult('wrong')"><span class="bi">✗</span>Väärin / Uusi kuva</button>
+      <button class="jbtn jno" id="btnNo" onclick="judgeResult('wrong')"><span class="bi">✗</span>Väärin</button>
     </div>
   </div>
 
@@ -303,57 +262,59 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 // ══════════════════════════════════════════════════════
 const CATS = [
   { id:'cars', name:'Automerkit', icon:'🚗', questions:[
-    {a:'Toyota',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Toyota_logo_%28Red%29.svg/600px-Toyota_logo_%28Red%29.svg.png'},
-    {a:'BMW',         img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/600px-BMW.svg.png'},
-    {a:'Mercedes',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/600px-Mercedes-Logo.svg.png'},
-    {a:'Audi',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Audi_logo_detail.svg/600px-Audi_logo_detail.svg.png'},
-    {a:'Ford',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/600px-Ford_logo_flat.svg.png'},
-    {a:'Honda',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/600px-Honda.svg.png'},
-    {a:'Volkswagen',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/600px-Volkswagen_logo_2019.svg.png'},
-    {a:'Ferrari',     img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Logo.svg/600px-Ferrari-Logo.svg.png'},
-    {a:'Porsche',     img:'https://upload.wikimedia.org/wikipedia/de/thumb/7/70/Porsche_Logo.svg/600px-Porsche_Logo.svg.png'},
-    {a:'Lamborghini', img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Lamborghini_Logo.svg/600px-Lamborghini_Logo.svg.png'},
-    {a:'Nissan',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Nissan_2020_logo.svg/600px-Nissan_2020_logo.svg.png'},
-    {a:'Hyundai',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/600px-Hyundai_Motor_Company_logo.svg.png'},
+    {a:'Toyota',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Toyota_logo_%28Red%29.svg/600px-Toyota_logo_%28Red%29.svg.png'},
+    {a:'BMW',          img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/600px-BMW.svg.png'},
+    {a:'Mercedes',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/600px-Mercedes-Logo.svg.png'},
+    {a:'Audi',         img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Audi_logo_detail.svg/600px-Audi_logo_detail.svg.png'},
+    {a:'Ford',         img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/600px-Ford_logo_flat.svg.png'},
+    {a:'Honda',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/600px-Honda.svg.png'},
+    {a:'Volkswagen',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/600px-Volkswagen_logo_2019.svg.png'},
+    {a:'Ferrari',      img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Logo.svg/600px-Ferrari-Logo.svg.png'},
+    {a:'Porsche',      img:'https://upload.wikimedia.org/wikipedia/de/thumb/7/70/Porsche_Logo.svg/600px-Porsche_Logo.svg.png'},
+    {a:'Lamborghini',  img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Lamborghini_Logo.svg/600px-Lamborghini_Logo.svg.png'},
+    {a:'Nissan',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Nissan_2020_logo.svg/600px-Nissan_2020_logo.svg.png'},
+    {a:'Hyundai',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/600px-Hyundai_Motor_Company_logo.svg.png'},
+    {a:'Peugeot',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Peugeot_logo.svg/600px-Peugeot_logo.svg.png'},
+    {a:'Renault',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Renault_2021_Text.svg/600px-Renault_2021_Text.svg.png'},
   ]},
   { id:'flowers', name:'Kukat', icon:'🌸', questions:[
-    {a:'Auringonkukka',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/800px-Sunflower_sky_backdrop.jpg'},
-    {a:'Ruusu',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg/800px-Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg'},
-    {a:'Tulppaani',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Amst_tulips.jpg/800px-Amst_tulips.jpg'},
-    {a:'Laventeli',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Lavand%C3%A8re-2.jpg/800px-Lavand%C3%A8re-2.jpg'},
-    {a:'Orvokki',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Viola_x_wittrockiana2.jpg/800px-Viola_x_wittrockiana2.jpg'},
-    {a:'Päivänkakkara',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Leucanthemum_vulgare_Daisy.JPG/800px-Leucanthemum_vulgare_Daisy.JPG'},
-    {a:'Magnolia',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Magnolia_officinalis_at_Tortworth_Court.jpg/800px-Magnolia_officinalis_at_Tortworth_Court.jpg'},
-    {a:'Krysanteemi',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/800px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg'},
-    {a:'Orkidea',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Phalaenopsis_DTPS_Chain_Xen_Pearl_%27Chain_Xen_Fancy%27.jpg/800px-Phalaenopsis_DTPS_Chain_Xen_Pearl_%27Chain_Xen_Fancy%27.jpg'},
+    {a:'Auringonkukka', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/800px-Sunflower_sky_backdrop.jpg'},
+    {a:'Ruusu',         img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg/800px-Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg'},
+    {a:'Tulppaani',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Amst_tulips.jpg/800px-Amst_tulips.jpg'},
+    {a:'Laventeli',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Lavand%C3%A8re-2.jpg/800px-Lavand%C3%A8re-2.jpg'},
+    {a:'Orvokki',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Viola_x_wittrockiana2.jpg/800px-Viola_x_wittrockiana2.jpg'},
+    {a:'Päivänkakkara', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Leucanthemum_vulgare_Daisy.JPG/800px-Leucanthemum_vulgare_Daisy.JPG'},
+    {a:'Magnolia',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Magnolia_officinalis_at_Tortworth_Court.jpg/800px-Magnolia_officinalis_at_Tortworth_Court.jpg'},
+    {a:'Krysanteemi',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/800px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg'},
+    {a:'Orkidea',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Phalaenopsis_DTPS_Chain_Xen_Pearl_%27Chain_Xen_Fancy%27.jpg/800px-Phalaenopsis_DTPS_Chain_Xen_Pearl_%27Chain_Xen_Fancy%27.jpg'},
   ]},
   { id:'animals', name:'Eläimet', icon:'🦁', questions:[
-    {a:'Gepardi',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/800px-The_Cheetah_Acinonyx_jubatus_-_8.jpg'},
-    {a:'Gorilla',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/800px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg'},
-    {a:'Flamingo',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pink_flamingo_Luc_Viatour.jpg/800px-Pink_flamingo_Luc_Viatour.jpg'},
-    {a:'Koala',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/800px-Koala_climbing_tree.jpg'},
-    {a:'Pingviini',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg/800px-South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg'},
-    {a:'Leijona',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/800px-Lion_waiting_in_Namibia.jpg'},
-    {a:'Elefantti',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/800px-African_Bush_Elephant.jpg'},
-    {a:'Delfiini',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/800px-Tursiops_truncatus_01.jpg'},
-    {a:'Panda',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/800px-Grosser_Panda.JPG'},
-    {a:'Kameleontti', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Chameleon_perezi_%283%29.jpg/800px-Chameleon_perezi_%283%29.jpg'},
-    {a:'Jääkarhu',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg/800px-Polar_Bear_-_Alaska_%28cropped%29.jpg'},
-    {a:'Zebra',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Plains_Zebra_Equus_quagga.jpg/800px-Plains_Zebra_Equus_quagga.jpg'},
+    {a:'Gepardi',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/800px-The_Cheetah_Acinonyx_jubatus_-_8.jpg'},
+    {a:'Gorilla',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/800px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg'},
+    {a:'Flamingo',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pink_flamingo_Luc_Viatour.jpg/800px-Pink_flamingo_Luc_Viatour.jpg'},
+    {a:'Koala',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/800px-Koala_climbing_tree.jpg'},
+    {a:'Pingviini',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg/800px-South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg'},
+    {a:'Leijona',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/800px-Lion_waiting_in_Namibia.jpg'},
+    {a:'Elefantti',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/800px-African_Bush_Elephant.jpg'},
+    {a:'Delfiini',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/800px-Tursiops_truncatus_01.jpg'},
+    {a:'Panda',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/800px-Grosser_Panda.JPG'},
+    {a:'Kameleontti',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Chameleon_perezi_%283%29.jpg/800px-Chameleon_perezi_%283%29.jpg'},
+    {a:'Jääkarhu',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg/800px-Polar_Bear_-_Alaska_%28cropped%29.jpg'},
+    {a:'Zebra',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Plains_Zebra_Equus_quagga.jpg/800px-Plains_Zebra_Equus_quagga.jpg'},
   ]},
   { id:'flags', name:'Liput', icon:'🚩', questions:[
-    {a:'Suomi',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/800px-Flag_of_Finland.svg.png'},
-    {a:'Japani',   img:'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/800px-Flag_of_Japan.svg.png'},
-    {a:'Brasilia', img:'https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/800px-Flag_of_Brazil.svg.png'},
-    {a:'Kanada',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/800px-Flag_of_Canada_%28Pantone%29.svg.png'},
-    {a:'Norja',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/800px-Flag_of_Norway.svg.png'},
-    {a:'Sveitsi',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/800px-Flag_of_Switzerland.svg.png'},
-    {a:'Turkki',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/800px-Flag_of_Turkey.svg.png'},
-    {a:'Kreikka',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/800px-Flag_of_Greece.svg.png'},
-    {a:'Intia',    img:'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/800px-Flag_of_India.svg.png'},
-    {a:'Meksiko',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Flag_of_Mexico.svg/800px-Flag_of_Mexico.svg.png'},
-    {a:'Australia',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Australia_%28converted%29.svg/800px-Flag_of_Australia_%28converted%29.svg.png'},
-    {a:'Ruotsi',   img:'https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/800px-Flag_of_Sweden.svg.png'},
+    {a:'Suomi',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/800px-Flag_of_Finland.svg.png'},
+    {a:'Japani',    img:'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/800px-Flag_of_Japan.svg.png'},
+    {a:'Brasilia',  img:'https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/800px-Flag_of_Brazil.svg.png'},
+    {a:'Kanada',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/800px-Flag_of_Canada_%28Pantone%29.svg.png'},
+    {a:'Norja',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/800px-Flag_of_Norway.svg.png'},
+    {a:'Sveitsi',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/800px-Flag_of_Switzerland.svg.png'},
+    {a:'Turkki',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/800px-Flag_of_Turkey.svg.png'},
+    {a:'Kreikka',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/800px-Flag_of_Greece.svg.png'},
+    {a:'Intia',     img:'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/800px-Flag_of_India.svg.png'},
+    {a:'Meksiko',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Flag_of_Mexico.svg/800px-Flag_of_Mexico.svg.png'},
+    {a:'Australia', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Australia_%28converted%29.svg/800px-Flag_of_Australia_%28converted%29.svg.png'},
+    {a:'Ruotsi',    img:'https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/800px-Flag_of_Sweden.svg.png'},
   ]},
   { id:'food', name:'Ruoka', icon:'🍕', questions:[
     {a:'Sushi',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/800px-Sushi_platter.jpg'},
@@ -364,83 +325,82 @@ const CATS = [
     {a:'Paella',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Paella_Valenciana_by_TasteTravelBelgium.jpg/800px-Paella_Valenciana_by_TasteTravelBelgium.jpg'},
     {a:'Tiramisu',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tiramisu_-_Raffaele_Diomede.jpg/800px-Tiramisu_-_Raffaele_Diomede.jpg'},
     {a:'Guacamole', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Guacamole.jpg/800px-Guacamole.jpg'},
-    {a:'Pho',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Pho-Beef-Noodles-2008.jpg/800px-Pho-Beef-Noodles-2008.jpg'},
   ]},
   { id:'landmarks', name:'Maamerkit', icon:'🗼', questions:[
-    {a:'Eiffel-torni',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/800px-Sightseeing_in_Paris.jpg'},
-    {a:'Colosseum',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/800px-Colosseo_2020.jpg'},
-    {a:'Taj Mahal',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg'},
-    {a:'Vapaudenpatsas', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/800px-Statue_of_Liberty_7.jpg'},
-    {a:'Sydney Opera',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/800px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg'},
-    {a:'Sagrada Familia',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sagrada_Familia_01.jpg/800px-Sagrada_Familia_01.jpg'},
-    {a:'Akropolis',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/800px-The_Parthenon_in_Athens.jpg'},
-    {a:'Kiinan muuri',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/800px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg'},
-    {a:'Big Ben',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007_icon.png/800px-Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007_icon.png'},
+    {a:'Eiffel-torni',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/800px-Sightseeing_in_Paris.jpg'},
+    {a:'Colosseum',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/800px-Colosseo_2020.jpg'},
+    {a:'Taj Mahal',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg'},
+    {a:'Vapaudenpatsas',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/800px-Statue_of_Liberty_7.jpg'},
+    {a:'Sydney Opera',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/800px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg'},
+    {a:'Sagrada Familia', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sagrada_Familia_01.jpg/800px-Sagrada_Familia_01.jpg'},
+    {a:'Akropolis',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/800px-The_Parthenon_in_Athens.jpg'},
+    {a:'Kiinan muuri',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/800px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg'},
   ]},
 ];
 
-const PLAYER_COLORS = ['#4A9FE0','#E05A4A','#4AE07A','#E0C04A','#C04AE0','#4AE0D4','#E0844A'];
+const P_COLORS=['#4A9FE0','#E05A4A','#4AE07A','#E0C04A','#C04AE0','#4AE0D4','#E0844A'];
 
 // ══════════════════════════════════════════════════════
 // STATE
+// key idea: two active players per round with SEPARATE timers
+// each timer only counts down when it's that player's turn
 // ══════════════════════════════════════════════════════
-let peer = null, conn = null;
-let S = {
-  role: null,          // 'judge' | 'player'
-  players: [],         // [{name, color, score}]
-  selectedCats: [],
-  questions: [],       // full shuffled pool per category
-  catQuestions: {},    // {catId: [remaining questions]}
-  pairIdx: 0,          // which pair is playing (rotates every 2 players)
-  activeInPair: 0,     // 0 = left player of pair, 1 = right player
-  currentQ: null,      // {a, img, cat, icon}
-  scores: {},          // {playerName: score}
-  timerInt: null,
-  timeLeft: 60,
-  judged: false,
-  selectedCatIds: [],
+let peer=null, conn=null;
+let S={
+  role:null,          // 'judge'|'player'
+  players:[],         // all players [{name,color,score}]
+  selectedCatIds:[],
+  catPools:{},        // {catId:[...shuffled questions]}
+  // Current match: two players with their own timers
+  matchPlayerIdxs:[0,1],  // indices into S.players
+  activeSlot:0,           // 0 or 1 – which of the two is answering
+  timers:[60,60],         // seconds left for slot 0 and slot 1
+  matchScores:[0,0],      // scores this match
+  timerInt:null,
+  judged:false,
+  currentQ:null,
+  roundOver:false,
 };
 
 // ══════════════════════════════════════════════════════
 // PEER
 // ══════════════════════════════════════════════════════
-function makePeer(id) { return id ? new Peer(id,{debug:0}) : new Peer({debug:0}); }
-
-function setupConn(c) {
-  conn = c;
-  conn.on('data', d => onMsg(d));
-  conn.on('close', () => showToast('Yhteys katkesi'));
-  conn.on('error', e => showToast('Virhe: '+e));
+function makePeer(id){return id?new Peer(id,{debug:0}):new Peer({debug:0});}
+function setupConn(c){
+  conn=c;
+  conn.on('data',d=>onMsg(d));
+  conn.on('close',()=>showToast('Yhteys katkesi'));
+  conn.on('error',()=>showToast('Yhteysvirhe'));
 }
-
-function send(type, data={}) {
-  if(conn && conn.open) conn.send({type,...data});
-}
+function send(type,data={}){ if(conn&&conn.open) conn.send({type,...data}); }
 
 // ══════════════════════════════════════════════════════
-// UI
+// UI helpers
 // ══════════════════════════════════════════════════════
-function show(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
-function flash(cls, txt) {
-  const f=document.getElementById('flash');
-  f.textContent=txt; f.className='flash '+cls+' show';
-  return new Promise(r=>setTimeout(()=>{ f.className='flash'; r(); },1200));
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function doFlash(cls,txt){
+  return new Promise(r=>{
+    const f=document.getElementById('flash');
+    f.textContent=txt;f.className='flash '+cls+' show';
+    setTimeout(()=>{f.className='flash';r();},1100);
+  });
 }
 
 // ══════════════════════════════════════════════════════
 // HOME
 // ══════════════════════════════════════════════════════
-function toggleJoin() {
+function toggleJoin(){
   const w=document.getElementById('joinWrap');
   w.classList.toggle('open');
-  if(w.classList.contains('open')) setTimeout(()=>document.getElementById('joinCode').focus(),340);
+  if(w.classList.contains('open'))setTimeout(()=>document.getElementById('joinCode').focus(),340);
 }
-function goHome() {
+function goHome(){
   clearInterval(S.timerInt);
-  if(conn){try{conn.close();}catch(e){} conn=null;}
-  if(peer){try{peer.destroy();}catch(e){} peer=null;}
-  S={role:null,players:[],selectedCats:[],questions:[],catQuestions:{},pairIdx:0,activeInPair:0,currentQ:null,scores:{},timerInt:null,timeLeft:60,judged:false,selectedCatIds:[]};
+  if(conn){try{conn.close();}catch(e){}}
+  if(peer){try{peer.destroy();}catch(e){}}
+  conn=null;peer=null;
+  S={role:null,players:[],selectedCatIds:[],catPools:{},matchPlayerIdxs:[0,1],activeSlot:0,timers:[60,60],matchScores:[0,0],timerInt:null,judged:false,currentQ:null,roundOver:false};
   document.getElementById('joinCode').value='';
   document.getElementById('joinErr').textContent='';
   document.getElementById('joinWrap').classList.remove('open');
@@ -450,40 +410,36 @@ function goHome() {
 // ══════════════════════════════════════════════════════
 // CREATE (judge)
 // ══════════════════════════════════════════════════════
-function createGame() {
-  const code = Math.random().toString(36).slice(2,6).toUpperCase();
+function createGame(){
+  const code=Math.random().toString(36).slice(2,6).toUpperCase();
   S.role='judge';
   document.getElementById('lobbyCode').textContent=code;
-  document.getElementById('lobbyStatus').textContent='Odotetaan pelaajia...';
-  document.getElementById('lobbyNextBtn').style.display='none';
-  document.getElementById('lobbyPlayers').textContent='';
+  document.getElementById('lobbyNext').style.display='none';
   show('lobby');
-
-  peer = makePeer('floor-'+code);
-  peer.on('open', ()=>{
-    peer.on('connection', c=>{
+  peer=makePeer('floor-'+code);
+  peer.on('open',()=>{
+    peer.on('connection',c=>{
       setupConn(c);
-      c.on('open', ()=>{
-        showToast('Pelaajapuhelin liittyi! 🎉');
+      c.on('open',()=>{
         document.getElementById('lobbyStatus').textContent='Pelaajapuhelin yhdistetty ✓';
-        document.getElementById('lobbyNextBtn').style.display='block';
+        document.getElementById('lobbyDots').style.display='none';
+        document.getElementById('lobbyNext').style.display='block';
+        showToast('Pelaajapuhelin liittyi! 🎉');
       });
     });
   });
-  peer.on('error', e=>{ showToast('Virhe: '+e.type); console.error(e); });
+  peer.on('error',e=>{ showToast('Virhe: '+e.type); console.error(e); });
 }
 
-function judgeSetup() {
-  // Build setup screen
-  buildPlayerRows();
-  buildCatGrid();
+function judgeSetup(){
+  buildSetup();
   show('setup');
 }
 
 // ══════════════════════════════════════════════════════
 // JOIN (player phone)
 // ══════════════════════════════════════════════════════
-function joinGame() {
+function joinGame(){
   const code=document.getElementById('joinCode').value.trim().toUpperCase();
   document.getElementById('joinErr').textContent='';
   if(code.length!==4){document.getElementById('joinErr').textContent='Anna 4-merkkinen koodi';return;}
@@ -493,14 +449,11 @@ function joinGame() {
   peer=makePeer();
   peer.on('open',()=>{
     const c=peer.connect('floor-'+code,{reliable:true});
-    c.on('open',()=>{
-      document.getElementById('connecting').classList.remove('show');
-      setupConn(c);
-    });
+    c.on('open',()=>{ document.getElementById('connecting').classList.remove('show'); setupConn(c); });
     setTimeout(()=>{
       if(!conn||!conn.open){
         document.getElementById('connecting').classList.remove('show');
-        document.getElementById('joinErr').textContent='Ei löydy peliä – tarkista koodi';
+        document.getElementById('joinErr').textContent='Peliä ei löydy koodilla '+code;
         show('home');document.getElementById('joinWrap').classList.add('open');
       }
     },9000);
@@ -513,351 +466,368 @@ function joinGame() {
 }
 
 // ══════════════════════════════════════════════════════
-// SETUP SCREEN (judge)
+// SETUP
 // ══════════════════════════════════════════════════════
-function buildPlayerRows() {
+function buildSetup(){
+  S.selectedCatIds=[];
   const rows=document.getElementById('playerRows');
   rows.innerHTML='';
-  // default 2 players
   addPlayerRow('Pelaaja 1');
   addPlayerRow('Pelaaja 2');
-  checkStartBtn();
-}
-
-function addPlayerRow(defaultName='') {
-  const idx=document.getElementById('playerRows').children.length;
-  const col=PLAYER_COLORS[idx%PLAYER_COLORS.length];
-  const row=document.createElement('div'); row.className='player-row';
-  row.innerHTML=`
-    <div class="player-dot" style="background:${col}"></div>
-    <input class="player-input" placeholder="Pelaajan nimi" value="${defaultName}" oninput="checkStartBtn()"/>
-    <button class="rm-btn" onclick="this.parentElement.remove();checkStartBtn()">✕</button>`;
-  document.getElementById('playerRows').appendChild(row);
-  checkStartBtn();
-}
-
-function buildCatGrid() {
-  S.selectedCatIds=[];
-  const g=document.getElementById('catGrid'); g.innerHTML='';
+  const cg=document.getElementById('catGrid');cg.innerHTML='';
   CATS.forEach(cat=>{
-    const d=document.createElement('div'); d.className='cat-card'; d.dataset.id=cat.id;
+    const d=document.createElement('div');d.className='cat-card';d.dataset.id=cat.id;
     d.innerHTML=`<span class="cicon">${cat.icon}</span><span class="cname">${cat.name}</span><span class="ccount">${cat.questions.length} kuvaa</span>`;
-    d.onclick=()=>toggleCat(cat.id,d); g.appendChild(d);
+    d.onclick=()=>toggleCat(cat.id,d);cg.appendChild(d);
   });
+  checkStart();
+}
+function addPlayerRow(def=''){
+  const idx=document.getElementById('playerRows').children.length;
+  const col=P_COLORS[idx%P_COLORS.length];
+  const row=document.createElement('div');row.className='player-row';
+  row.innerHTML=`<div class="player-dot" style="background:${col}"></div><input class="player-input" placeholder="Nimi" value="${def}" oninput="checkStart()"/><button class="rm-btn" onclick="this.parentElement.remove();checkStart()">✕</button>`;
+  document.getElementById('playerRows').appendChild(row);
+  checkStart();
 }
 function toggleCat(id,el){
   if(S.selectedCatIds.includes(id)){S.selectedCatIds=S.selectedCatIds.filter(c=>c!==id);el.classList.remove('sel');}
   else if(S.selectedCatIds.length<4){S.selectedCatIds.push(id);el.classList.add('sel');}
-  checkStartBtn();
+  checkStart();
 }
-function checkStartBtn(){
-  const names=Array.from(document.querySelectorAll('.player-input')).map(i=>i.value.trim()).filter(Boolean);
-  document.getElementById('startBtn').disabled=names.length<2||S.selectedCatIds.length===0;
+function checkStart(){
+  const n=Array.from(document.querySelectorAll('.player-input')).map(i=>i.value.trim()).filter(Boolean).length;
+  document.getElementById('startBtn').disabled=n<2||S.selectedCatIds.length===0;
 }
 
 // ══════════════════════════════════════════════════════
-// START GAME
+// START
 // ══════════════════════════════════════════════════════
-function startGame() {
+function startGame(){
   const names=Array.from(document.querySelectorAll('.player-input')).map(i=>i.value.trim()).filter(Boolean);
-  S.players=names.map((n,i)=>({name:n,color:PLAYER_COLORS[i%PLAYER_COLORS.length],score:0}));
-  S.scores={};
-  S.players.forEach(p=>S.scores[p.name]=0);
+  S.players=names.map((n,i)=>({name:n,color:P_COLORS[i%P_COLORS.length],score:0}));
 
-  // Build per-category question pools (shuffled)
-  S.catQuestions={};
+  // Build category question pools
+  S.catPools={};
   S.selectedCatIds.forEach(cid=>{
     const cat=CATS.find(c=>c.id===cid);
-    S.catQuestions[cid]=[...cat.questions].sort(()=>Math.random()-.5);
+    S.catPools[cid]=shuffle([...cat.questions]);
   });
 
-  S.pairIdx=0;
-  S.activeInPair=0;
+  // First match: players[0] vs players[1]
+  S.matchPlayerIdxs=[0,1];
+  S.matchScores=[0,0];
+  S.timers=[60,60];
+  S.activeSlot=0;
 
-  const payload={players:S.players,catQuestions:S.catQuestions,selectedCatIds:S.selectedCatIds};
+  const payload={players:S.players,catPools:S.catPools,selectedCatIds:S.selectedCatIds,
+    matchPlayerIdxs:S.matchPlayerIdxs,matchScores:S.matchScores,timers:S.timers,activeSlot:S.activeSlot};
   send('game_start',payload);
-  beginRound();
+  beginTurn();
 }
 
-// ══════════════════════════════════════════════════════
-// MESSAGES (player phone)
-// ══════════════════════════════════════════════════════
-function onMsg(msg) {
-  if(msg.type==='game_start'){
-    S.players=msg.players;
-    S.catQuestions=msg.catQuestions;
-    S.selectedCatIds=msg.selectedCatIds;
-    S.scores={};
-    S.players.forEach(p=>S.scores[p.name]=0);
-    S.pairIdx=0; S.activeInPair=0;
-    show('playerscreen');
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function pickQ(){
+  // Pick random cat with remaining questions
+  const avail=S.selectedCatIds.filter(cid=>S.catPools[cid]&&S.catPools[cid].length>0);
+  if(!avail.length){
+    S.selectedCatIds.forEach(cid=>{const cat=CATS.find(c=>c.id===cid);S.catPools[cid]=shuffle([...cat.questions]);});
+    return pickQ();
   }
-  if(msg.type==='round_state'){ applyRoundState(msg); }
-  if(msg.type==='tick'){ updateSideTimers(msg.t, msg.activeInPair); }
-  if(msg.type==='result_flash'){ flash(msg.cls,msg.txt); }
-  if(msg.type==='show_scoreboard'){ showScoreboardPlayer(msg); }
-}
-
-// ══════════════════════════════════════════════════════
-// ROUND LOGIC
-// ══════════════════════════════════════════════════════
-function getPair() {
-  // Returns [playerA, playerB] indices for current pairIdx
-  const n=S.players.length;
-  const a=S.pairIdx%n;
-  const b=(S.pairIdx+1)%n;
-  return [a,b];
-}
-
-function getActivePlayerIdx() {
-  const [a,b]=getPair();
-  return S.activeInPair===0?a:b;
-}
-
-function pickQuestion() {
-  // pick random category from selected, then next question
-  const catIds=S.selectedCatIds;
-  // pick random cat that still has questions
-  const available=catIds.filter(cid=>S.catQuestions[cid]&&S.catQuestions[cid].length>0);
-  if(available.length===0){
-    // refill all
-    S.selectedCatIds.forEach(cid=>{
-      const cat=CATS.find(c=>c.id===cid);
-      S.catQuestions[cid]=[...cat.questions].sort(()=>Math.random()-.5);
-    });
-    return pickQuestion();
-  }
-  const cid=available[Math.floor(Math.random()*available.length)];
+  const cid=avail[Math.floor(Math.random()*avail.length)];
   const cat=CATS.find(c=>c.id===cid);
-  const q=S.catQuestions[cid].pop();
-  return {...q, cat:cat.name, icon:cat.icon, catId:cid};
+  const q=S.catPools[cid].pop();
+  return {...q,cat:cat.name,icon:cat.icon};
 }
 
-function beginRound() {
+// ══════════════════════════════════════════════════════
+// TURN LOGIC
+// Key: activeSlot's timer counts down. On correct: give point,
+// switch slot (other timer continues from where it was), new image.
+// On wrong: new image, same slot, timer continues.
+// Timer hits 0: that player loses the match.
+// ══════════════════════════════════════════════════════
+function beginTurn(){
   clearInterval(S.timerInt);
   S.judged=false;
-  S.currentQ=pickQuestion();
-  S.timeLeft=60;
+  S.roundOver=false;
+  S.currentQ=pickQ();
 
-  const [ai,bi]=getPair();
-  const activeIdx=getActivePlayerIdx();
-  const pa=S.players[ai], pb=S.players[bi];
-  const active=S.players[activeIdx];
+  pushState(); // send to player phone + update judge UI
+  startTimer();
+}
 
-  const state={
-    q:S.currentQ, pairA:pa, pairB:pb,
-    activeInPair:S.activeInPair, scores:S.scores, timeLeft:60
-  };
-
-  // Send to player phone
-  send('round_state', state);
-  applyRoundState(state); // also apply locally for judge
-
-  // Judge screen
-  if(S.role==='judge') {
-    document.getElementById('jAnswer').textContent=S.currentQ.a;
-    const ji=document.getElementById('judgeImg');
-    ji.src=S.currentQ.img; ji.style.display='block';
-    document.getElementById('jActiveDot').style.background=active.color;
-    document.getElementById('jActiveName').textContent=active.name;
-    updateJScores();
-    document.getElementById('btnOk').disabled=false;
-    document.getElementById('btnNo').disabled=false;
-    show('judgescreen');
-  }
-
-  // Timer
+function startTimer(){
+  clearInterval(S.timerInt);
   S.timerInt=setInterval(()=>{
-    S.timeLeft--;
-    if(S.role==='judge') {
-      send('tick',{t:S.timeLeft, activeInPair:S.activeInPair});
-      updateJTimer(S.timeLeft);
-    }
-    if(S.timeLeft<=0){
+    S.timers[S.activeSlot]--;
+    // send tick
+    send('tick',{timers:S.timers,activeSlot:S.activeSlot});
+    renderTimers(S.timers,S.activeSlot);
+    updateJudgeTimers();
+    if(S.timers[S.activeSlot]<=0){
       clearInterval(S.timerInt);
       if(S.role==='judge') judgeResult('timeout');
     }
   },1000);
 }
 
-function applyRoundState(state) {
-  if(S.role!=='player') return;
-  const {pairA,pairB,activeInPair,scores,timeLeft,q}=state;
-  S.scores=scores;
+// Push full state to player phone and update judge display
+function pushState(){
+  const state={
+    q:S.currentQ,
+    players:S.players,
+    matchPlayerIdxs:S.matchPlayerIdxs,
+    timers:[...S.timers],
+    activeSlot:S.activeSlot,
+    matchScores:[...S.matchScores],
+  };
+  send('state',state);
+  if(S.role==='judge') applyJudgeState();
+  if(S.role==='player') applyPlayerState(state);
+}
 
-  // Update turn banner
-  document.getElementById('p1dot').style.background=pairA.color;
-  document.getElementById('p2dot').style.background=pairB.color;
-  document.getElementById('p1name').textContent=pairA.name;
-  document.getElementById('p2name').textContent=pairB.name;
+// ── Judge UI ──────────────────────────────────────────
+function applyJudgeState(){
+  const slot=S.activeSlot;
+  const pidx=S.matchPlayerIdxs[slot];
+  const p=S.players[pidx];
+  document.getElementById('jActiveDot').style.background=p.color;
+  document.getElementById('jActiveName').textContent=p.name;
+  document.getElementById('jAnswer').textContent=S.currentQ.a;
+  const ji=document.getElementById('judgeImg');ji.src=S.currentQ.img;ji.style.display='block';
+  document.getElementById('btnOk').disabled=false;
+  document.getElementById('btnNo').disabled=false;
+  updateJScores();
+  buildJudgeTimersUI();
+  updateJudgeTimers();
+  show('judgescreen');
+}
 
-  // Left = pairA, Right = pairB
-  document.getElementById('leftName').textContent=pairA.name;
-  document.getElementById('rightName').textContent=pairB.name;
+function updateJScores(){
+  const txt=S.matchPlayerIdxs.map((pi,slot)=>`${S.players[pi].name} ${S.matchScores[slot]}`).join(' · ');
+  document.getElementById('jScores').textContent=txt;
+}
 
-  // Show image
-  const pi=document.getElementById('playerImg'), pp=document.getElementById('playerPh');
-  pi.style.display='none'; pp.style.display='flex'; pp.textContent='📷';
-  pi.onload=()=>{ pi.style.display='block'; pp.style.display='none'; };
-  pi.onerror=()=>{ pp.textContent='❓'; };
-  pi.src=''; pi.src=q.img;
-  document.getElementById('playerCatBadge').textContent=q.icon+' '+q.cat;
+const CJT=2*Math.PI*14; // small judge timer arc circumference (r=14 on 36px svg)
+function buildJudgeTimersUI(){
+  const wrap=document.getElementById('judgeTimers');
+  wrap.innerHTML='';
+  S.matchPlayerIdxs.forEach((pi,slot)=>{
+    const p=S.players[pi];
+    const div=document.createElement('div');div.className='jt-block';
+    div.innerHTML=`
+      <div class="jt-name" style="color:${p.color}">${p.name}</div>
+      <svg class="jt-arc" viewBox="0 0 36 36" style="transform:rotate(-90deg)">
+        <circle class="jt-track" cx="18" cy="18" r="14"/>
+        <circle class="jt-fill" id="jtArc${slot}" cx="18" cy="18" r="14"/>
+      </svg>
+      <div class="jt-num" id="jtNum${slot}" style="color:${p.color}">${S.timers[slot]}</div>`;
+    wrap.appendChild(div);
+  });
+}
+function updateJudgeTimers(){
+  S.timers.forEach((t,slot)=>{
+    const arc=document.getElementById('jtArc'+slot);
+    const num=document.getElementById('jtNum'+slot);
+    if(!arc||!num)return;
+    const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
+    arc.style.strokeDasharray=CJT;
+    arc.style.strokeDashoffset=CJT*(1-t/60);
+    arc.style.stroke=col;
+    num.textContent=t;
+    num.style.color=col;
+  });
+}
 
-  // Highlight active side, reset timers
-  const larc=document.getElementById('leftArc'), rarc=document.getElementById('rightArc');
-  const lnum=document.getElementById('leftNum'), rnum=document.getElementById('rightNum');
-  const C=2*Math.PI*14;
-  // Active player's timer running, other shows 60 dimmed
-  const activeIsLeft=activeInPair===0;
-  document.getElementById('leftTimer').style.opacity=activeIsLeft?'1':'0.35';
-  document.getElementById('rightTimer').style.opacity=activeIsLeft?'0.35':'1';
-  const pct=timeLeft/60;
-  const col=timeLeft>20?'#2d8a4e':timeLeft>10?'#c8a84b':'#d63b2f';
-  if(activeIsLeft){
-    larc.style.strokeDasharray=C; larc.style.strokeDashoffset=C*(1-pct); larc.style.stroke=col;
-    rarc.style.strokeDasharray=C; rarc.style.strokeDashoffset=0; rarc.style.stroke='#2d8a4e';
-    lnum.textContent=timeLeft; rnum.textContent=60;
-  } else {
-    rarc.style.strokeDasharray=C; rarc.style.strokeDashoffset=C*(1-pct); rarc.style.stroke=col;
-    larc.style.strokeDasharray=C; larc.style.strokeDashoffset=0; larc.style.stroke='#2d8a4e';
-    rnum.textContent=timeLeft; lnum.textContent=60;
-  }
+// ── Player UI ──────────────────────────────────────────
+function applyPlayerState(state){
+  const {players,matchPlayerIdxs,timers,activeSlot,q,matchScores}=state;
+
+  // Build timer strip if needed
+  buildTimerStrip(matchPlayerIdxs,players);
+  renderTimers(timers,activeSlot);
+
+  // Image
+  const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
+  pi.style.display='none';pp.style.display='flex';pp.textContent='📷';
+  pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
+  pi.onerror=()=>{pp.textContent='❓';};
+  pi.src='';pi.src=q.img;
+  document.getElementById('playerCat').textContent=q.icon+' '+q.cat;
   show('playerscreen');
 }
 
-function updateSideTimers(t, activeInPair) {
-  const C=2*Math.PI*14;
-  const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
-  const larc=document.getElementById('leftArc'), rarc=document.getElementById('rightArc');
-  const lnum=document.getElementById('leftNum'), rnum=document.getElementById('rightNum');
-  const pct=t/60;
-  if(activeInPair===0){
-    larc.style.strokeDashoffset=C*(1-pct); larc.style.stroke=col;
-    lnum.textContent=t;
-  } else {
-    rarc.style.strokeDashoffset=C*(1-pct); rarc.style.stroke=col;
-    rnum.textContent=t;
+const CARC=2*Math.PI*18; // r=18 on side arc (44px svg)
+function buildTimerStrip(matchPlayerIdxs,players){
+  const strip=document.getElementById('timerStrip');
+  // Only rebuild if players changed
+  const key=matchPlayerIdxs.join('-');
+  if(strip.dataset.key===key)return;
+  strip.dataset.key=key;
+  strip.innerHTML='';
+  matchPlayerIdxs.forEach((pi,slot)=>{
+    const p=players[pi];
+    if(slot===1){ const div=document.createElement('div');div.className='vs-divider';strip.appendChild(div); }
+    const block=document.createElement('div');
+    block.className='p-timer';block.id='pTimerBlock'+slot;
+    block.innerHTML=`
+      <div class="p-timer-name" id="pTimerName${slot}" style="color:${p.color}">${p.name}</div>
+      <svg class="arc-svg" viewBox="0 0 44 44" style="transform:rotate(-90deg)">
+        <circle class="arc-track" cx="22" cy="22" r="18"/>
+        <circle class="arc-fill" id="pArc${slot}" cx="22" cy="22" r="18"/>
+      </svg>
+      <div class="p-timer-num" id="pNum${slot}">${S.timers[slot]}</div>
+      <div class="active-indicator" id="pInd${slot}" style="display:none"></div>`;
+    if(slot===0) strip.prepend(block); else strip.appendChild(block);
+  });
+}
+
+function renderTimers(timers,activeSlot){
+  timers.forEach((t,slot)=>{
+    const arc=document.getElementById('pArc'+slot);
+    const num=document.getElementById('pNum'+slot);
+    const block=document.getElementById('pTimerBlock'+slot);
+    const ind=document.getElementById('pInd'+slot);
+    if(!arc)return;
+    const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
+    arc.style.strokeDasharray=CARC;
+    arc.style.strokeDashoffset=CARC*(1-t/60);
+    arc.style.stroke=col;
+    num.textContent=t;
+    num.style.color=col;
+    if(block){block.className='p-timer '+(slot===activeSlot?'active-side':'inactive-side');}
+    if(ind){ind.style.display=slot===activeSlot?'block':'none';}
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// MESSAGES
+// ══════════════════════════════════════════════════════
+function onMsg(msg){
+  if(msg.type==='game_start'&&S.role==='player'){
+    S.players=msg.players;
+    S.catPools=msg.catPools;
+    S.selectedCatIds=msg.selectedCatIds;
+    S.matchPlayerIdxs=msg.matchPlayerIdxs;
+    S.matchScores=msg.matchScores;
+    S.timers=msg.timers;
+    S.activeSlot=msg.activeSlot;
+    show('playerscreen');
   }
-}
-
-const CJ=2*Math.PI*31;
-function updateJTimer(t) {
-  const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
-  const jf=document.getElementById('jFill');
-  jf.style.strokeDasharray=CJ; jf.style.strokeDashoffset=CJ*(1-t/60); jf.style.stroke=col;
-  document.getElementById('jNum').textContent=t;
-}
-
-function updateJScores() {
-  const txt=S.players.map(p=>`${p.name} ${S.scores[p.name]}`).join(' · ');
-  document.getElementById('jScores').textContent=txt;
+  if(msg.type==='state'&&S.role==='player'){
+    S.timers=msg.timers;
+    S.activeSlot=msg.activeSlot;
+    S.matchPlayerIdxs=msg.matchPlayerIdxs;
+    S.matchScores=msg.matchScores;
+    applyPlayerState(msg);
+  }
+  if(msg.type==='tick'&&S.role==='player'){
+    S.timers=msg.timers;
+    S.activeSlot=msg.activeSlot;
+    renderTimers(msg.timers,msg.activeSlot);
+  }
+  if(msg.type==='flash'){
+    doFlash(msg.cls,msg.txt);
+  }
+  if(msg.type==='scoreboard'&&S.role==='player'){
+    showScoreboard(msg.title,msg.sub,false);
+  }
 }
 
 // ══════════════════════════════════════════════════════
 // JUDGE ACTIONS
 // ══════════════════════════════════════════════════════
-async function judgeResult(outcome) {
-  if(S.judged) return; S.judged=true;
+async function judgeResult(outcome){
+  if(S.judged||S.roundOver)return;
+  S.judged=true;
   clearInterval(S.timerInt);
   document.getElementById('btnOk').disabled=true;
   document.getElementById('btnNo').disabled=true;
 
-  const activeIdx=getActivePlayerIdx();
-  const activeName=S.players[activeIdx].name;
+  if(outcome==='correct'){
+    // Point to active player
+    S.matchScores[S.activeSlot]++;
+    send('flash',{cls:'ok',txt:'✓ OIKEIN!'});
+    await doFlash('ok','✓ OIKEIN!');
+    // Switch active slot – other player's timer continues from where it was
+    S.activeSlot=S.activeSlot===0?1:0;
+    S.judged=false;
+    S.currentQ=pickQ();
+    pushState();
+    startTimer();
+    return;
+  }
 
-  if(outcome==='correct') {
-    S.scores[activeName]=(S.scores[activeName]||0)+1;
-    send('result_flash',{cls:'ok',txt:'✓ OIKEIN!'});
-    await flash('ok','✓ OIKEIN!');
-    // Show mini scoreboard, then next pair
-    nextPair();
-  } else if(outcome==='wrong') {
-    send('result_flash',{cls:'no',txt:'✗ VÄÄRIN'});
-    await flash('no','✗ VÄÄRIN');
-    // Same player, new image from same category, switch to other player in pair
-    switchActiveInPair();
-  } else {
-    // timeout – switch active player, new image
-    send('result_flash',{cls:'time',txt:'⏱ AIKA!'});
-    await flash('time','⏱ AIKA!');
-    switchActiveInPair();
+  if(outcome==='wrong'){
+    send('flash',{cls:'no',txt:'✗ VÄÄRIN'});
+    await doFlash('no','✗ VÄÄRIN');
+    // Same player, new image from same category pool, timer continues
+    S.judged=false;
+    S.currentQ=pickQ();
+    pushState();
+    startTimer();
+    return;
+  }
+
+  if(outcome==='timeout'){
+    // Active player's timer hit 0 – they lose the match
+    const loserSlot=S.activeSlot;
+    const winnerSlot=loserSlot===0?1:0;
+    const loser=S.players[S.matchPlayerIdxs[loserSlot]];
+    const winner=S.players[S.matchPlayerIdxs[winnerSlot]];
+    send('flash',{cls:'time',txt:'⏱ AIKA!\n'+loser.name+' hävisi'});
+    await doFlash('time','⏱ AIKA!');
+    S.roundOver=true;
+    // Add match scores to global scores
+    S.players[S.matchPlayerIdxs[0]].score+=S.matchScores[0];
+    S.players[S.matchPlayerIdxs[1]].score+=S.matchScores[1];
+    // Show scoreboard
+    const sub=winner.name+' voitti erän! Kokonaispisteillä:';
+    send('scoreboard',{title:'Erä päättyi! 🏁',sub});
+    showScoreboard('Erä päättyi! 🏁',sub,true,loser,winner);
   }
 }
 
-function switchActiveInPair() {
-  // Other player in pair gets a new image (same category pool)
-  S.activeInPair = S.activeInPair===0?1:0;
-  S.judged=false;
-  S.currentQ=pickQuestion();
-  S.timeLeft=60;
-
-  const [ai,bi]=getPair();
-  const activeIdx=getActivePlayerIdx();
-  const active=S.players[activeIdx];
-  const pa=S.players[ai], pb=S.players[bi];
-
-  const state={q:S.currentQ,pairA:pa,pairB:pb,activeInPair:S.activeInPair,scores:S.scores,timeLeft:60};
-  send('round_state',state);
-  applyRoundState(state);
-
-  document.getElementById('jAnswer').textContent=S.currentQ.a;
-  document.getElementById('judgeImg').src=S.currentQ.img;
-  document.getElementById('jActiveDot').style.background=active.color;
-  document.getElementById('jActiveName').textContent=active.name;
-  updateJScores();
-  document.getElementById('btnOk').disabled=false;
-  document.getElementById('btnNo').disabled=false;
-  show('judgescreen');
-  updateJTimer(60);
-
-  S.timerInt=setInterval(()=>{
-    S.timeLeft--;
-    send('tick',{t:S.timeLeft,activeInPair:S.activeInPair});
-    updateJTimer(S.timeLeft);
-    if(S.timeLeft<=0){ clearInterval(S.timerInt); judgeResult('timeout'); }
-  },1000);
-}
-
-function nextPair() {
-  // Rotate to next pair
-  S.pairIdx++;
-  S.activeInPair=0;
-  // Show brief scoreboard on judge, then continue
-  showScoreboardJudge();
-}
-
-// ══════════════════════════════════════════════════════
-// SCOREBOARD
-// ══════════════════════════════════════════════════════
-function showScoreboardJudge() {
-  const sorted=[...S.players].sort((a,b)=>(S.scores[b.name]||0)-(S.scores[a.name]||0));
-  document.getElementById('sbTitle').textContent='Kierros ohi! 🏁';
+function showScoreboard(title,sub,isJudge,loser,winner){
+  const sorted=[...S.players].sort((a,b)=>b.score-a.score);
+  document.getElementById('sbTitle').textContent=title;
   document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`
     <div class="sb-row ${i===0?'winner':''}">
-      <span class="sn"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${p.color}"></span>${p.name}</span>
-      <span class="sp">${S.scores[p.name]||0}</span>
+      <span class="sn">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${p.color}"></span>
+        ${p.name}${p===loser?' ⏱':''}${p===winner?' ✓':''}
+      </span>
+      <span class="sp">${p.score}</span>
     </div>`).join('');
-  document.getElementById('sbSub').textContent='Paina jatka aloittaaksesi seuraavan vuoron';
+  document.getElementById('sbSub').textContent=sub||'';
   const nb=document.getElementById('nextBtn');
-  nb.style.display='block'; nb.textContent='Seuraava vuoro →'; nb.onclick=()=>beginRound();
-
-  // Tell player phone to show scoreboard too
-  send('show_scoreboard',{scores:S.scores,players:S.players});
+  if(isJudge){
+    nb.style.display='block';
+    nb.textContent='Seuraava erä →';
+    nb.onclick=nextMatch;
+  } else {
+    nb.style.display='none';
+  }
   show('scoreboard');
 }
 
-function showScoreboardPlayer(msg) {
-  if(S.role!=='player') return;
-  const sorted=[...msg.players].sort((a,b)=>(msg.scores[b.name]||0)-(msg.scores[a.name]||0));
-  document.getElementById('sbTitle').textContent='Kierros ohi! 🏁';
-  document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`
-    <div class="sb-row ${i===0?'winner':''}">
-      <span class="sn"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${p.color}"></span>${p.name}</span>
-      <span class="sp">${msg.scores[p.name]||0}</span>
-    </div>`).join('');
-  document.getElementById('sbSub').textContent='Tuomari aloittaa seuraavan vuoron';
-  document.getElementById('nextBtn').style.display='none';
-  show('scoreboard');
+function nextMatch(){
+  // Rotate to next pair
+  const n=S.players.length;
+  // Next two players (rotate by 1 each match)
+  const firstIdx=(S.matchPlayerIdxs[0]+1)%n;
+  const secondIdx=(firstIdx+1)%n;
+  S.matchPlayerIdxs=[firstIdx,secondIdx];
+  S.matchScores=[0,0];
+  S.timers=[60,60];
+  S.activeSlot=0;
+  S.roundOver=false;
+  const payload={players:S.players,catPools:S.catPools,selectedCatIds:S.selectedCatIds,
+    matchPlayerIdxs:S.matchPlayerIdxs,matchScores:S.matchScores,timers:S.timers,activeSlot:S.activeSlot};
+  send('game_start',payload);
+  beginTurn();
 }
 </script>
 </body>
