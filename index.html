@@ -13,24 +13,24 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .screen{display:none;flex-direction:column;height:100%;align-items:center;justify-content:center;padding:2rem}
 .screen.active{display:flex}
 
-/* ── HOME ── */
-#home{background:var(--black);position:relative;overflow:hidden}
-#home::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#c8a84b18,transparent 65%);pointer-events:none}
+/* HOME */
+#home{position:relative;overflow:hidden}
+#home::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 28%,#c8a84b18,transparent 65%);pointer-events:none}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(76px,23vw,112px);color:var(--gold);line-height:.88;text-align:center;letter-spacing:.04em}
-.logo-sub{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;margin-bottom:3rem;text-align:center}
-.btn{width:100%;max-width:300px;padding:17px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;border:none;transition:transform .1s;margin-bottom:10px;position:relative;z-index:1}
-.btn:active{transform:scale(.95)}
-.btn-gold{background:var(--gold);color:var(--black)}
-.btn-outline{background:transparent;color:var(--white);border:1.5px solid var(--gray3)}
+.logo-sub{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;margin-bottom:2.5rem;text-align:center}
+.hbtn{width:100%;max-width:300px;padding:17px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;border:none;transition:transform .1s;margin-bottom:10px;position:relative;z-index:1}
+.hbtn:active{transform:scale(.95)}
+.hbtn-gold{background:var(--gold);color:var(--black)}
+.hbtn-outline{background:transparent;color:var(--white);border:1.5px solid var(--gray3)}
 .join-wrap{width:100%;max-width:300px;overflow:hidden;max-height:0;transition:max-height .35s ease;position:relative;z-index:1}
-.join-wrap.open{max-height:180px}
+.join-wrap.open{max-height:200px}
 .code-input{width:100%;background:var(--gray2);border:1.5px solid var(--gray3);border-radius:6px;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.22em;text-align:center;padding:13px 8px;text-transform:uppercase;margin-top:8px}
 .code-input:focus{outline:none;border-color:var(--gold)}
 .go-btn{width:100%;margin-top:8px;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:15px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
 .go-btn:active{transform:scale(.95)}
 .err{color:var(--red);font-size:13px;text-align:center;margin-top:6px;min-height:16px}
 
-/* ── LOBBY ── */
+/* LOBBY */
 #lobby{gap:.6rem;text-align:center}
 .lbl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
 .room-code{font-family:'Bebas Neue',sans-serif;font-size:clamp(88px,26vw,128px);color:var(--gold);letter-spacing:.14em;line-height:1}
@@ -39,75 +39,119 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 @keyframes dot{0%,80%,100%{opacity:0}40%{opacity:1}}
 .back-btn{margin-top:1rem;background:transparent;color:var(--muted);border:1px solid var(--gray3);border-radius:6px;padding:11px 26px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
 
-/* ── CAT SELECT ── */
-#catselect{align-items:stretch;padding:0;justify-content:flex-start}
-.top-bar{padding:1.25rem 1rem .6rem;flex-shrink:0}
-.stitle{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);letter-spacing:.08em}
-.ssub{font-size:13px;color:var(--muted);margin-top:2px}
-.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 1rem;overflow-y:auto;flex:1}
-.cat-card{background:var(--gray);border:1.5px solid var(--gray2);border-radius:8px;padding:16px 12px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:4px;user-select:none}
+/* SETUP (add players + cats on judge phone) */
+#setup{align-items:stretch;justify-content:flex-start;padding:0;overflow:hidden}
+.setup-scroll{flex:1;overflow-y:auto;padding:1.25rem 1rem}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:.08em;margin-bottom:.2rem}
+.ssub{font-size:13px;color:var(--muted);margin-bottom:1rem}
+.section-lbl{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin:.9rem 0 .4rem}
+.player-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:.5rem}
+.player-row{display:flex;align-items:center;gap:8px}
+.player-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.player-input{flex:1;background:var(--gray2);border:1px solid var(--gray3);border-radius:6px;color:var(--white);padding:9px 12px;font-size:15px;font-family:'DM Sans',sans-serif}
+.player-input:focus{outline:none;border-color:var(--gold)}
+.rm-btn{background:transparent;border:1px solid var(--gray3);border-radius:6px;color:var(--muted);padding:7px 11px;font-size:14px;cursor:pointer;flex-shrink:0}
+.add-player-btn{background:transparent;border:1px dashed var(--gray3);border-radius:6px;color:var(--muted);padding:10px;font-size:14px;cursor:pointer;width:100%;margin-top:4px}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+.cat-card{background:var(--gray);border:1.5px solid var(--gray2);border-radius:8px;padding:13px 10px;cursor:pointer;display:flex;flex-direction:column;gap:3px}
 .cat-card.sel{border-color:var(--gold);background:#1b1500}
-.cicon{font-size:28px}.cname{font-size:14px;font-weight:600}.ccount{font-size:11px;color:var(--muted)}
+.cicon{font-size:26px}.cname{font-size:13px;font-weight:600}.ccount{font-size:11px;color:var(--muted)}
 .start-bar{padding:1rem;border-top:1px solid var(--gray2);flex-shrink:0;width:100%}
 .start-bar button{width:100%;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:17px;font-size:17px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
 .start-bar button:disabled{opacity:.3;cursor:not-allowed}
 
-/* ── WAITING ── */
+/* WAITING */
 #waiting{gap:1.5rem;text-align:center}
 
-/* ── PLAYER SCREEN ── */
+/* ══ PLAYER GAME SCREEN ══
+   Layout: left timer | image | right timer
+   Top shows whose turn it is */
 #playerscreen{align-items:stretch;justify-content:flex-start;padding:0}
-.game-header{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;background:var(--gray2);flex-shrink:0}
-.gcatname{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:.07em}
-.gscore{font-size:13px;color:var(--muted)}
-.timer-center{display:flex;align-items:center;justify-content:center;padding:.7rem 0 .2rem;flex-shrink:0;position:relative}
-.timer-center svg{transform:rotate(-90deg)}
-.t-track{fill:none;stroke:var(--gray2);stroke-width:7}
-.t-fill{fill:none;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .5s}
-.t-num{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--white)}
-.img-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:1rem;overflow:hidden;min-height:0}
-.qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none}
-.img-ph{width:100%;height:160px;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
-.guess-hint{text-align:center;padding:.4rem 1rem 1.1rem;font-size:14px;color:var(--muted);flex-shrink:0}
 
-/* ── JUDGE SCREEN ── */
+.turn-banner{
+  display:flex;align-items:center;justify-content:center;
+  padding:.55rem 1rem;background:var(--gray2);flex-shrink:0;gap:8px
+}
+.turn-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.turn-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em}
+.turn-vs{font-size:12px;color:var(--muted);padding:0 4px}
+
+.play-area{
+  flex:1;display:flex;flex-direction:row;min-height:0;overflow:hidden
+}
+
+/* Side timers */
+.side-timer{
+  width:52px;flex-shrink:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:8px 0;gap:6px;
+  background:var(--gray)
+}
+.side-timer.left{border-right:1px solid var(--gray3)}
+.side-timer.right{border-left:1px solid var(--gray3)}
+.side-name{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg)}
+.side-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
+.side-arc{width:36px;height:36px;flex-shrink:0}
+.arc-track{fill:none;stroke:var(--gray3);stroke-width:4}
+.arc-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .5s}
+
+/* Center image */
+.center-img{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:.75rem;overflow:hidden;min-width:0
+}
+.qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none}
+.img-ph{width:100%;aspect-ratio:4/3;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.cat-badge{font-size:11px;color:var(--muted);margin-top:.4rem;letter-spacing:.08em;text-transform:uppercase}
+
+/* ══ JUDGE SCREEN ══ */
 #judgescreen{align-items:stretch;justify-content:flex-start;padding:0}
-.answer-box{margin:1rem 1rem .4rem;background:var(--gray);border-radius:10px;padding:1.25rem 1rem;text-align:center;flex-shrink:0}
-.albl{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
-.aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,12vw,62px);color:var(--gold);letter-spacing:.05em;line-height:1.05}
-.judge-img{flex:1;min-height:0;overflow:hidden;padding:0 1.5rem;display:flex;align-items:center;justify-content:center}
-.judge-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.38;display:none}
-.jtimer-row{display:flex;justify-content:center;padding:.4rem 0;flex-shrink:0;position:relative}
+.judge-turn{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:var(--gray2);flex-shrink:0}
+.jturn-left{display:flex;align-items:center;gap:6px}
+.jscore-right{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:.06em}
+
+.answer-box{margin:.75rem 1rem .35rem;background:var(--gray);border-radius:10px;padding:1.1rem 1rem;text-align:center;flex-shrink:0}
+.albl{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,11vw,60px);color:var(--gold);letter-spacing:.05em;line-height:1.05}
+
+.judge-img{flex:1;min-height:0;overflow:hidden;padding:0 1.25rem;display:flex;align-items:center;justify-content:center}
+.judge-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.35;display:none}
+
+.jtimer-row{display:flex;justify-content:center;padding:.3rem 0;flex-shrink:0;position:relative}
 .jtimer-row svg{transform:rotate(-90deg)}
-.judge-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:1rem;flex-shrink:0}
-.jbtn{padding:20px 8px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform .1s,opacity .15s}
+.jt-track{fill:none;stroke:var(--gray2);stroke-width:6}
+.jt-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .5s}
+.jt-num{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--white)}
+
+.judge-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:.75rem 1rem 1rem;flex-shrink:0}
+.jbtn{padding:18px 8px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .1s,opacity .15s}
 .jbtn:active{transform:scale(.94)}.jbtn:disabled{opacity:.35;cursor:not-allowed}
-.jbtn .bi{font-size:26px}
+.jbtn .bi{font-size:24px}
 .jok{background:var(--green);color:#fff}.jno{background:var(--red);color:#fff}
 
-/* ── SCOREBOARD ── */
+/* SCOREBOARD */
 #scoreboard{align-items:stretch;justify-content:flex-start;padding:1.5rem;overflow-y:auto;gap:.6rem}
 .sb-title{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);letter-spacing:.08em}
-.sb-row{background:var(--gray);border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.sb-row .sn{font-weight:600;font-size:15px}.sb-row .sp{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold)}
+.sb-row{background:var(--gray);border-radius:8px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.sb-row .sn{font-weight:600;font-size:15px;display:flex;align-items:center;gap:7px}
+.sb-row .sp{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold)}
 .sb-row.winner{border:2px solid var(--gold)}
 .sb-sub{font-size:13px;color:var(--muted);text-align:center}
 .next-btn{background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:17px;font-size:17px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:auto;width:100%}
 .next-btn:active{transform:scale(.97)}
 
-/* ── FLASH ── */
+/* FLASH */
 .flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:76px;letter-spacing:.05em;z-index:200;pointer-events:none;opacity:0;transition:opacity .12s}
 .flash.show{opacity:1}
 .flash.ok{background:#2d8a4ecc;color:#fff}
 .flash.no{background:#d63b2fcc;color:#fff}
 .flash.time{background:#c8a84bcc;color:var(--black)}
 
-/* ── TOAST ── */
+/* TOAST */
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--gray3);color:var(--white);padding:10px 22px;border-radius:999px;font-size:14px;z-index:300;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}
 .toast.show{opacity:1}
 
-/* ── CONNECTING OVERLAY ── */
-#connecting{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:400;display:none}
+/* CONNECTING */
+#connecting{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;z-index:400}
 #connecting.show{display:flex}
 .conn-box{background:var(--gray);border-radius:10px;padding:2rem;text-align:center;font-size:15px;color:var(--muted)}
 </style>
@@ -119,96 +163,129 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
   <div id="home" class="screen active">
     <div class="logo">THE<br>FLOOR</div>
     <div class="logo-sub">Kuvatunnistuspeli</div>
-    <button class="btn btn-gold" onclick="createGame()">Luo peli</button>
-    <button class="btn btn-outline" onclick="toggleJoin()">Liity peliin</button>
+    <button class="hbtn hbtn-gold" onclick="createGame()">Luo peli (Tuomari)</button>
+    <button class="hbtn hbtn-outline" onclick="toggleJoin()">Liity peliin (Pelaajat)</button>
     <div class="join-wrap" id="joinWrap">
       <input class="code-input" id="joinCode" maxlength="4" placeholder="KOODI"
-        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"/>
       <button class="go-btn" onclick="joinGame()">Liity →</button>
       <div class="err" id="joinErr"></div>
     </div>
   </div>
 
-  <!-- LOBBY -->
+  <!-- LOBBY (judge waits) -->
   <div id="lobby" class="screen">
-    <div class="lbl">Pelin koodi – jaa kaverille</div>
+    <div class="lbl">Pelin koodi – jaa pelaajille</div>
     <div class="room-code" id="lobbyCode">----</div>
-    <div class="lbl" style="margin-top:.4rem">Odotetaan toista pelaajaa</div>
+    <div class="lbl" id="lobbyStatus" style="margin-top:.5rem">Odotetaan pelaajia...</div>
     <div class="dots"><span>●</span><span>●</span><span>●</span></div>
+    <div id="lobbyPlayers" style="margin-top:1rem;font-size:14px;color:var(--muted);text-align:center"></div>
+    <button class="hbtn hbtn-gold" id="lobbyNextBtn" onclick="judgeSetup()" style="display:none;margin-top:1.5rem;max-width:260px">Jatka →</button>
     <button class="back-btn" onclick="goHome()">← Peruuta</button>
   </div>
 
-  <!-- CAT SELECT -->
-  <div id="catselect" class="screen">
-    <div class="top-bar">
-      <div class="stitle">Valitse kategoriat</div>
-      <div class="ssub">Valitse 1–4 kategoriaa</div>
+  <!-- SETUP (judge: add player names + pick cats) -->
+  <div id="setup" class="screen">
+    <div class="setup-scroll">
+      <div class="stitle">Peliasetukset</div>
+      <div class="ssub">Tuomari asettaa pelin</div>
+      <div class="section-lbl">Pelaajat</div>
+      <div class="player-rows" id="playerRows"></div>
+      <button class="add-player-btn" onclick="addPlayerRow()">+ Lisää pelaaja</button>
+      <div class="section-lbl">Kategoriat (1–4)</div>
+      <div class="cat-grid" id="catGrid"></div>
     </div>
-    <div class="cat-grid" id="catGrid"></div>
     <div class="start-bar">
-      <button id="startBtn" onclick="startGame()" disabled>Aloita peli</button>
+      <button id="startBtn" onclick="startGame()" disabled>Aloita peli ▶</button>
     </div>
   </div>
 
-  <!-- WAITING -->
+  <!-- WAITING (player phone) -->
   <div id="waiting" class="screen">
     <div style="font-size:64px">✅</div>
     <div class="lbl" style="font-size:15px;letter-spacing:.1em">Liitytty peliin!</div>
-    <div class="lbl">Isäntä valitsee kategoriat...</div>
+    <div class="lbl">Tuomari käynnistää pelin...</div>
     <div class="dots"><span>●</span><span>●</span><span>●</span></div>
   </div>
 
-  <!-- PLAYER SCREEN -->
+  <!-- PLAYER GAME SCREEN -->
   <div id="playerscreen" class="screen">
-    <div class="game-header">
-      <div class="gcatname" id="pCat">–</div>
-      <div class="gscore" id="pScore">0 pistettä</div>
+    <!-- Top bar: whose turn -->
+    <div class="turn-banner">
+      <div class="turn-dot" id="p1dot"></div>
+      <div class="turn-name" id="p1name">–</div>
+      <div class="turn-vs">VS</div>
+      <div class="turn-name" id="p2name">–</div>
+      <div class="turn-dot" id="p2dot"></div>
     </div>
-    <div class="timer-center">
-      <svg width="96" height="96" viewBox="0 0 96 96">
-        <circle class="t-track" cx="48" cy="48" r="40"/>
-        <circle class="t-fill" id="pFill" cx="48" cy="48" r="40"/>
-      </svg>
-      <div class="t-num" id="pNum">60</div>
+    <!-- Main play area: left timer | image | right timer -->
+    <div class="play-area">
+      <!-- Left player timer -->
+      <div class="side-timer left" id="leftTimer">
+        <div class="side-name" id="leftName">P1</div>
+        <svg class="side-arc" viewBox="0 0 36 36">
+          <circle class="arc-track" cx="18" cy="18" r="14"/>
+          <circle class="arc-fill" id="leftArc" cx="18" cy="18" r="14"/>
+        </svg>
+        <div class="side-num" id="leftNum">60</div>
+      </div>
+      <!-- Center: image -->
+      <div class="center-img">
+        <img class="qimg" id="playerImg" alt="Tunnista!"/>
+        <div class="img-ph" id="playerPh">📷</div>
+        <div class="cat-badge" id="playerCatBadge"></div>
+      </div>
+      <!-- Right player timer -->
+      <div class="side-timer right" id="rightTimer">
+        <div class="side-name" id="rightName">P2</div>
+        <svg class="side-arc" viewBox="0 0 36 36">
+          <circle class="arc-track" cx="18" cy="18" r="14"/>
+          <circle class="arc-fill" id="rightArc" cx="18" cy="18" r="14"/>
+        </svg>
+        <div class="side-num" id="rightNum">60</div>
+      </div>
     </div>
-    <div class="img-wrap">
-      <img class="qimg" id="playerImg" alt="Tunnista!"/>
-      <div class="img-ph" id="playerPh">📷</div>
-    </div>
-    <div class="guess-hint">Mikä tämä on? Sano ääneen! 🎤</div>
   </div>
 
   <!-- JUDGE SCREEN -->
   <div id="judgescreen" class="screen">
-    <div class="game-header">
-      <div class="gcatname" id="jCat">–</div>
-      <div class="gscore" id="jScore">0 – 0</div>
+    <div class="judge-turn">
+      <div class="jturn-left">
+        <div class="turn-dot" id="jActiveDot" style="width:10px;height:10px;border-radius:50%"></div>
+        <div style="font-size:14px;font-weight:600" id="jActiveName">–</div>
+        <div style="font-size:12px;color:var(--muted);margin-left:4px">vuorossa</div>
+      </div>
+      <div class="jscore-right" id="jScores">–</div>
     </div>
+
     <div class="answer-box">
       <div class="albl">Oikea vastaus</div>
       <div class="aval" id="jAnswer">–</div>
     </div>
+
     <div class="judge-img">
       <img id="judgeImg" alt=""/>
     </div>
+
     <div class="jtimer-row">
       <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
-        <svg width="80" height="80" viewBox="0 0 80 80" style="transform:rotate(-90deg)">
-          <circle class="t-track" cx="40" cy="40" r="33"/>
-          <circle class="t-fill" id="jFill" cx="40" cy="40" r="33"/>
+        <svg width="76" height="76" viewBox="0 0 76 76" style="transform:rotate(-90deg)">
+          <circle class="jt-track" cx="38" cy="38" r="31"/>
+          <circle class="jt-fill" id="jFill" cx="38" cy="38" r="31"/>
         </svg>
-        <div class="t-num" id="jNum" style="font-size:36px">60</div>
+        <div class="jt-num" id="jNum">60</div>
       </div>
     </div>
+
     <div class="judge-actions">
       <button class="jbtn jok" id="btnOk" onclick="judgeResult('correct')"><span class="bi">✓</span>Oikein</button>
-      <button class="jbtn jno" id="btnNo" onclick="judgeResult('wrong')"><span class="bi">✗</span>Väärin</button>
+      <button class="jbtn jno" id="btnNo" onclick="judgeResult('wrong')"><span class="bi">✗</span>Väärin / Uusi kuva</button>
     </div>
   </div>
 
   <!-- SCOREBOARD -->
   <div id="scoreboard" class="screen">
-    <div class="sb-title" id="sbTitle">Kierros ohi!</div>
+    <div class="sb-title" id="sbTitle">Pisteet</div>
     <div id="sbRows"></div>
     <div class="sb-sub" id="sbSub"></div>
     <button class="next-btn" id="nextBtn">Seuraava →</button>
@@ -221,9 +298,9 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
-// ════════════════════════════════════════════════════
-//  CATEGORIES
-// ════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CATEGORIES
+// ══════════════════════════════════════════════════════
 const CATS = [
   { id:'cars', name:'Automerkit', icon:'🚗', questions:[
     {a:'Toyota',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Toyota_logo_%28Red%29.svg/600px-Toyota_logo_%28Red%29.svg.png'},
@@ -302,272 +379,484 @@ const CATS = [
   ]},
 ];
 
-// ════════════════════════════════════════════════════
-//  STATE
-// ════════════════════════════════════════════════════
+const PLAYER_COLORS = ['#4A9FE0','#E05A4A','#4AE07A','#E0C04A','#C04AE0','#4AE0D4','#E0844A'];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
 let peer = null, conn = null;
-let S = { role:null, selectedCats:[], questions:[], qIdx:0, scores:{host:0,player:0}, timerInt:null, timeLeft:60, judged:false };
+let S = {
+  role: null,          // 'judge' | 'player'
+  players: [],         // [{name, color, score}]
+  selectedCats: [],
+  questions: [],       // full shuffled pool per category
+  catQuestions: {},    // {catId: [remaining questions]}
+  pairIdx: 0,          // which pair is playing (rotates every 2 players)
+  activeInPair: 0,     // 0 = left player of pair, 1 = right player
+  currentQ: null,      // {a, img, cat, icon}
+  scores: {},          // {playerName: score}
+  timerInt: null,
+  timeLeft: 60,
+  judged: false,
+  selectedCatIds: [],
+};
 
-// ════════════════════════════════════════════════════
-//  PEERJS
-// ════════════════════════════════════════════════════
-function makePeer(id) {
-  // Use public PeerJS cloud server – no account needed
-  return new Peer(id, { debug: 0 });
-}
+// ══════════════════════════════════════════════════════
+// PEER
+// ══════════════════════════════════════════════════════
+function makePeer(id) { return id ? new Peer(id,{debug:0}) : new Peer({debug:0}); }
 
-function setupConnHandlers(c) {
+function setupConn(c) {
   conn = c;
   conn.on('data', d => onMsg(d));
-  conn.on('close', () => { showToast('Yhteys katkesi'); });
-  conn.on('error', e => { showToast('Virhe: '+e); });
+  conn.on('close', () => showToast('Yhteys katkesi'));
+  conn.on('error', e => showToast('Virhe: '+e));
 }
 
 function send(type, data={}) {
   if(conn && conn.open) conn.send({type,...data});
 }
 
-// ════════════════════════════════════════════════════
-//  UI HELPERS
-// ════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// UI
+// ══════════════════════════════════════════════════════
 function show(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
-
-// ════════════════════════════════════════════════════
-//  HOME
-// ════════════════════════════════════════════════════
-function toggleJoin() {
-  const w = document.getElementById('joinWrap');
-  w.classList.toggle('open');
-  if(w.classList.contains('open')) setTimeout(()=>document.getElementById('joinCode').focus(), 340);
+function flash(cls, txt) {
+  const f=document.getElementById('flash');
+  f.textContent=txt; f.className='flash '+cls+' show';
+  return new Promise(r=>setTimeout(()=>{ f.className='flash'; r(); },1200));
 }
 
+// ══════════════════════════════════════════════════════
+// HOME
+// ══════════════════════════════════════════════════════
+function toggleJoin() {
+  const w=document.getElementById('joinWrap');
+  w.classList.toggle('open');
+  if(w.classList.contains('open')) setTimeout(()=>document.getElementById('joinCode').focus(),340);
+}
 function goHome() {
   clearInterval(S.timerInt);
-  if(conn) { try{conn.close();}catch(e){} conn=null; }
-  if(peer) { try{peer.destroy();}catch(e){} peer=null; }
-  S = {role:null,selectedCats:[],questions:[],qIdx:0,scores:{host:0,player:0},timerInt:null,timeLeft:60,judged:false};
+  if(conn){try{conn.close();}catch(e){} conn=null;}
+  if(peer){try{peer.destroy();}catch(e){} peer=null;}
+  S={role:null,players:[],selectedCats:[],questions:[],catQuestions:{},pairIdx:0,activeInPair:0,currentQ:null,scores:{},timerInt:null,timeLeft:60,judged:false,selectedCatIds:[]};
   document.getElementById('joinCode').value='';
   document.getElementById('joinErr').textContent='';
   document.getElementById('joinWrap').classList.remove('open');
   show('home');
 }
 
-// ════════════════════════════════════════════════════
-//  CREATE
-// ════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CREATE (judge)
+// ══════════════════════════════════════════════════════
 function createGame() {
   const code = Math.random().toString(36).slice(2,6).toUpperCase();
-  S.role = 'host';
-  document.getElementById('lobbyCode').textContent = code;
+  S.role='judge';
+  document.getElementById('lobbyCode').textContent=code;
+  document.getElementById('lobbyStatus').textContent='Odotetaan pelaajia...';
+  document.getElementById('lobbyNextBtn').style.display='none';
+  document.getElementById('lobbyPlayers').textContent='';
   show('lobby');
 
   peer = makePeer('floor-'+code);
-  peer.on('open', () => {
-    peer.on('connection', c => {
-      setupConnHandlers(c);
-      c.on('open', () => {
-        showToast('Pelaaja liittyi! 🎉');
-        buildCatGrid();
-        show('catselect');
+  peer.on('open', ()=>{
+    peer.on('connection', c=>{
+      setupConn(c);
+      c.on('open', ()=>{
+        showToast('Pelaajapuhelin liittyi! 🎉');
+        document.getElementById('lobbyStatus').textContent='Pelaajapuhelin yhdistetty ✓';
+        document.getElementById('lobbyNextBtn').style.display='block';
       });
     });
   });
-  peer.on('error', e => {
-    showToast('Virhe: '+e.type);
-    console.error(e);
-  });
+  peer.on('error', e=>{ showToast('Virhe: '+e.type); console.error(e); });
 }
 
-// ════════════════════════════════════════════════════
-//  JOIN
-// ════════════════════════════════════════════════════
-function joinGame() {
-  const code = document.getElementById('joinCode').value.trim().toUpperCase();
-  document.getElementById('joinErr').textContent = '';
-  if(code.length !== 4) { document.getElementById('joinErr').textContent='Anna 4-merkkinen koodi'; return; }
+function judgeSetup() {
+  // Build setup screen
+  buildPlayerRows();
+  buildCatGrid();
+  show('setup');
+}
 
-  S.role = 'player';
+// ══════════════════════════════════════════════════════
+// JOIN (player phone)
+// ══════════════════════════════════════════════════════
+function joinGame() {
+  const code=document.getElementById('joinCode').value.trim().toUpperCase();
+  document.getElementById('joinErr').textContent='';
+  if(code.length!==4){document.getElementById('joinErr').textContent='Anna 4-merkkinen koodi';return;}
+  S.role='player';
   show('waiting');
   document.getElementById('connecting').classList.add('show');
-
-  peer = makePeer(); // random id for player
-  peer.on('open', () => {
-    const c = peer.connect('floor-'+code, {reliable:true});
-    c.on('open', () => {
+  peer=makePeer();
+  peer.on('open',()=>{
+    const c=peer.connect('floor-'+code,{reliable:true});
+    c.on('open',()=>{
       document.getElementById('connecting').classList.remove('show');
-      setupConnHandlers(c);
-    });
-    c.on('error', e => {
-      document.getElementById('connecting').classList.remove('show');
-      showToast('Ei löydy peliä koodilla '+code);
-      goHome();
+      setupConn(c);
     });
     setTimeout(()=>{
-      if(!conn || !conn.open) {
+      if(!conn||!conn.open){
         document.getElementById('connecting').classList.remove('show');
-        document.getElementById('joinErr').textContent='Peliä ei löydy – tarkista koodi';
-        show('home'); document.getElementById('joinWrap').classList.add('open');
+        document.getElementById('joinErr').textContent='Ei löydy peliä – tarkista koodi';
+        show('home');document.getElementById('joinWrap').classList.add('open');
       }
-    }, 8000);
+    },9000);
   });
-  peer.on('error', e => {
+  peer.on('error',()=>{
     document.getElementById('connecting').classList.remove('show');
-    document.getElementById('joinErr').textContent='Virhe yhteydenmuodostuksessa';
-    show('home'); document.getElementById('joinWrap').classList.add('open');
+    document.getElementById('joinErr').textContent='Yhteysongelma';
+    show('home');document.getElementById('joinWrap').classList.add('open');
   });
 }
 
-// ════════════════════════════════════════════════════
-//  MESSAGES
-// ════════════════════════════════════════════════════
-function onMsg(msg) {
-  if(msg.type==='game_start' && S.role==='player') {
-    S.questions=msg.questions; S.scores={host:0,player:0}; S.qIdx=0;
-    showQ();
-  }
-  if(msg.type==='tick' && S.role==='player') { updateTimers(msg.t); }
-  if(msg.type==='result') { applyResult(msg); }
-  if(msg.type==='next' && S.role==='player') { S.qIdx=msg.qIdx; S.scores=msg.scores; showQ(); }
+// ══════════════════════════════════════════════════════
+// SETUP SCREEN (judge)
+// ══════════════════════════════════════════════════════
+function buildPlayerRows() {
+  const rows=document.getElementById('playerRows');
+  rows.innerHTML='';
+  // default 2 players
+  addPlayerRow('Pelaaja 1');
+  addPlayerRow('Pelaaja 2');
+  checkStartBtn();
 }
 
-// ════════════════════════════════════════════════════
-//  CAT SELECT
-// ════════════════════════════════════════════════════
+function addPlayerRow(defaultName='') {
+  const idx=document.getElementById('playerRows').children.length;
+  const col=PLAYER_COLORS[idx%PLAYER_COLORS.length];
+  const row=document.createElement('div'); row.className='player-row';
+  row.innerHTML=`
+    <div class="player-dot" style="background:${col}"></div>
+    <input class="player-input" placeholder="Pelaajan nimi" value="${defaultName}" oninput="checkStartBtn()"/>
+    <button class="rm-btn" onclick="this.parentElement.remove();checkStartBtn()">✕</button>`;
+  document.getElementById('playerRows').appendChild(row);
+  checkStartBtn();
+}
+
 function buildCatGrid() {
-  S.selectedCats=[];
+  S.selectedCatIds=[];
   const g=document.getElementById('catGrid'); g.innerHTML='';
   CATS.forEach(cat=>{
     const d=document.createElement('div'); d.className='cat-card'; d.dataset.id=cat.id;
     d.innerHTML=`<span class="cicon">${cat.icon}</span><span class="cname">${cat.name}</span><span class="ccount">${cat.questions.length} kuvaa</span>`;
     d.onclick=()=>toggleCat(cat.id,d); g.appendChild(d);
   });
-  document.getElementById('startBtn').disabled=true;
 }
-function toggleCat(id,el) {
-  if(S.selectedCats.includes(id)){ S.selectedCats=S.selectedCats.filter(c=>c!==id); el.classList.remove('sel'); }
-  else if(S.selectedCats.length<4){ S.selectedCats.push(id); el.classList.add('sel'); }
-  document.getElementById('startBtn').disabled=S.selectedCats.length===0;
+function toggleCat(id,el){
+  if(S.selectedCatIds.includes(id)){S.selectedCatIds=S.selectedCatIds.filter(c=>c!==id);el.classList.remove('sel');}
+  else if(S.selectedCatIds.length<4){S.selectedCatIds.push(id);el.classList.add('sel');}
+  checkStartBtn();
+}
+function checkStartBtn(){
+  const names=Array.from(document.querySelectorAll('.player-input')).map(i=>i.value.trim()).filter(Boolean);
+  document.getElementById('startBtn').disabled=names.length<2||S.selectedCatIds.length===0;
 }
 
-// ════════════════════════════════════════════════════
-//  START
-// ════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// START GAME
+// ══════════════════════════════════════════════════════
 function startGame() {
-  let qs=[];
-  S.selectedCats.forEach(cid=>{
+  const names=Array.from(document.querySelectorAll('.player-input')).map(i=>i.value.trim()).filter(Boolean);
+  S.players=names.map((n,i)=>({name:n,color:PLAYER_COLORS[i%PLAYER_COLORS.length],score:0}));
+  S.scores={};
+  S.players.forEach(p=>S.scores[p.name]=0);
+
+  // Build per-category question pools (shuffled)
+  S.catQuestions={};
+  S.selectedCatIds.forEach(cid=>{
     const cat=CATS.find(c=>c.id===cid);
-    if(cat) cat.questions.forEach(q=>qs.push({...q,cat:cat.name,icon:cat.icon}));
+    S.catQuestions[cid]=[...cat.questions].sort(()=>Math.random()-.5);
   });
-  for(let i=qs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[qs[i],qs[j]]=[qs[j],qs[i]];}
-  S.questions=qs; S.qIdx=0; S.scores={host:0,player:0};
-  send('game_start',{questions:qs});
-  showQ();
+
+  S.pairIdx=0;
+  S.activeInPair=0;
+
+  const payload={players:S.players,catQuestions:S.catQuestions,selectedCatIds:S.selectedCatIds};
+  send('game_start',payload);
+  beginRound();
 }
 
-// ════════════════════════════════════════════════════
-//  SHOW QUESTION
-// ════════════════════════════════════════════════════
-const CP=2*Math.PI*40, CJ=2*Math.PI*33;
+// ══════════════════════════════════════════════════════
+// MESSAGES (player phone)
+// ══════════════════════════════════════════════════════
+function onMsg(msg) {
+  if(msg.type==='game_start'){
+    S.players=msg.players;
+    S.catQuestions=msg.catQuestions;
+    S.selectedCatIds=msg.selectedCatIds;
+    S.scores={};
+    S.players.forEach(p=>S.scores[p.name]=0);
+    S.pairIdx=0; S.activeInPair=0;
+    show('playerscreen');
+  }
+  if(msg.type==='round_state'){ applyRoundState(msg); }
+  if(msg.type==='tick'){ updateSideTimers(msg.t, msg.activeInPair); }
+  if(msg.type==='result_flash'){ flash(msg.cls,msg.txt); }
+  if(msg.type==='show_scoreboard'){ showScoreboardPlayer(msg); }
+}
 
-function showQ() {
-  clearInterval(S.timerInt); S.judged=false;
-  if(S.qIdx>=S.questions.length){ showFinal(); return; }
-  const q=S.questions[S.qIdx];
+// ══════════════════════════════════════════════════════
+// ROUND LOGIC
+// ══════════════════════════════════════════════════════
+function getPair() {
+  // Returns [playerA, playerB] indices for current pairIdx
+  const n=S.players.length;
+  const a=S.pairIdx%n;
+  const b=(S.pairIdx+1)%n;
+  return [a,b];
+}
 
-  if(S.role==='host') {
-    document.getElementById('jCat').textContent=q.icon+' '+q.cat;
-    document.getElementById('jScore').textContent=`Host ${S.scores.host} – ${S.scores.player} Pelaaja`;
-    document.getElementById('jAnswer').textContent=q.a;
-    const ji=document.getElementById('judgeImg'); ji.src=q.img; ji.style.display='block';
+function getActivePlayerIdx() {
+  const [a,b]=getPair();
+  return S.activeInPair===0?a:b;
+}
+
+function pickQuestion() {
+  // pick random category from selected, then next question
+  const catIds=S.selectedCatIds;
+  // pick random cat that still has questions
+  const available=catIds.filter(cid=>S.catQuestions[cid]&&S.catQuestions[cid].length>0);
+  if(available.length===0){
+    // refill all
+    S.selectedCatIds.forEach(cid=>{
+      const cat=CATS.find(c=>c.id===cid);
+      S.catQuestions[cid]=[...cat.questions].sort(()=>Math.random()-.5);
+    });
+    return pickQuestion();
+  }
+  const cid=available[Math.floor(Math.random()*available.length)];
+  const cat=CATS.find(c=>c.id===cid);
+  const q=S.catQuestions[cid].pop();
+  return {...q, cat:cat.name, icon:cat.icon, catId:cid};
+}
+
+function beginRound() {
+  clearInterval(S.timerInt);
+  S.judged=false;
+  S.currentQ=pickQuestion();
+  S.timeLeft=60;
+
+  const [ai,bi]=getPair();
+  const activeIdx=getActivePlayerIdx();
+  const pa=S.players[ai], pb=S.players[bi];
+  const active=S.players[activeIdx];
+
+  const state={
+    q:S.currentQ, pairA:pa, pairB:pb,
+    activeInPair:S.activeInPair, scores:S.scores, timeLeft:60
+  };
+
+  // Send to player phone
+  send('round_state', state);
+  applyRoundState(state); // also apply locally for judge
+
+  // Judge screen
+  if(S.role==='judge') {
+    document.getElementById('jAnswer').textContent=S.currentQ.a;
+    const ji=document.getElementById('judgeImg');
+    ji.src=S.currentQ.img; ji.style.display='block';
+    document.getElementById('jActiveDot').style.background=active.color;
+    document.getElementById('jActiveName').textContent=active.name;
+    updateJScores();
     document.getElementById('btnOk').disabled=false;
     document.getElementById('btnNo').disabled=false;
     show('judgescreen');
-  } else {
-    document.getElementById('pCat').textContent=q.icon+' '+q.cat;
-    document.getElementById('pScore').textContent=`Pisteet: ${S.scores.player}`;
-    const pi=document.getElementById('playerImg'), pp=document.getElementById('playerPh');
-    pi.style.display='none'; pp.style.display='flex'; pp.textContent='📷';
-    pi.onload=()=>{ pi.style.display='block'; pp.style.display='none'; };
-    pi.onerror=()=>{ pp.textContent='❓'; };
-    pi.src=''; pi.src=q.img;
-    show('playerscreen');
   }
 
-  S.timeLeft=60; updateTimers(60);
+  // Timer
   S.timerInt=setInterval(()=>{
     S.timeLeft--;
-    updateTimers(S.timeLeft);
-    if(S.role==='host') send('tick',{t:S.timeLeft});
-    if(S.timeLeft<=0){ clearInterval(S.timerInt); if(S.role==='host') judgeResult('timeout'); }
+    if(S.role==='judge') {
+      send('tick',{t:S.timeLeft, activeInPair:S.activeInPair});
+      updateJTimer(S.timeLeft);
+    }
+    if(S.timeLeft<=0){
+      clearInterval(S.timerInt);
+      if(S.role==='judge') judgeResult('timeout');
+    }
   },1000);
 }
 
-function updateTimers(t) {
-  const pct=t/60, col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
-  const pf=document.getElementById('pFill'), jf=document.getElementById('jFill');
-  if(pf){pf.style.strokeDasharray=CP;pf.style.strokeDashoffset=CP*(1-pct);pf.style.stroke=col;}
-  if(jf){jf.style.strokeDasharray=CJ;jf.style.strokeDashoffset=CJ*(1-pct);jf.style.stroke=col;}
-  document.getElementById('pNum').textContent=t;
+function applyRoundState(state) {
+  if(S.role!=='player') return;
+  const {pairA,pairB,activeInPair,scores,timeLeft,q}=state;
+  S.scores=scores;
+
+  // Update turn banner
+  document.getElementById('p1dot').style.background=pairA.color;
+  document.getElementById('p2dot').style.background=pairB.color;
+  document.getElementById('p1name').textContent=pairA.name;
+  document.getElementById('p2name').textContent=pairB.name;
+
+  // Left = pairA, Right = pairB
+  document.getElementById('leftName').textContent=pairA.name;
+  document.getElementById('rightName').textContent=pairB.name;
+
+  // Show image
+  const pi=document.getElementById('playerImg'), pp=document.getElementById('playerPh');
+  pi.style.display='none'; pp.style.display='flex'; pp.textContent='📷';
+  pi.onload=()=>{ pi.style.display='block'; pp.style.display='none'; };
+  pi.onerror=()=>{ pp.textContent='❓'; };
+  pi.src=''; pi.src=q.img;
+  document.getElementById('playerCatBadge').textContent=q.icon+' '+q.cat;
+
+  // Highlight active side, reset timers
+  const larc=document.getElementById('leftArc'), rarc=document.getElementById('rightArc');
+  const lnum=document.getElementById('leftNum'), rnum=document.getElementById('rightNum');
+  const C=2*Math.PI*14;
+  // Active player's timer running, other shows 60 dimmed
+  const activeIsLeft=activeInPair===0;
+  document.getElementById('leftTimer').style.opacity=activeIsLeft?'1':'0.35';
+  document.getElementById('rightTimer').style.opacity=activeIsLeft?'0.35':'1';
+  const pct=timeLeft/60;
+  const col=timeLeft>20?'#2d8a4e':timeLeft>10?'#c8a84b':'#d63b2f';
+  if(activeIsLeft){
+    larc.style.strokeDasharray=C; larc.style.strokeDashoffset=C*(1-pct); larc.style.stroke=col;
+    rarc.style.strokeDasharray=C; rarc.style.strokeDashoffset=0; rarc.style.stroke='#2d8a4e';
+    lnum.textContent=timeLeft; rnum.textContent=60;
+  } else {
+    rarc.style.strokeDasharray=C; rarc.style.strokeDashoffset=C*(1-pct); rarc.style.stroke=col;
+    larc.style.strokeDasharray=C; larc.style.strokeDashoffset=0; larc.style.stroke='#2d8a4e';
+    rnum.textContent=timeLeft; lnum.textContent=60;
+  }
+  show('playerscreen');
+}
+
+function updateSideTimers(t, activeInPair) {
+  const C=2*Math.PI*14;
+  const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
+  const larc=document.getElementById('leftArc'), rarc=document.getElementById('rightArc');
+  const lnum=document.getElementById('leftNum'), rnum=document.getElementById('rightNum');
+  const pct=t/60;
+  if(activeInPair===0){
+    larc.style.strokeDashoffset=C*(1-pct); larc.style.stroke=col;
+    lnum.textContent=t;
+  } else {
+    rarc.style.strokeDashoffset=C*(1-pct); rarc.style.stroke=col;
+    rnum.textContent=t;
+  }
+}
+
+const CJ=2*Math.PI*31;
+function updateJTimer(t) {
+  const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
+  const jf=document.getElementById('jFill');
+  jf.style.strokeDasharray=CJ; jf.style.strokeDashoffset=CJ*(1-t/60); jf.style.stroke=col;
   document.getElementById('jNum').textContent=t;
 }
 
-// ════════════════════════════════════════════════════
-//  JUDGE
-// ════════════════════════════════════════════════════
-function judgeResult(outcome) {
+function updateJScores() {
+  const txt=S.players.map(p=>`${p.name} ${S.scores[p.name]}`).join(' · ');
+  document.getElementById('jScores').textContent=txt;
+}
+
+// ══════════════════════════════════════════════════════
+// JUDGE ACTIONS
+// ══════════════════════════════════════════════════════
+async function judgeResult(outcome) {
   if(S.judged) return; S.judged=true;
   clearInterval(S.timerInt);
   document.getElementById('btnOk').disabled=true;
   document.getElementById('btnNo').disabled=true;
-  if(outcome==='correct') S.scores.player++;
-  const payload={type:'result',outcome,scores:S.scores,qIdx:S.qIdx};
-  send('result',{outcome,scores:S.scores,qIdx:S.qIdx});
-  applyResult(payload);
+
+  const activeIdx=getActivePlayerIdx();
+  const activeName=S.players[activeIdx].name;
+
+  if(outcome==='correct') {
+    S.scores[activeName]=(S.scores[activeName]||0)+1;
+    send('result_flash',{cls:'ok',txt:'✓ OIKEIN!'});
+    await flash('ok','✓ OIKEIN!');
+    // Show mini scoreboard, then next pair
+    nextPair();
+  } else if(outcome==='wrong') {
+    send('result_flash',{cls:'no',txt:'✗ VÄÄRIN'});
+    await flash('no','✗ VÄÄRIN');
+    // Same player, new image from same category, switch to other player in pair
+    switchActiveInPair();
+  } else {
+    // timeout – switch active player, new image
+    send('result_flash',{cls:'time',txt:'⏱ AIKA!'});
+    await flash('time','⏱ AIKA!');
+    switchActiveInPair();
+  }
 }
 
-function applyResult({outcome,scores,qIdx}) {
-  clearInterval(S.timerInt); S.scores=scores;
-  const fl=document.getElementById('flash');
-  if(outcome==='correct'){fl.textContent='✓ OIKEIN!';fl.className='flash ok show';}
-  else if(outcome==='wrong'){fl.textContent='✗ VÄÄRIN';fl.className='flash no show';}
-  else{fl.textContent='⏱ AIKA!';fl.className='flash time show';}
-  setTimeout(()=>{ fl.className='flash'; showRound(outcome,qIdx); },1300);
+function switchActiveInPair() {
+  // Other player in pair gets a new image (same category pool)
+  S.activeInPair = S.activeInPair===0?1:0;
+  S.judged=false;
+  S.currentQ=pickQuestion();
+  S.timeLeft=60;
+
+  const [ai,bi]=getPair();
+  const activeIdx=getActivePlayerIdx();
+  const active=S.players[activeIdx];
+  const pa=S.players[ai], pb=S.players[bi];
+
+  const state={q:S.currentQ,pairA:pa,pairB:pb,activeInPair:S.activeInPair,scores:S.scores,timeLeft:60};
+  send('round_state',state);
+  applyRoundState(state);
+
+  document.getElementById('jAnswer').textContent=S.currentQ.a;
+  document.getElementById('judgeImg').src=S.currentQ.img;
+  document.getElementById('jActiveDot').style.background=active.color;
+  document.getElementById('jActiveName').textContent=active.name;
+  updateJScores();
+  document.getElementById('btnOk').disabled=false;
+  document.getElementById('btnNo').disabled=false;
+  show('judgescreen');
+  updateJTimer(60);
+
+  S.timerInt=setInterval(()=>{
+    S.timeLeft--;
+    send('tick',{t:S.timeLeft,activeInPair:S.activeInPair});
+    updateJTimer(S.timeLeft);
+    if(S.timeLeft<=0){ clearInterval(S.timerInt); judgeResult('timeout'); }
+  },1000);
 }
 
-function showRound(outcome,qIdx) {
-  const q=S.questions[qIdx];
-  document.getElementById('sbTitle').textContent=outcome==='correct'?'✓ Oikein!':outcome==='wrong'?'✗ Väärin':'⏱ Aika loppui';
-  document.getElementById('sbRows').innerHTML=`
-    <div class="sb-row" style="margin-bottom:10px">
-      <span class="sn">Oikea vastaus</span>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold)">${q.a}</span>
-    </div>
-    <div class="sb-row"><span class="sn">Pelaaja</span><span class="sp">${S.scores.player}</span></div>
-    <div class="sb-row" style="margin-top:8px"><span class="sn">Host</span><span class="sp">${S.scores.host}</span></div>`;
-  document.getElementById('sbSub').textContent=`Kuva ${qIdx+1} / ${S.questions.length}`;
+function nextPair() {
+  // Rotate to next pair
+  S.pairIdx++;
+  S.activeInPair=0;
+  // Show brief scoreboard on judge, then continue
+  showScoreboardJudge();
+}
+
+// ══════════════════════════════════════════════════════
+// SCOREBOARD
+// ══════════════════════════════════════════════════════
+function showScoreboardJudge() {
+  const sorted=[...S.players].sort((a,b)=>(S.scores[b.name]||0)-(S.scores[a.name]||0));
+  document.getElementById('sbTitle').textContent='Kierros ohi! 🏁';
+  document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`
+    <div class="sb-row ${i===0?'winner':''}">
+      <span class="sn"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${p.color}"></span>${p.name}</span>
+      <span class="sp">${S.scores[p.name]||0}</span>
+    </div>`).join('');
+  document.getElementById('sbSub').textContent='Paina jatka aloittaaksesi seuraavan vuoron';
   const nb=document.getElementById('nextBtn');
-  nb.textContent=qIdx>=S.questions.length-1?'Lopputulos →':'Seuraava kuva →';
-  nb.onclick=nextQ;
-  nb.style.display=S.role==='host'?'block':'none';
+  nb.style.display='block'; nb.textContent='Seuraava vuoro →'; nb.onclick=()=>beginRound();
+
+  // Tell player phone to show scoreboard too
+  send('show_scoreboard',{scores:S.scores,players:S.players});
   show('scoreboard');
 }
 
-function nextQ() {
-  S.qIdx++;
-  send('next',{qIdx:S.qIdx,scores:S.scores});
-  showQ();
-}
-
-function showFinal() {
-  const pw=S.scores.player>S.scores.host, tie=S.scores.player===S.scores.host;
-  document.getElementById('sbTitle').textContent=tie?'Tasapeli! 🤝':pw?'Pelaaja voitti! 🏆':'Host voitti! 🏆';
-  document.getElementById('sbRows').innerHTML=`
-    <div class="sb-row ${pw||tie?'winner':''}"><span class="sn">Pelaaja</span><span class="sp">${S.scores.player}</span></div>
-    <div class="sb-row ${!pw&&!tie?'winner':''}"><span class="sn">Host</span><span class="sp">${S.scores.host}</span></div>`;
-  document.getElementById('sbSub').textContent='Peli ohi!';
-  const nb=document.getElementById('nextBtn');
-  nb.textContent='Uusi peli'; nb.onclick=goHome; nb.style.display='block';
+function showScoreboardPlayer(msg) {
+  if(S.role!=='player') return;
+  const sorted=[...msg.players].sort((a,b)=>(msg.scores[b.name]||0)-(msg.scores[a.name]||0));
+  document.getElementById('sbTitle').textContent='Kierros ohi! 🏁';
+  document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`
+    <div class="sb-row ${i===0?'winner':''}">
+      <span class="sn"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${p.color}"></span>${p.name}</span>
+      <span class="sp">${msg.scores[p.name]||0}</span>
+    </div>`).join('');
+  document.getElementById('sbSub').textContent='Tuomari aloittaa seuraavan vuoron';
+  document.getElementById('nextBtn').style.display='none';
   show('scoreboard');
 }
 </script>
