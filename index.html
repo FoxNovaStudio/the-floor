@@ -4,484 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>The Floor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black: #0a0a0a;
-  --white: #f5f0e8;
-  --gold: #c8a84b;
-  --gold-light: #e8c96a;
-  --red: #d63b2f;
-  --green: #2d8a4e;
-  --gray: #2a2a2a;
-  --gray2: #3d3d3d;
-  --text-muted: #888;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body {
-  height: 100%; width: 100%;
-  background: var(--black);
-  color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  overflow: hidden;
-}
-#app {
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
+:root{--black:#0a0a0a;--white:#f5f0e8;--gold:#c8a84b;--red:#d63b2f;--green:#2d8a4e;--gray:#1e1e1e;--gray2:#2a2a2a;--gray3:#3d3d3d;--muted:#777}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{height:100%;width:100%;background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow:hidden}
+#app{height:100dvh;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;height:100%;align-items:center;justify-content:center;padding:2rem}
+.screen.active{display:flex}
 
-/* SCREENS */
-.screen { display: none; flex-direction: column; height: 100%; padding: 0; }
-.screen.active { display: flex; }
+/* ── HOME ── */
+#home{background:var(--black);position:relative;overflow:hidden}
+#home::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#c8a84b18,transparent 65%);pointer-events:none}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(76px,23vw,112px);color:var(--gold);line-height:.88;text-align:center;letter-spacing:.04em}
+.logo-sub{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;margin-bottom:3rem;text-align:center}
+.btn{width:100%;max-width:300px;padding:17px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;letter-spacing:.03em;cursor:pointer;border:none;transition:transform .1s;margin-bottom:10px;position:relative;z-index:1}
+.btn:active{transform:scale(.95)}
+.btn-gold{background:var(--gold);color:var(--black)}
+.btn-outline{background:transparent;color:var(--white);border:1.5px solid var(--gray3)}
+.join-wrap{width:100%;max-width:300px;overflow:hidden;max-height:0;transition:max-height .35s ease;position:relative;z-index:1}
+.join-wrap.open{max-height:180px}
+.code-input{width:100%;background:var(--gray2);border:1.5px solid var(--gray3);border-radius:6px;color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.22em;text-align:center;padding:13px 8px;text-transform:uppercase;margin-top:8px}
+.code-input:focus{outline:none;border-color:var(--gold)}
+.go-btn{width:100%;margin-top:8px;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:15px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
+.go-btn:active{transform:scale(.95)}
+.err{color:var(--red);font-size:13px;text-align:center;margin-top:6px;min-height:16px}
 
-/* HOME */
-#home {
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  padding: 2rem;
-  background: var(--black);
-  position: relative;
-  overflow: hidden;
-}
-#home::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 30%, #c8a84b18 0%, transparent 70%);
-  pointer-events: none;
-}
-.logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(64px, 20vw, 96px);
-  letter-spacing: 0.05em;
-  color: var(--gold);
-  line-height: 1;
-  text-align: center;
-  margin-bottom: 0.25rem;
-}
-.logo-sub {
-  font-size: 13px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 3rem;
-  text-align: center;
-}
-.home-btn {
-  width: 100%;
-  max-width: 320px;
-  padding: 18px;
-  border-radius: 4px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  border: none;
-  transition: transform 0.1s, opacity 0.1s;
-  margin-bottom: 12px;
-}
-.home-btn:active { transform: scale(0.97); }
-.btn-create {
-  background: var(--gold);
-  color: var(--black);
-}
-.btn-join {
-  background: transparent;
-  color: var(--white);
-  border: 1.5px solid var(--gray2);
-}
-.join-input-wrap {
-  width: 100%;
-  max-width: 320px;
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 4px;
-}
-.join-input-wrap.visible { display: flex; }
-.code-input {
-  background: var(--gray);
-  border: 1.5px solid var(--gray2);
-  border-radius: 4px;
-  color: var(--white);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 36px;
-  letter-spacing: 0.2em;
-  text-align: center;
-  padding: 14px;
-  text-transform: uppercase;
-  width: 100%;
-}
-.code-input:focus { outline: none; border-color: var(--gold); }
-.btn-go {
-  background: var(--gold);
-  color: var(--black);
-  border: none;
-  border-radius: 4px;
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: transform 0.1s;
-}
-.btn-go:active { transform: scale(0.97); }
+/* ── LOBBY ── */
+#lobby{gap:.6rem;text-align:center}
+.lbl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.room-code{font-family:'Bebas Neue',sans-serif;font-size:clamp(88px,26vw,128px);color:var(--gold);letter-spacing:.14em;line-height:1}
+.dots span{display:inline-block;animation:dot 1.4s infinite;color:var(--gold);font-size:18px;margin:0 2px}
+.dots span:nth-child(2){animation-delay:.22s}.dots span:nth-child(3){animation-delay:.44s}
+@keyframes dot{0%,80%,100%{opacity:0}40%{opacity:1}}
+.back-btn{margin-top:1rem;background:transparent;color:var(--muted);border:1px solid var(--gray3);border-radius:6px;padding:11px 26px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
 
-/* LOBBY */
-#lobby {
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  gap: 1rem;
-  text-align: center;
-}
-.room-code {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(72px, 22vw, 108px);
-  color: var(--gold);
-  letter-spacing: 0.1em;
-  line-height: 1;
-}
-.lobby-label {
-  font-size: 13px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.waiting-dots span {
-  display: inline-block;
-  animation: dot 1.4s infinite;
-  color: var(--gold);
-  font-size: 24px;
-}
-.waiting-dots span:nth-child(2) { animation-delay: 0.2s; }
-.waiting-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dot { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+/* ── CAT SELECT ── */
+#catselect{align-items:stretch;padding:0;justify-content:flex-start}
+.top-bar{padding:1.25rem 1rem .6rem;flex-shrink:0}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);letter-spacing:.08em}
+.ssub{font-size:13px;color:var(--muted);margin-top:2px}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 1rem;overflow-y:auto;flex:1}
+.cat-card{background:var(--gray);border:1.5px solid var(--gray2);border-radius:8px;padding:16px 12px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:4px;user-select:none}
+.cat-card.sel{border-color:var(--gold);background:#1b1500}
+.cicon{font-size:28px}.cname{font-size:14px;font-weight:600}.ccount{font-size:11px;color:var(--muted)}
+.start-bar{padding:1rem;border-top:1px solid var(--gray2);flex-shrink:0;width:100%}
+.start-bar button{width:100%;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:17px;font-size:17px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
+.start-bar button:disabled{opacity:.3;cursor:not-allowed}
 
-/* CATEGORY SELECT */
-#catselect {
-  padding: 1.5rem 1rem 1rem;
-  overflow-y: auto;
-}
-.screen-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  color: var(--gold);
-  letter-spacing: 0.08em;
-  margin-bottom: 0.25rem;
-}
-.screen-sub {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 1.25rem;
-}
-.cat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.cat-card {
-  background: var(--gray);
-  border: 1.5px solid var(--gray2);
-  border-radius: 6px;
-  padding: 16px 12px;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  user-select: none;
-}
-.cat-card.selected {
-  border-color: var(--gold);
-  background: #1a1600;
-}
-.cat-icon { font-size: 28px; }
-.cat-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--white);
-}
-.cat-count {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-.start-bar {
-  position: sticky;
-  bottom: 0;
-  background: var(--black);
-  padding: 1rem;
-  border-top: 1px solid var(--gray2);
-}
-.start-bar button {
-  width: 100%;
-  background: var(--gold);
-  color: var(--black);
-  border: none;
-  border-radius: 4px;
-  padding: 18px;
-  font-size: 17px;
-  font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-.start-bar button:disabled { opacity: 0.3; cursor: not-allowed; }
+/* ── WAITING ── */
+#waiting{gap:1.5rem;text-align:center}
 
-/* WAITING FOR HOST */
-#waiting {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem;
-  gap: 1.5rem;
-}
+/* ── PLAYER SCREEN ── */
+#playerscreen{align-items:stretch;justify-content:flex-start;padding:0}
+.game-header{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;background:var(--gray2);flex-shrink:0}
+.gcatname{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:.07em}
+.gscore{font-size:13px;color:var(--muted)}
+.timer-center{display:flex;align-items:center;justify-content:center;padding:.7rem 0 .2rem;flex-shrink:0;position:relative}
+.timer-center svg{transform:rotate(-90deg)}
+.t-track{fill:none;stroke:var(--gray2);stroke-width:7}
+.t-fill{fill:none;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .5s}
+.t-num{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--white)}
+.img-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:1rem;overflow:hidden;min-height:0}
+.qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none}
+.img-ph{width:100%;height:160px;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.guess-hint{text-align:center;padding:.4rem 1rem 1.1rem;font-size:14px;color:var(--muted);flex-shrink:0}
 
-/* PLAYER SCREEN */
-#playerscreen {
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-.game-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: var(--gray);
-  flex-shrink: 0;
-}
-.game-cat {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  color: var(--gold);
-  letter-spacing: 0.08em;
-}
-.game-score {
-  font-size: 13px;
-  color: var(--text-muted);
-}
+/* ── JUDGE SCREEN ── */
+#judgescreen{align-items:stretch;justify-content:flex-start;padding:0}
+.answer-box{margin:1rem 1rem .4rem;background:var(--gray);border-radius:10px;padding:1.25rem 1rem;text-align:center;flex-shrink:0}
+.albl{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,12vw,62px);color:var(--gold);letter-spacing:.05em;line-height:1.05}
+.judge-img{flex:1;min-height:0;overflow:hidden;padding:0 1.5rem;display:flex;align-items:center;justify-content:center}
+.judge-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.38;display:none}
+.jtimer-row{display:flex;justify-content:center;padding:.4rem 0;flex-shrink:0;position:relative}
+.jtimer-row svg{transform:rotate(-90deg)}
+.judge-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:1rem;flex-shrink:0}
+.jbtn{padding:20px 8px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:transform .1s,opacity .15s}
+.jbtn:active{transform:scale(.94)}.jbtn:disabled{opacity:.35;cursor:not-allowed}
+.jbtn .bi{font-size:26px}
+.jok{background:var(--green);color:#fff}.jno{background:var(--red);color:#fff}
 
-/* TIMER */
-.timer-ring-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  flex-shrink: 0;
-}
-.timer-ring-wrap svg { transform: rotate(-90deg); }
-.timer-track { fill: none; stroke: var(--gray2); stroke-width: 6; }
-.timer-fill { fill: none; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
-.timer-num {
-  position: absolute;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 42px;
-  color: var(--white);
-  letter-spacing: 0.05em;
-}
+/* ── SCOREBOARD ── */
+#scoreboard{align-items:stretch;justify-content:flex-start;padding:1.5rem;overflow-y:auto;gap:.6rem}
+.sb-title{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);letter-spacing:.08em}
+.sb-row{background:var(--gray);border-radius:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sb-row .sn{font-weight:600;font-size:15px}.sb-row .sp{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold)}
+.sb-row.winner{border:2px solid var(--gold)}
+.sb-sub{font-size:13px;color:var(--muted);text-align:center}
+.next-btn{background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:17px;font-size:17px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:auto;width:100%}
+.next-btn:active{transform:scale(.97)}
 
-.img-container {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  overflow: hidden;
-  position: relative;
-}
-.question-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
-  display: block;
-}
-.img-placeholder {
-  width: 100%;
-  height: 200px;
-  background: var(--gray);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-}
-.guess-label {
-  text-align: center;
-  padding: 0.5rem 1rem 1rem;
-  font-size: 14px;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
+/* ── FLASH ── */
+.flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:76px;letter-spacing:.05em;z-index:200;pointer-events:none;opacity:0;transition:opacity .12s}
+.flash.show{opacity:1}
+.flash.ok{background:#2d8a4ecc;color:#fff}
+.flash.no{background:#d63b2fcc;color:#fff}
+.flash.time{background:#c8a84bcc;color:var(--black)}
 
-/* JUDGE SCREEN */
-#judgescreen {
-  flex-direction: column;
-  overflow: hidden;
-}
-.answer-big {
-  background: var(--gray);
-  margin: 1rem;
-  border-radius: 8px;
-  padding: 1.5rem 1rem;
-  text-align: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(36px, 10vw, 56px);
-  color: var(--gold);
-  letter-spacing: 0.05em;
-  line-height: 1.1;
-  flex-shrink: 0;
-}
-.judge-timer-row {
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem 0;
-  flex-shrink: 0;
-}
-.judge-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 1rem;
-  flex-shrink: 0;
-}
-.judge-btn {
-  padding: 22px 10px;
-  border-radius: 8px;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.1s, opacity 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.judge-btn:active { transform: scale(0.96); }
-.judge-btn .bjicon { font-size: 28px; }
-.btn-correct { background: var(--green); color: #fff; }
-.btn-wrong { background: var(--red); color: #fff; }
-.judge-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-.hint-img-small {
-  flex: 1;
-  overflow: hidden;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hint-img-small img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 6px;
-  opacity: 0.5;
-}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--gray3);color:var(--white);padding:10px 22px;border-radius:999px;font-size:14px;z-index:300;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap}
+.toast.show{opacity:1}
 
-/* RESULT FLASH */
-.result-flash {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 80px;
-  letter-spacing: 0.05em;
-  z-index: 100;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-.result-flash.show { opacity: 1; }
-.result-flash.correct { background: #2d8a4e99; color: #fff; }
-.result-flash.wrong { background: #d63b2f99; color: #fff; }
-.result-flash.timeout { background: #c8a84b99; color: var(--black); }
-
-/* SCOREBOARD */
-#scoreboard {
-  padding: 1.5rem;
-  overflow-y: auto;
-  gap: 1rem;
-  align-items: stretch;
-}
-.score-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  color: var(--gold);
-  letter-spacing: 0.08em;
-}
-.score-row {
-  background: var(--gray);
-  border-radius: 6px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.score-row .sname { font-weight: 600; font-size: 18px; }
-.score-row .spts {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  color: var(--gold);
-}
-.score-row.winner { border: 2px solid var(--gold); }
-.next-btn {
-  background: var(--gold);
-  color: var(--black);
-  border: none;
-  border-radius: 4px;
-  padding: 18px;
-  font-size: 17px;
-  font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: transform 0.1s;
-  margin-top: auto;
-}
-.next-btn:active { transform: scale(0.97); }
-
-/* ERROR */
-.error-msg {
-  color: var(--red);
-  font-size: 13px;
-  text-align: center;
-  min-height: 18px;
-}
-
-/* TOAST */
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--gray2);
-  color: var(--white);
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-size: 14px;
-  z-index: 200;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  white-space: nowrap;
-}
-.toast.show { opacity: 1; }
-
-.divider {
-  height: 1px;
-  background: var(--gray2);
-  margin: 0.5rem 0;
-  flex-shrink: 0;
-}
+/* ── CONNECTING OVERLAY ── */
+#connecting{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:400;display:none}
+#connecting.show{display:flex}
+.conn-box{background:var(--gray);border-radius:10px;padding:2rem;text-align:center;font-size:15px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -491,492 +119,456 @@ html, body {
   <div id="home" class="screen active">
     <div class="logo">THE<br>FLOOR</div>
     <div class="logo-sub">Kuvatunnistuspeli</div>
-    <button class="home-btn btn-create" onclick="createGame()">Luo peli</button>
-    <button class="home-btn btn-join" onclick="toggleJoin()">Liity peliin</button>
-    <div class="join-input-wrap" id="joinWrap">
-      <input class="code-input" id="joinCode" maxlength="4" placeholder="KOODI" oninput="this.value=this.value.toUpperCase()" />
-      <button class="btn-go" onclick="joinGame()">Liity →</button>
-      <div class="error-msg" id="joinError"></div>
+    <button class="btn btn-gold" onclick="createGame()">Luo peli</button>
+    <button class="btn btn-outline" onclick="toggleJoin()">Liity peliin</button>
+    <div class="join-wrap" id="joinWrap">
+      <input class="code-input" id="joinCode" maxlength="4" placeholder="KOODI"
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
+      <button class="go-btn" onclick="joinGame()">Liity →</button>
+      <div class="err" id="joinErr"></div>
     </div>
   </div>
 
-  <!-- LOBBY (host waiting for player 2) -->
+  <!-- LOBBY -->
   <div id="lobby" class="screen">
-    <div class="lobby-label">Pelin koodi</div>
+    <div class="lbl">Pelin koodi – jaa kaverille</div>
     <div class="room-code" id="lobbyCode">----</div>
-    <div class="lobby-label" style="margin-top:1rem">Odotetaan toista pelaajaa</div>
-    <div class="waiting-dots"><span>●</span><span>●</span><span>●</span></div>
-    <button class="home-btn btn-join" style="margin-top:2rem;max-width:220px" onclick="goHome()">Peruuta</button>
+    <div class="lbl" style="margin-top:.4rem">Odotetaan toista pelaajaa</div>
+    <div class="dots"><span>●</span><span>●</span><span>●</span></div>
+    <button class="back-btn" onclick="goHome()">← Peruuta</button>
   </div>
 
-  <!-- CATEGORY SELECT (host only) -->
+  <!-- CAT SELECT -->
   <div id="catselect" class="screen">
-    <div class="screen-title">Valitse kategoriat</div>
-    <div class="screen-sub">Valitse 1–4 kategoriaa pelille</div>
+    <div class="top-bar">
+      <div class="stitle">Valitse kategoriat</div>
+      <div class="ssub">Valitse 1–4 kategoriaa</div>
+    </div>
     <div class="cat-grid" id="catGrid"></div>
     <div class="start-bar">
       <button id="startBtn" onclick="startGame()" disabled>Aloita peli</button>
     </div>
   </div>
 
-  <!-- WAITING (player 2 waits for host to start) -->
+  <!-- WAITING -->
   <div id="waiting" class="screen">
-    <div class="lobby-label">Liitytty peliin</div>
-    <div class="room-code" style="font-size:clamp(48px,15vw,72px)">✓</div>
-    <div class="lobby-label">Isäntä valitsee kategoriat</div>
-    <div class="waiting-dots"><span>●</span><span>●</span><span>●</span></div>
+    <div style="font-size:64px">✅</div>
+    <div class="lbl" style="font-size:15px;letter-spacing:.1em">Liitytty peliin!</div>
+    <div class="lbl">Isäntä valitsee kategoriat...</div>
+    <div class="dots"><span>●</span><span>●</span><span>●</span></div>
   </div>
 
-  <!-- PLAYER SCREEN (player 2 – sees image) -->
+  <!-- PLAYER SCREEN -->
   <div id="playerscreen" class="screen">
     <div class="game-header">
-      <div class="game-cat" id="pCat">–</div>
-      <div class="game-score" id="pScore">0 pistettä</div>
+      <div class="gcatname" id="pCat">–</div>
+      <div class="gscore" id="pScore">0 pistettä</div>
     </div>
-    <div class="timer-ring-wrap" style="padding-top:0.75rem">
-      <svg width="90" height="90" viewBox="0 0 90 90">
-        <circle class="timer-track" cx="45" cy="45" r="38"/>
-        <circle class="timer-fill" id="pTimerFill" cx="45" cy="45" r="38"/>
+    <div class="timer-center">
+      <svg width="96" height="96" viewBox="0 0 96 96">
+        <circle class="t-track" cx="48" cy="48" r="40"/>
+        <circle class="t-fill" id="pFill" cx="48" cy="48" r="40"/>
       </svg>
-      <div class="timer-num" id="pTimerNum">60</div>
+      <div class="t-num" id="pNum">60</div>
     </div>
-    <div class="img-container">
-      <img class="question-img" id="playerImg" src="" alt="Tunnista kuva" style="display:none"/>
-      <div class="img-placeholder" id="playerImgPlaceholder">📷</div>
+    <div class="img-wrap">
+      <img class="qimg" id="playerImg" alt="Tunnista!"/>
+      <div class="img-ph" id="playerPh">📷</div>
     </div>
-    <div class="guess-label">Mikä tämä on? Sano ääneen!</div>
+    <div class="guess-hint">Mikä tämä on? Sano ääneen! 🎤</div>
   </div>
 
-  <!-- JUDGE SCREEN (player 1 / host – sees answer) -->
+  <!-- JUDGE SCREEN -->
   <div id="judgescreen" class="screen">
     <div class="game-header">
-      <div class="game-cat" id="jCat">–</div>
-      <div class="game-score" id="jScore">0 – 0</div>
+      <div class="gcatname" id="jCat">–</div>
+      <div class="gscore" id="jScore">0 – 0</div>
     </div>
-    <div class="answer-big" id="jAnswer">–</div>
-    <div class="hint-img-small" id="jImgWrap">
-      <img id="judgeImg" src="" alt="" style="display:none"/>
+    <div class="answer-box">
+      <div class="albl">Oikea vastaus</div>
+      <div class="aval" id="jAnswer">–</div>
     </div>
-    <div class="judge-timer-row">
+    <div class="judge-img">
+      <img id="judgeImg" alt=""/>
+    </div>
+    <div class="jtimer-row">
       <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
-        <svg width="80" height="80" viewBox="0 0 80 80">
-          <circle class="timer-track" cx="40" cy="40" r="33"/>
-          <circle class="timer-fill" id="jTimerFill" cx="40" cy="40" r="33"/>
+        <svg width="80" height="80" viewBox="0 0 80 80" style="transform:rotate(-90deg)">
+          <circle class="t-track" cx="40" cy="40" r="33"/>
+          <circle class="t-fill" id="jFill" cx="40" cy="40" r="33"/>
         </svg>
-        <div class="timer-num" id="jTimerNum" style="font-size:36px">60</div>
+        <div class="t-num" id="jNum" style="font-size:36px">60</div>
       </div>
     </div>
     <div class="judge-actions">
-      <button class="judge-btn btn-correct" id="btnCorrect" onclick="judgeResult('correct')">
-        <span class="bjicon">✓</span> Oikein
-      </button>
-      <button class="judge-btn btn-wrong" id="btnWrong" onclick="judgeResult('wrong')">
-        <span class="bjicon">✗</span> Väärin
-      </button>
+      <button class="jbtn jok" id="btnOk" onclick="judgeResult('correct')"><span class="bi">✓</span>Oikein</button>
+      <button class="jbtn jno" id="btnNo" onclick="judgeResult('wrong')"><span class="bi">✗</span>Väärin</button>
     </div>
   </div>
 
-  <!-- SCOREBOARD / ROUND END -->
+  <!-- SCOREBOARD -->
   <div id="scoreboard" class="screen">
-    <div class="score-title" id="sbTitle">Kierros ohi!</div>
+    <div class="sb-title" id="sbTitle">Kierros ohi!</div>
     <div id="sbRows"></div>
-    <div style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:0.5rem" id="sbSub"></div>
-    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Seuraava kuva →</button>
+    <div class="sb-sub" id="sbSub"></div>
+    <button class="next-btn" id="nextBtn">Seuraava →</button>
   </div>
 
-  <div class="result-flash" id="resultFlash"></div>
+  <div class="flash" id="flash"></div>
   <div class="toast" id="toast"></div>
+  <div id="connecting"><div class="conn-box">Yhdistetään...<br><div class="dots" style="margin-top:.5rem"><span>●</span><span>●</span><span>●</span></div></div></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
-// ─── CONFIG ────────────────────────────────────────────────────────────────
-// Replace with your Supabase project URL and anon key
-const SUPABASE_URL = 'SUPABASE_URL_HERE';
-const SUPABASE_KEY = 'SUPABASE_ANON_KEY_HERE';
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// ─── CATEGORIES & QUESTIONS ────────────────────────────────────────────────
-const CATEGORIES = [
-  {
-    id:'cars', name:'Automerkit', icon:'🚗',
-    questions:[
-      {answer:'Toyota',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Toyota_logo_%28Red%29.svg/600px-Toyota_logo_%28Red%29.svg.png'},
-      {answer:'BMW',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/600px-BMW.svg.png'},
-      {answer:'Ferrari',   img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Logo.svg/600px-Ferrari-Logo.svg.png'},
-      {answer:'Mercedes',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/600px-Mercedes-Logo.svg.png'},
-      {answer:'Volkswagen',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/600px-Volkswagen_logo_2019.svg.png'},
-      {answer:'Audi',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Audi_logo_detail.svg/600px-Audi_logo_detail.svg.png'},
-      {answer:'Ford',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/600px-Ford_logo_flat.svg.png'},
-      {answer:'Honda',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/600px-Honda.svg.png'},
-      {answer:'Lamborghini',img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Lamborghini_Logo.svg/600px-Lamborghini_Logo.svg.png'},
-      {answer:'Porsche',   img:'https://upload.wikimedia.org/wikipedia/de/thumb/7/70/Porsche_Logo.svg/600px-Porsche_Logo.svg.png'},
-    ]
-  },
-  {
-    id:'flowers', name:'Kukat', icon:'🌸',
-    questions:[
-      {answer:'Auringonkukka', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/800px-Sunflower_sky_backdrop.jpg'},
-      {answer:'Ruusu',         img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg/800px-Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg'},
-      {answer:'Tulppaani',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Amst_tulips.jpg/800px-Amst_tulips.jpg'},
-      {answer:'Orvokki',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Viola_x_wittrockiana2.jpg/800px-Viola_x_wittrockiana2.jpg'},
-      {answer:'Laventeli',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Lavand%C3%A8re-2.jpg/800px-Lavand%C3%A8re-2.jpg'},
-      {answer:'Kamomilla',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Matricaria_officinalis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-096.jpg/800px-Matricaria_officinalis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-096.jpg'},
-      {answer:'Krysanteemi',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/800px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg'},
-      {answer:'Päivänkakkara', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Leucanthemum_vulgare_'May_Queen'.jpg/800px-Leucanthemum_vulgare_'May_Queen'.jpg'},
-      {answer:'Magnolia',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Magnolia_officinalis_at_Tortworth_Court.jpg/800px-Magnolia_officinalis_at_Tortworth_Court.jpg'},
-      {answer:'Oranssi lilja', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Lilium_bulbiferum_002.jpg/800px-Lilium_bulbiferum_002.jpg'},
-    ]
-  },
-  {
-    id:'animals', name:'Eläimet', icon:'🦁',
-    questions:[
-      {answer:'Gepardi',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/800px-The_Cheetah_Acinonyx_jubatus_-_8.jpg'},
-      {answer:'Gorilla',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/800px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg'},
-      {answer:'Flamingo',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pink_flamingo_Luc_Viatour.jpg/800px-Pink_flamingo_Luc_Viatour.jpg'},
-      {answer:'Koala',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/800px-Koala_climbing_tree.jpg'},
-      {answer:'Pingviini', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg/800px-South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg'},
-      {answer:'Leijona',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/800px-Lion_waiting_in_Namibia.jpg'},
-      {answer:'Elefantti', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/800px-African_Bush_Elephant.jpg'},
-      {answer:'Delfiini',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/800px-Tursiops_truncatus_01.jpg'},
-      {answer:'Panda',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/800px-Grosser_Panda.JPG'},
-      {answer:'Kameleontti',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Chameleon_perezi_%283%29.jpg/800px-Chameleon_perezi_%283%29.jpg'},
-    ]
-  },
-  {
-    id:'flags', name:'Liput', icon:'🚩',
-    questions:[
-      {answer:'Suomi',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/800px-Flag_of_Finland.svg.png'},
-      {answer:'Japani',   img:'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/800px-Flag_of_Japan.svg.png'},
-      {answer:'Brasilia', img:'https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/800px-Flag_of_Brazil.svg.png'},
-      {answer:'Kanada',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/800px-Flag_of_Canada_%28Pantone%29.svg.png'},
-      {answer:'Norja',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/800px-Flag_of_Norway.svg.png'},
-      {answer:'Sveitsi',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/800px-Flag_of_Switzerland.svg.png'},
-      {answer:'Turkki',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/800px-Flag_of_Turkey.svg.png'},
-      {answer:'Kreikka',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/800px-Flag_of_Greece.svg.png'},
-      {answer:'Intia',    img:'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/800px-Flag_of_India.svg.png'},
-      {answer:'Meksiko',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Flag_of_Mexico.svg/800px-Flag_of_Mexico.svg.png'},
-    ]
-  },
-  {
-    id:'food', name:'Ruoka', icon:'🍕',
-    questions:[
-      {answer:'Sushi',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/800px-Sushi_platter.jpg'},
-      {answer:'Pizza',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/800px-Eq_it-na_pizza-margherita_sep2005_sml.jpg'},
-      {answer:'Taco',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/800px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg'},
-      {answer:'Croissant',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Croissant_Knipser.jpg/800px-Croissant_Knipser.jpg'},
-      {answer:'Paella',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Paella_Valenciana_by_TasteTravelBelgium.jpg/800px-Paella_Valenciana_by_TasteTravelBelgium.jpg'},
-      {answer:'Ramen',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Tonkotsu_ramen.jpg/800px-Tonkotsu_ramen.jpg'},
-      {answer:'Wafeli',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Waffles_with_strawberries_01.jpg/800px-Waffles_with_strawberries_01.jpg'},
-      {answer:'Guacamole',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Guacamole.jpg/800px-Guacamole.jpg'},
-      {answer:'Tiramisu',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tiramisu_-_Raffaele_Diomede.jpg/800px-Tiramisu_-_Raffaele_Diomede.jpg'},
-      {answer:'Currykana',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Chicken_curry_%28gravy%29.jpg/800px-Chicken_curry_%28gravy%29.jpg'},
-    ]
-  },
-  {
-    id:'landmarks', name:'Maamerkit', icon:'🗼',
-    questions:[
-      {answer:'Eiffel-torni',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/800px-Sightseeing_in_Paris.jpg'},
-      {answer:'Colosseum',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/800px-Colosseo_2020.jpg'},
-      {answer:'Taj Mahal',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg'},
-      {answer:'Big Ben',         img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007_icon.png/800px-Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007_icon.png'},
-      {answer:'Vapaudenpatsas',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/800px-Statue_of_Liberty_7.jpg'},
-      {answer:'Sydney Opera',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/800px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg'},
-      {answer:'Kreml',           img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Kremlin_27.06.2008.jpg/800px-Kremlin_27.06.2008.jpg'},
-      {answer:'Sagrada Familia', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sagrada_Familia_01.jpg/800px-Sagrada_Familia_01.jpg'},
-      {answer:'Akropolis',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/800px-The_Parthenon_in_Athens.jpg'},
-      {answer:'Kiinan muuri',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/800px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg'},
-    ]
-  },
+// ════════════════════════════════════════════════════
+//  CATEGORIES
+// ════════════════════════════════════════════════════
+const CATS = [
+  { id:'cars', name:'Automerkit', icon:'🚗', questions:[
+    {a:'Toyota',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Toyota_logo_%28Red%29.svg/600px-Toyota_logo_%28Red%29.svg.png'},
+    {a:'BMW',         img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/600px-BMW.svg.png'},
+    {a:'Mercedes',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/600px-Mercedes-Logo.svg.png'},
+    {a:'Audi',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Audi_logo_detail.svg/600px-Audi_logo_detail.svg.png'},
+    {a:'Ford',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ford_logo_flat.svg/600px-Ford_logo_flat.svg.png'},
+    {a:'Honda',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/600px-Honda.svg.png'},
+    {a:'Volkswagen',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/600px-Volkswagen_logo_2019.svg.png'},
+    {a:'Ferrari',     img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Logo.svg/600px-Ferrari-Logo.svg.png'},
+    {a:'Porsche',     img:'https://upload.wikimedia.org/wikipedia/de/thumb/7/70/Porsche_Logo.svg/600px-Porsche_Logo.svg.png'},
+    {a:'Lamborghini', img:'https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Lamborghini_Logo.svg/600px-Lamborghini_Logo.svg.png'},
+    {a:'Nissan',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Nissan_2020_logo.svg/600px-Nissan_2020_logo.svg.png'},
+    {a:'Hyundai',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/600px-Hyundai_Motor_Company_logo.svg.png'},
+  ]},
+  { id:'flowers', name:'Kukat', icon:'🌸', questions:[
+    {a:'Auringonkukka',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/800px-Sunflower_sky_backdrop.jpg'},
+    {a:'Ruusu',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg/800px-Rosa_glauca_Fackelglut_%28Rietberg%29_02.jpg'},
+    {a:'Tulppaani',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Amst_tulips.jpg/800px-Amst_tulips.jpg'},
+    {a:'Laventeli',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Lavand%C3%A8re-2.jpg/800px-Lavand%C3%A8re-2.jpg'},
+    {a:'Orvokki',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Viola_x_wittrockiana2.jpg/800px-Viola_x_wittrockiana2.jpg'},
+    {a:'Päivänkakkara',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Leucanthemum_vulgare_Daisy.JPG/800px-Leucanthemum_vulgare_Daisy.JPG'},
+    {a:'Magnolia',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Magnolia_officinalis_at_Tortworth_Court.jpg/800px-Magnolia_officinalis_at_Tortworth_Court.jpg'},
+    {a:'Krysanteemi',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/800px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg'},
+    {a:'Orkidea',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Phalaenopsis_DTPS_Chain_Xen_Pearl_%27Chain_Xen_Fancy%27.jpg/800px-Phalaenopsis_DTPS_Chain_Xen_Pearl_%27Chain_Xen_Fancy%27.jpg'},
+  ]},
+  { id:'animals', name:'Eläimet', icon:'🦁', questions:[
+    {a:'Gepardi',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/800px-The_Cheetah_Acinonyx_jubatus_-_8.jpg'},
+    {a:'Gorilla',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/800px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg'},
+    {a:'Flamingo',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pink_flamingo_Luc_Viatour.jpg/800px-Pink_flamingo_Luc_Viatour.jpg'},
+    {a:'Koala',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/800px-Koala_climbing_tree.jpg'},
+    {a:'Pingviini',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg/800px-South_Shetland-2016-Deception_Island%E2%80%93Chinstrap_penguin_%28Pygoscelis_antarctica%29_04.jpg'},
+    {a:'Leijona',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/800px-Lion_waiting_in_Namibia.jpg'},
+    {a:'Elefantti',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/800px-African_Bush_Elephant.jpg'},
+    {a:'Delfiini',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/800px-Tursiops_truncatus_01.jpg'},
+    {a:'Panda',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/800px-Grosser_Panda.JPG'},
+    {a:'Kameleontti', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Chameleon_perezi_%283%29.jpg/800px-Chameleon_perezi_%283%29.jpg'},
+    {a:'Jääkarhu',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg/800px-Polar_Bear_-_Alaska_%28cropped%29.jpg'},
+    {a:'Zebra',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Plains_Zebra_Equus_quagga.jpg/800px-Plains_Zebra_Equus_quagga.jpg'},
+  ]},
+  { id:'flags', name:'Liput', icon:'🚩', questions:[
+    {a:'Suomi',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/800px-Flag_of_Finland.svg.png'},
+    {a:'Japani',   img:'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/800px-Flag_of_Japan.svg.png'},
+    {a:'Brasilia', img:'https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/800px-Flag_of_Brazil.svg.png'},
+    {a:'Kanada',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/800px-Flag_of_Canada_%28Pantone%29.svg.png'},
+    {a:'Norja',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/800px-Flag_of_Norway.svg.png'},
+    {a:'Sveitsi',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/800px-Flag_of_Switzerland.svg.png'},
+    {a:'Turkki',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/800px-Flag_of_Turkey.svg.png'},
+    {a:'Kreikka',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/800px-Flag_of_Greece.svg.png'},
+    {a:'Intia',    img:'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/800px-Flag_of_India.svg.png'},
+    {a:'Meksiko',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Flag_of_Mexico.svg/800px-Flag_of_Mexico.svg.png'},
+    {a:'Australia',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Australia_%28converted%29.svg/800px-Flag_of_Australia_%28converted%29.svg.png'},
+    {a:'Ruotsi',   img:'https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/800px-Flag_of_Sweden.svg.png'},
+  ]},
+  { id:'food', name:'Ruoka', icon:'🍕', questions:[
+    {a:'Sushi',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/800px-Sushi_platter.jpg'},
+    {a:'Pizza',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/800px-Eq_it-na_pizza-margherita_sep2005_sml.jpg'},
+    {a:'Taco',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/800px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg'},
+    {a:'Croissant', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Croissant_Knipser.jpg/800px-Croissant_Knipser.jpg'},
+    {a:'Ramen',     img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Tonkotsu_ramen.jpg/800px-Tonkotsu_ramen.jpg'},
+    {a:'Paella',    img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Paella_Valenciana_by_TasteTravelBelgium.jpg/800px-Paella_Valenciana_by_TasteTravelBelgium.jpg'},
+    {a:'Tiramisu',  img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tiramisu_-_Raffaele_Diomede.jpg/800px-Tiramisu_-_Raffaele_Diomede.jpg'},
+    {a:'Guacamole', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Guacamole.jpg/800px-Guacamole.jpg'},
+    {a:'Pho',       img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Pho-Beef-Noodles-2008.jpg/800px-Pho-Beef-Noodles-2008.jpg'},
+  ]},
+  { id:'landmarks', name:'Maamerkit', icon:'🗼', questions:[
+    {a:'Eiffel-torni',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/800px-Sightseeing_in_Paris.jpg'},
+    {a:'Colosseum',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/800px-Colosseo_2020.jpg'},
+    {a:'Taj Mahal',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/800px-Taj_Mahal_%28Edited%29.jpeg'},
+    {a:'Vapaudenpatsas', img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/800px-Statue_of_Liberty_7.jpg'},
+    {a:'Sydney Opera',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/800px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg'},
+    {a:'Sagrada Familia',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sagrada_Familia_01.jpg/800px-Sagrada_Familia_01.jpg'},
+    {a:'Akropolis',      img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/800px-The_Parthenon_in_Athens.jpg'},
+    {a:'Kiinan muuri',   img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/800px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg'},
+    {a:'Big Ben',        img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007_icon.png/800px-Clock_Tower_-_Palace_of_Westminster%2C_London_-_May_2007_icon.png'},
+  ]},
 ];
 
-// ─── STATE ─────────────────────────────────────────────────────────────────
-let state = {
-  role: null,       // 'host' | 'player'
-  roomId: null,
-  channel: null,
-  selectedCats: [],
-  questions: [],
-  qIndex: 0,
-  scores: {host:0, player:0},
-  timerInt: null,
-  timeLeft: 60,
-  judgeDisabled: false,
-};
+// ════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════
+let peer = null, conn = null;
+let S = { role:null, selectedCats:[], questions:[], qIdx:0, scores:{host:0,player:0}, timerInt:null, timeLeft:60, judged:false };
 
-// ─── UTILS ─────────────────────────────────────────────────────────────────
-function randomCode() {
-  return Math.random().toString(36).slice(2,6).toUpperCase();
-}
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2200);
+// ════════════════════════════════════════════════════
+//  PEERJS
+// ════════════════════════════════════════════════════
+function makePeer(id) {
+  // Use public PeerJS cloud server – no account needed
+  return new Peer(id, { debug: 0 });
 }
 
-const CIRC_P = 2 * Math.PI * 38;
-const CIRC_J = 2 * Math.PI * 33;
-function updateTimerUI(t) {
-  const pct = t / 60;
-  const pf = document.getElementById('pTimerFill');
-  const jf = document.getElementById('jTimerFill');
-  const color = t > 20 ? '#2d8a4e' : t > 10 ? '#c8a84b' : '#d63b2f';
-  if(pf) {
-    pf.style.strokeDasharray = CIRC_P;
-    pf.style.strokeDashoffset = CIRC_P * (1 - pct);
-    pf.style.stroke = color;
-  }
-  if(jf) {
-    jf.style.strokeDasharray = CIRC_J;
-    jf.style.strokeDashoffset = CIRC_J * (1 - pct);
-    jf.style.stroke = color;
-  }
-  document.getElementById('pTimerNum').textContent = t;
-  document.getElementById('jTimerNum').textContent = t;
+function setupConnHandlers(c) {
+  conn = c;
+  conn.on('data', d => onMsg(d));
+  conn.on('close', () => { showToast('Yhteys katkesi'); });
+  conn.on('error', e => { showToast('Virhe: '+e); });
 }
 
-// ─── SUPABASE CHANNEL ──────────────────────────────────────────────────────
-function joinChannel(roomId) {
-  if(state.channel) supabase.removeChannel(state.channel);
-  const ch = supabase.channel('room:'+roomId, {config:{broadcast:{self:false}}});
-  ch.on('broadcast', {event:'*'}, ({event,payload}) => handleMsg(event, payload));
-  ch.subscribe();
-  state.channel = ch;
-}
-function send(event, payload={}) {
-  if(!state.channel) return;
-  state.channel.send({type:'broadcast', event, payload});
+function send(type, data={}) {
+  if(conn && conn.open) conn.send({type,...data});
 }
 
-// ─── HOME ──────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════
+//  UI HELPERS
+// ════════════════════════════════════════════════════
+function show(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
+
+// ════════════════════════════════════════════════════
+//  HOME
+// ════════════════════════════════════════════════════
 function toggleJoin() {
   const w = document.getElementById('joinWrap');
-  w.classList.toggle('visible');
-  if(w.classList.contains('visible')) document.getElementById('joinCode').focus();
+  w.classList.toggle('open');
+  if(w.classList.contains('open')) setTimeout(()=>document.getElementById('joinCode').focus(), 340);
 }
+
 function goHome() {
-  if(state.channel) supabase.removeChannel(state.channel);
-  state = {role:null,roomId:null,channel:null,selectedCats:[],questions:[],qIndex:0,scores:{host:0,player:0},timerInt:null,timeLeft:60,judgeDisabled:false};
-  showScreen('home');
+  clearInterval(S.timerInt);
+  if(conn) { try{conn.close();}catch(e){} conn=null; }
+  if(peer) { try{peer.destroy();}catch(e){} peer=null; }
+  S = {role:null,selectedCats:[],questions:[],qIdx:0,scores:{host:0,player:0},timerInt:null,timeLeft:60,judged:false};
+  document.getElementById('joinCode').value='';
+  document.getElementById('joinErr').textContent='';
+  document.getElementById('joinWrap').classList.remove('open');
+  show('home');
 }
 
-// ─── CREATE GAME ───────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════
+//  CREATE
+// ════════════════════════════════════════════════════
 function createGame() {
-  const code = randomCode();
-  state.role = 'host';
-  state.roomId = code;
-  joinChannel(code);
+  const code = Math.random().toString(36).slice(2,6).toUpperCase();
+  S.role = 'host';
   document.getElementById('lobbyCode').textContent = code;
-  showScreen('lobby');
+  show('lobby');
+
+  peer = makePeer('floor-'+code);
+  peer.on('open', () => {
+    peer.on('connection', c => {
+      setupConnHandlers(c);
+      c.on('open', () => {
+        showToast('Pelaaja liittyi! 🎉');
+        buildCatGrid();
+        show('catselect');
+      });
+    });
+  });
+  peer.on('error', e => {
+    showToast('Virhe: '+e.type);
+    console.error(e);
+  });
 }
 
-// ─── JOIN GAME ─────────────────────────────────────────────────────────────
-async function joinGame() {
+// ════════════════════════════════════════════════════
+//  JOIN
+// ════════════════════════════════════════════════════
+function joinGame() {
   const code = document.getElementById('joinCode').value.trim().toUpperCase();
-  document.getElementById('joinError').textContent = '';
-  if(code.length !== 4) { document.getElementById('joinError').textContent = 'Anna 4-kirjaiminen koodi'; return; }
-  state.role = 'player';
-  state.roomId = code;
-  joinChannel(code);
-  showScreen('waiting');
-  send('player_joined');
+  document.getElementById('joinErr').textContent = '';
+  if(code.length !== 4) { document.getElementById('joinErr').textContent='Anna 4-merkkinen koodi'; return; }
+
+  S.role = 'player';
+  show('waiting');
+  document.getElementById('connecting').classList.add('show');
+
+  peer = makePeer(); // random id for player
+  peer.on('open', () => {
+    const c = peer.connect('floor-'+code, {reliable:true});
+    c.on('open', () => {
+      document.getElementById('connecting').classList.remove('show');
+      setupConnHandlers(c);
+    });
+    c.on('error', e => {
+      document.getElementById('connecting').classList.remove('show');
+      showToast('Ei löydy peliä koodilla '+code);
+      goHome();
+    });
+    setTimeout(()=>{
+      if(!conn || !conn.open) {
+        document.getElementById('connecting').classList.remove('show');
+        document.getElementById('joinErr').textContent='Peliä ei löydy – tarkista koodi';
+        show('home'); document.getElementById('joinWrap').classList.add('open');
+      }
+    }, 8000);
+  });
+  peer.on('error', e => {
+    document.getElementById('connecting').classList.remove('show');
+    document.getElementById('joinErr').textContent='Virhe yhteydenmuodostuksessa';
+    show('home'); document.getElementById('joinWrap').classList.add('open');
+  });
 }
 
-// ─── HANDLE MESSAGES ───────────────────────────────────────────────────────
-function handleMsg(event, payload) {
-  if(event === 'player_joined' && state.role === 'host') {
-    // Build category selection
-    buildCatGrid();
-    showScreen('catselect');
+// ════════════════════════════════════════════════════
+//  MESSAGES
+// ════════════════════════════════════════════════════
+function onMsg(msg) {
+  if(msg.type==='game_start' && S.role==='player') {
+    S.questions=msg.questions; S.scores={host:0,player:0}; S.qIdx=0;
+    showQ();
   }
-  if(event === 'game_start' && state.role === 'player') {
-    state.questions = payload.questions;
-    state.scores = {host:0,player:0};
-    state.qIndex = 0;
-    showQuestion();
-  }
-  if(event === 'timer_tick' && state.role === 'player') {
-    updateTimerUI(payload.t);
-  }
-  if(event === 'judge_result') {
-    handleJudgeResult(payload);
-  }
-  if(event === 'next_question' && state.role === 'player') {
-    state.qIndex = payload.qIndex;
-    state.scores = payload.scores;
-    showQuestion();
-  }
+  if(msg.type==='tick' && S.role==='player') { updateTimers(msg.t); }
+  if(msg.type==='result') { applyResult(msg); }
+  if(msg.type==='next' && S.role==='player') { S.qIdx=msg.qIdx; S.scores=msg.scores; showQ(); }
 }
 
-// ─── CATEGORY SELECT ───────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════
+//  CAT SELECT
+// ════════════════════════════════════════════════════
 function buildCatGrid() {
-  const grid = document.getElementById('catGrid');
-  grid.innerHTML = '';
-  CATEGORIES.forEach(cat => {
-    const div = document.createElement('div');
-    div.className = 'cat-card';
-    div.dataset.id = cat.id;
-    div.innerHTML = `<span class="cat-icon">${cat.icon}</span><span class="cat-name">${cat.name}</span><span class="cat-count">${cat.questions.length} kuvaa</span>`;
-    div.onclick = () => toggleCat(cat.id, div);
-    grid.appendChild(div);
+  S.selectedCats=[];
+  const g=document.getElementById('catGrid'); g.innerHTML='';
+  CATS.forEach(cat=>{
+    const d=document.createElement('div'); d.className='cat-card'; d.dataset.id=cat.id;
+    d.innerHTML=`<span class="cicon">${cat.icon}</span><span class="cname">${cat.name}</span><span class="ccount">${cat.questions.length} kuvaa</span>`;
+    d.onclick=()=>toggleCat(cat.id,d); g.appendChild(d);
   });
+  document.getElementById('startBtn').disabled=true;
 }
-function toggleCat(id, el) {
-  if(state.selectedCats.includes(id)) {
-    state.selectedCats = state.selectedCats.filter(c=>c!==id);
-    el.classList.remove('selected');
-  } else if(state.selectedCats.length < 4) {
-    state.selectedCats.push(id);
-    el.classList.add('selected');
-  }
-  document.getElementById('startBtn').disabled = state.selectedCats.length === 0;
+function toggleCat(id,el) {
+  if(S.selectedCats.includes(id)){ S.selectedCats=S.selectedCats.filter(c=>c!==id); el.classList.remove('sel'); }
+  else if(S.selectedCats.length<4){ S.selectedCats.push(id); el.classList.add('sel'); }
+  document.getElementById('startBtn').disabled=S.selectedCats.length===0;
 }
 
-// ─── START GAME ────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════
+//  START
+// ════════════════════════════════════════════════════
 function startGame() {
-  // Build shuffled question list from selected categories
-  let qs = [];
-  state.selectedCats.forEach(cid => {
-    const cat = CATEGORIES.find(c=>c.id===cid);
-    if(cat) cat.questions.forEach(q => qs.push({...q, cat:cat.name, catIcon:cat.icon}));
+  let qs=[];
+  S.selectedCats.forEach(cid=>{
+    const cat=CATS.find(c=>c.id===cid);
+    if(cat) cat.questions.forEach(q=>qs.push({...q,cat:cat.name,icon:cat.icon}));
   });
-  // shuffle
   for(let i=qs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[qs[i],qs[j]]=[qs[j],qs[i]];}
-  state.questions = qs;
-  state.qIndex = 0;
-  state.scores = {host:0, player:0};
-  send('game_start', {questions: qs});
-  showQuestion();
+  S.questions=qs; S.qIdx=0; S.scores={host:0,player:0};
+  send('game_start',{questions:qs});
+  showQ();
 }
 
-// ─── SHOW QUESTION ─────────────────────────────────────────────────────────
-function showQuestion() {
-  clearInterval(state.timerInt);
-  state.judgeDisabled = false;
-  if(state.qIndex >= state.questions.length) {
-    showFinalScore();
-    return;
-  }
-  const q = state.questions[state.qIndex];
+// ════════════════════════════════════════════════════
+//  SHOW QUESTION
+// ════════════════════════════════════════════════════
+const CP=2*Math.PI*40, CJ=2*Math.PI*33;
 
-  if(state.role === 'host') {
-    // Judge screen
-    document.getElementById('jCat').textContent = (q.catIcon||'') + ' ' + q.cat;
-    document.getElementById('jScore').textContent = `Host ${state.scores.host} – ${state.scores.player} Pelaaja`;
-    document.getElementById('jAnswer').textContent = q.answer;
-    const ji = document.getElementById('judgeImg');
-    ji.src = q.img; ji.style.display='block';
-    document.getElementById('btnCorrect').disabled = false;
-    document.getElementById('btnWrong').disabled = false;
-    showScreen('judgescreen');
+function showQ() {
+  clearInterval(S.timerInt); S.judged=false;
+  if(S.qIdx>=S.questions.length){ showFinal(); return; }
+  const q=S.questions[S.qIdx];
+
+  if(S.role==='host') {
+    document.getElementById('jCat').textContent=q.icon+' '+q.cat;
+    document.getElementById('jScore').textContent=`Host ${S.scores.host} – ${S.scores.player} Pelaaja`;
+    document.getElementById('jAnswer').textContent=q.a;
+    const ji=document.getElementById('judgeImg'); ji.src=q.img; ji.style.display='block';
+    document.getElementById('btnOk').disabled=false;
+    document.getElementById('btnNo').disabled=false;
+    show('judgescreen');
   } else {
-    // Player screen
-    document.getElementById('pCat').textContent = (q.catIcon||'') + ' ' + q.cat;
-    document.getElementById('pScore').textContent = `Pisteet: ${state.scores.player}`;
-    const pi = document.getElementById('playerImg');
-    const pp = document.getElementById('playerImgPlaceholder');
-    pi.style.display='none'; pp.style.display='flex';
-    pi.onload = ()=>{ pi.style.display='block'; pp.style.display='none'; };
-    pi.src = q.img;
-    showScreen('playerscreen');
+    document.getElementById('pCat').textContent=q.icon+' '+q.cat;
+    document.getElementById('pScore').textContent=`Pisteet: ${S.scores.player}`;
+    const pi=document.getElementById('playerImg'), pp=document.getElementById('playerPh');
+    pi.style.display='none'; pp.style.display='flex'; pp.textContent='📷';
+    pi.onload=()=>{ pi.style.display='block'; pp.style.display='none'; };
+    pi.onerror=()=>{ pp.textContent='❓'; };
+    pi.src=''; pi.src=q.img;
+    show('playerscreen');
   }
 
-  // Start timer
-  state.timeLeft = 60;
-  updateTimerUI(60);
-  state.timerInt = setInterval(() => {
-    state.timeLeft--;
-    updateTimerUI(state.timeLeft);
-    if(state.role === 'host') send('timer_tick', {t: state.timeLeft});
-    if(state.timeLeft <= 0) {
-      clearInterval(state.timerInt);
-      if(state.role === 'host') judgeResult('timeout');
-    }
-  }, 1000);
+  S.timeLeft=60; updateTimers(60);
+  S.timerInt=setInterval(()=>{
+    S.timeLeft--;
+    updateTimers(S.timeLeft);
+    if(S.role==='host') send('tick',{t:S.timeLeft});
+    if(S.timeLeft<=0){ clearInterval(S.timerInt); if(S.role==='host') judgeResult('timeout'); }
+  },1000);
 }
 
-// ─── JUDGE RESULT ──────────────────────────────────────────────────────────
+function updateTimers(t) {
+  const pct=t/60, col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
+  const pf=document.getElementById('pFill'), jf=document.getElementById('jFill');
+  if(pf){pf.style.strokeDasharray=CP;pf.style.strokeDashoffset=CP*(1-pct);pf.style.stroke=col;}
+  if(jf){jf.style.strokeDasharray=CJ;jf.style.strokeDashoffset=CJ*(1-pct);jf.style.stroke=col;}
+  document.getElementById('pNum').textContent=t;
+  document.getElementById('jNum').textContent=t;
+}
+
+// ════════════════════════════════════════════════════
+//  JUDGE
+// ════════════════════════════════════════════════════
 function judgeResult(outcome) {
-  if(state.judgeDisabled) return;
-  state.judgeDisabled = true;
-  clearInterval(state.timerInt);
-  document.getElementById('btnCorrect').disabled = true;
-  document.getElementById('btnWrong').disabled = true;
-
-  if(outcome === 'correct') state.scores.player++;
-
-  send('judge_result', {outcome, scores: state.scores, qIndex: state.qIndex});
-  handleJudgeResult({outcome, scores: state.scores, qIndex: state.qIndex});
+  if(S.judged) return; S.judged=true;
+  clearInterval(S.timerInt);
+  document.getElementById('btnOk').disabled=true;
+  document.getElementById('btnNo').disabled=true;
+  if(outcome==='correct') S.scores.player++;
+  const payload={type:'result',outcome,scores:S.scores,qIdx:S.qIdx};
+  send('result',{outcome,scores:S.scores,qIdx:S.qIdx});
+  applyResult(payload);
 }
 
-function handleJudgeResult({outcome, scores, qIndex}) {
-  clearInterval(state.timerInt);
-  state.scores = scores;
-
-  const flash = document.getElementById('resultFlash');
-  if(outcome==='correct') { flash.textContent='✓ OIKEIN!'; flash.className='result-flash correct show'; }
-  else if(outcome==='wrong') { flash.textContent='✗ VÄÄRIN'; flash.className='result-flash wrong show'; }
-  else { flash.textContent='⏱ AIKA!'; flash.className='result-flash timeout show'; }
-  setTimeout(()=>{ flash.className='result-flash'; showRoundEnd(outcome, qIndex); }, 1200);
+function applyResult({outcome,scores,qIdx}) {
+  clearInterval(S.timerInt); S.scores=scores;
+  const fl=document.getElementById('flash');
+  if(outcome==='correct'){fl.textContent='✓ OIKEIN!';fl.className='flash ok show';}
+  else if(outcome==='wrong'){fl.textContent='✗ VÄÄRIN';fl.className='flash no show';}
+  else{fl.textContent='⏱ AIKA!';fl.className='flash time show';}
+  setTimeout(()=>{ fl.className='flash'; showRound(outcome,qIdx); },1300);
 }
 
-function showRoundEnd(outcome, qIndex) {
-  const q = state.questions[qIndex];
-  document.getElementById('sbTitle').textContent =
-    outcome==='correct' ? '✓ Oikein!' : outcome==='wrong' ? '✗ Väärin' : '⏱ Aika loppui';
-  const rows = document.getElementById('sbRows');
-  rows.innerHTML = `
-    <div class="score-row" style="margin-bottom:10px">
-      <span class="sname">Oikea vastaus</span>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold)">${q.answer}</span>
+function showRound(outcome,qIdx) {
+  const q=S.questions[qIdx];
+  document.getElementById('sbTitle').textContent=outcome==='correct'?'✓ Oikein!':outcome==='wrong'?'✗ Väärin':'⏱ Aika loppui';
+  document.getElementById('sbRows').innerHTML=`
+    <div class="sb-row" style="margin-bottom:10px">
+      <span class="sn">Oikea vastaus</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold)">${q.a}</span>
     </div>
-    <div class="score-row">
-      <span class="sname">Pelaaja</span><span class="spts">${state.scores.player}</span>
-    </div>
-    <div class="score-row" style="margin-top:8px">
-      <span class="sname">Host</span><span class="spts">${state.scores.host}</span>
-    </div>`;
-  const isLast = qIndex >= state.questions.length - 1;
-  const nextBtn = document.getElementById('nextBtn');
-  if(state.role === 'host') {
-    nextBtn.style.display = 'block';
-    nextBtn.textContent = isLast ? 'Lopputulokset →' : 'Seuraava kuva →';
-  } else {
-    nextBtn.style.display = 'none';
-  }
-  document.getElementById('sbSub').textContent = `Kuva ${qIndex+1} / ${state.questions.length}`;
-  showScreen('scoreboard');
+    <div class="sb-row"><span class="sn">Pelaaja</span><span class="sp">${S.scores.player}</span></div>
+    <div class="sb-row" style="margin-top:8px"><span class="sn">Host</span><span class="sp">${S.scores.host}</span></div>`;
+  document.getElementById('sbSub').textContent=`Kuva ${qIdx+1} / ${S.questions.length}`;
+  const nb=document.getElementById('nextBtn');
+  nb.textContent=qIdx>=S.questions.length-1?'Lopputulos →':'Seuraava kuva →';
+  nb.onclick=nextQ;
+  nb.style.display=S.role==='host'?'block':'none';
+  show('scoreboard');
 }
 
-function nextQuestion() {
-  state.qIndex++;
-  send('next_question', {qIndex: state.qIndex, scores: state.scores});
-  showQuestion();
+function nextQ() {
+  S.qIdx++;
+  send('next',{qIdx:S.qIdx,scores:S.scores});
+  showQ();
 }
 
-function showFinalScore() {
-  const playerWins = state.scores.player > state.scores.host;
-  const tie = state.scores.player === state.scores.host;
-  document.getElementById('sbTitle').textContent = tie ? 'Tasapeli!' : playerWins ? 'Pelaaja voitti!' : 'Host voitti!';
-  document.getElementById('sbRows').innerHTML = `
-    <div class="score-row ${playerWins||tie?'winner':''}">
-      <span class="sname">Pelaaja</span><span class="spts">${state.scores.player}</span>
-    </div>
-    <div class="score-row ${!playerWins&&!tie?'winner':''}">
-      <span class="sname">Host</span><span class="spts">${state.scores.host}</span>
-    </div>`;
-  document.getElementById('sbSub').textContent = 'Peli ohi!';
-  const nextBtn = document.getElementById('nextBtn');
-  nextBtn.textContent = 'Pelaa uudelleen';
-  nextBtn.onclick = goHome;
-  nextBtn.style.display = 'block';
-  showScreen('scoreboard');
+function showFinal() {
+  const pw=S.scores.player>S.scores.host, tie=S.scores.player===S.scores.host;
+  document.getElementById('sbTitle').textContent=tie?'Tasapeli! 🤝':pw?'Pelaaja voitti! 🏆':'Host voitti! 🏆';
+  document.getElementById('sbRows').innerHTML=`
+    <div class="sb-row ${pw||tie?'winner':''}"><span class="sn">Pelaaja</span><span class="sp">${S.scores.player}</span></div>
+    <div class="sb-row ${!pw&&!tie?'winner':''}"><span class="sn">Host</span><span class="sp">${S.scores.host}</span></div>`;
+  document.getElementById('sbSub').textContent='Peli ohi!';
+  const nb=document.getElementById('nextBtn');
+  nb.textContent='Uusi peli'; nb.onclick=goHome; nb.style.display='block';
+  show('scoreboard');
 }
 </script>
 </body>
