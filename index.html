@@ -292,91 +292,88 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 // Difficulty 1=easy, 2=medium, 3=hard
 const CATS=[
   {id:'cars',name:'Automerkit',icon:'🚗',questions:[
-    // Using actual car photos, not logos (JPEGs work reliably)
-    {a:'Ferrari',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ferrari_SF90_Stradale.jpg/800px-Ferrari_SF90_Stradale.jpg'},
-    {a:'Lamborghini',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Lamborghini_Urus_–_f_21122019.jpg/800px-Lamborghini_Urus_–_f_21122019.jpg'},
-    {a:'Volkswagen',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg/800px-2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg'},
-    {a:'Toyota',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toyota_Corolla_E210_IMG_4571.jpg/800px-Toyota_Corolla_E210_IMG_4571.jpg'},
-    {a:'BMW',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/2019_BMW_330i_M_Sport_%28F30%2C_facelift%2C_blue%29%2C_front_8.4.19.jpg/800px-2019_BMW_330i_M_Sport_%28F30%2C_facelift%2C_blue%29%2C_front_8.4.19.jpg'},
-    {a:'Mercedes',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Mercedes-Benz_A-Class_%28W177%29_IMG_0197.jpg/800px-Mercedes-Benz_A-Class_%28W177%29_IMG_0197.jpg'},
-    {a:'Audi',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg/800px-2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg'},
-    {a:'Ford',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg/800px-2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg'},
-    {a:'Porsche',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Porsche_911_996_silver.jpg/800px-Porsche_911_996_silver.jpg'},
-    {a:'Honda',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg/800px-Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg'},
-    {a:'Volvo',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg/800px-Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg'},
-    {a:'Jeep',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg/800px-Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg'},
+    {a:'Ferrari',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ferrari_SF90_Stradale.jpg/800px-Ferrari_SF90_Stradale.jpg&w=600&output=jpg'},
+    {a:'Lamborghini',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Lamborghini_Huracan_EVO_RWD_Spyder%2C_orange%2C_2023_%28cropped%29.jpg/800px-Lamborghini_Huracan_EVO_RWD_Spyder%2C_orange%2C_2023_%28cropped%29.jpg&w=600&output=jpg'},
+    {a:'Volkswagen',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/7e/2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg/800px-2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg&w=600&output=jpg'},
+    {a:'Toyota',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toyota_Corolla_E210_IMG_4571.jpg/800px-Toyota_Corolla_E210_IMG_4571.jpg&w=600&output=jpg'},
+    {a:'BMW',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/2a/2019_BMW_330i_%28G20%29_Sport_Line_sedan_%282019-10-11%29_01.jpg/800px-2019_BMW_330i_%28G20%29_Sport_Line_sedan_%282019-10-11%29_01.jpg&w=600&output=jpg'},
+    {a:'Mercedes-Benz',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/3e/2020_Mercedes-Benz_A_180_Sport_Premium_Plus_1.3_Front.jpg/800px-2020_Mercedes-Benz_A_180_Sport_Premium_Plus_1.3_Front.jpg&w=600&output=jpg'},
+    {a:'Audi',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/10/2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg/800px-2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg&w=600&output=jpg'},
+    {a:'Ford',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/13/2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg/800px-2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg&w=600&output=jpg'},
+    {a:'Porsche',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/80/Porsche_911_996_silver.jpg/800px-Porsche_911_996_silver.jpg&w=600&output=jpg'},
+    {a:'Honda',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg/800px-Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg&w=600&output=jpg'},
+    {a:'Volvo',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg/800px-Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg&w=600&output=jpg'},
+    {a:'Jeep',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/48/Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg/800px-Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg&w=600&output=jpg'},
   ]},
   {id:'flowers',name:'Kukat',icon:'🌸',questions:[
-    {a:'Auringonkukka',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/600px-Sunflower_sky_backdrop.jpg'},
-    {a:'Ruusu',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Rosa_rubiginosa_1.jpg/600px-Rosa_rubiginosa_1.jpg'},
-    {a:'Tulppaani',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Amst_tulips.jpg/600px-Amst_tulips.jpg'},
-    {a:'Laventeli',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Lavand%C3%A8re-2.jpg/600px-Lavand%C3%A8re-2.jpg'},
-    {a:'Orvokki',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Viola_x_wittrockiana2.jpg/600px-Viola_x_wittrockiana2.jpg'},
-    {a:'Päivänkakkara',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Leucanthemum_vulgare_Daisy.JPG/600px-Leucanthemum_vulgare_Daisy.JPG'},
-    {a:'Magnolia',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Magnolia_%C3%97_soulangeana_002.jpg/600px-Magnolia_%C3%97_soulangeana_002.jpg'},
-    {a:'Krysanteemi',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/600px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg'},
-    {a:'Orkidea',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Dendrobium_nobile2.jpg/600px-Dendrobium_nobile2.jpg'},
-    {a:'Unikko',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Papaver_rhoeas_LC0109.jpg/600px-Papaver_rhoeas_LC0109.jpg'},
+    {a:'Auringonkukka',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/600px-Sunflower_sky_backdrop.jpg&w=600&output=jpg'},
+    {a:'Ruusu',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Rosa_rubiginosa_1.jpg/600px-Rosa_rubiginosa_1.jpg&w=600&output=jpg'},
+    {a:'Tulppaani',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/41/Amst_tulips.jpg/600px-Amst_tulips.jpg&w=600&output=jpg'},
+    {a:'Laventeli',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Lavand%C3%A8re-2.jpg/600px-Lavand%C3%A8re-2.jpg&w=600&output=jpg'},
+    {a:'Orvokki',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Viola_x_wittrockiana2.jpg/600px-Viola_x_wittrockiana2.jpg&w=600&output=jpg'},
+    {a:'Päivänkakkara',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Leucanthemum_vulgare_Daisy.JPG/600px-Leucanthemum_vulgare_Daisy.JPG&w=600&output=jpg'},
+    {a:'Magnolia',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/48/Magnolia_%C3%97_soulangeana_002.jpg/600px-Magnolia_%C3%97_soulangeana_002.jpg&w=600&output=jpg'},
+    {a:'Krysanteemi',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/600px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg&w=600&output=jpg'},
+    {a:'Orkidea',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Dendrobium_nobile2.jpg/600px-Dendrobium_nobile2.jpg&w=600&output=jpg'},
+    {a:'Unikko',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Papaver_rhoeas_LC0109.jpg/600px-Papaver_rhoeas_LC0109.jpg&w=600&output=jpg'},
   ]},
   {id:'animals',name:'Eläimet',icon:'🦁',questions:[
-    {a:'Leijona',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/600px-Lion_waiting_in_Namibia.jpg'},
-    {a:'Elefantti',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/600px-African_Bush_Elephant.jpg'},
-    {a:'Panda',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/600px-Grosser_Panda.JPG'},
-    {a:'Pingviini',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/P._papua_Manchot_papou.jpg/600px-P._papua_Manchot_papou.jpg'},
-    {a:'Flamingo',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pink_flamingo_Luc_Viatour.jpg/600px-Pink_flamingo_Luc_Viatour.jpg'},
-    {a:'Koala',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/600px-Koala_climbing_tree.jpg'},
-    {a:'Delfiini',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/600px-Tursiops_truncatus_01.jpg'},
-    {a:'Zebra',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Plains_Zebra_Equus_quagga.jpg/600px-Plains_Zebra_Equus_quagga.jpg'},
-    {a:'Gepardi',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/600px-The_Cheetah_Acinonyx_jubatus_-_8.jpg'},
-    {a:'Gorilla',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/600px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg'},
-    {a:'Kameleontti',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Chameleon_perezi_%283%29.jpg/600px-Chameleon_perezi_%283%29.jpg'},
-    {a:'Jääkarhu',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg/600px-Polar_Bear_-_Alaska_%28cropped%29.jpg'},
+    {a:'Leijona',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/600px-Lion_waiting_in_Namibia.jpg&w=600&output=jpg'},
+    {a:'Elefantti',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/600px-African_Bush_Elephant.jpg&w=600&output=jpg'},
+    {a:'Panda',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/600px-Grosser_Panda.JPG&w=600&output=jpg'},
+    {a:'Pingviini',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/33/P._papua_Manchot_papou.jpg/600px-P._papua_Manchot_papou.jpg&w=600&output=jpg'},
+    {a:'Flamingo',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pink_flamingo_Luc_Viatour.jpg/600px-Pink_flamingo_Luc_Viatour.jpg&w=600&output=jpg'},
+    {a:'Koala',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/600px-Koala_climbing_tree.jpg&w=600&output=jpg'},
+    {a:'Delfiini',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/600px-Tursiops_truncatus_01.jpg&w=600&output=jpg'},
+    {a:'Zebra',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Plains_Zebra_Equus_quagga.jpg/600px-Plains_Zebra_Equus_quagga.jpg&w=600&output=jpg'},
+    {a:'Gepardi',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/600px-The_Cheetah_Acinonyx_jubatus_-_8.jpg&w=600&output=jpg'},
+    {a:'Gorilla',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/600px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg&w=600&output=jpg'},
+    {a:'Kameleontti',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Chameleon_perezi_%283%29.jpg/600px-Chameleon_perezi_%283%29.jpg&w=600&output=jpg'},
+    {a:'Jääkarhu',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg/600px-Polar_Bear_-_Alaska_%28cropped%29.jpg&w=600&output=jpg'},
   ]},
   {id:'flags',name:'Liput',icon:'🚩',questions:[
-    // flagcdn.com – open CDN, works perfectly in all browsers, no CORS issues
-    {a:'Suomi',   d:1,img:'https://flagcdn.com/w640/fi.png'},
-    {a:'Japani',  d:1,img:'https://flagcdn.com/w640/jp.png'},
-    {a:'Kanada',  d:1,img:'https://flagcdn.com/w640/ca.png'},
-    {a:'Ranska',  d:1,img:'https://flagcdn.com/w640/fr.png'},
-    {a:'Saksa',   d:1,img:'https://flagcdn.com/w640/de.png'},
-    {a:'Italia',  d:2,img:'https://flagcdn.com/w640/it.png'},
-    {a:'Espanja', d:2,img:'https://flagcdn.com/w640/es.png'},
-    {a:'Brasilia',d:2,img:'https://flagcdn.com/w640/br.png'},
-    {a:'Norja',   d:2,img:'https://flagcdn.com/w640/no.png'},
-    {a:'Ruotsi',  d:2,img:'https://flagcdn.com/w640/se.png'},
-    {a:'Sveitsi', d:3,img:'https://flagcdn.com/w640/ch.png'},
-    {a:'Kreikka', d:3,img:'https://flagcdn.com/w640/gr.png'},
-    {a:'Turkki',  d:3,img:'https://flagcdn.com/w640/tr.png'},
-    {a:'Intia',   d:3,img:'https://flagcdn.com/w640/in.png'},
-    {a:'Meksiko', d:3,img:'https://flagcdn.com/w640/mx.png'},
-    {a:'Australia',d:3,img:'https://flagcdn.com/w640/au.png'},
-    {a:'Portugali',d:3,img:'https://flagcdn.com/w640/pt.png'},
-    {a:'Tanska',  d:2,img:'https://flagcdn.com/w640/dk.png'},
+    {a:'Suomi',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/fi.png&w=600&output=jpg'},
+    {a:'Japani',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/jp.png&w=600&output=jpg'},
+    {a:'Kanada',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/ca.png&w=600&output=jpg'},
+    {a:'Ranska',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/fr.png&w=600&output=jpg'},
+    {a:'Saksa',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/de.png&w=600&output=jpg'},
+    {a:'Italia',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/it.png&w=600&output=jpg'},
+    {a:'Espanja',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/es.png&w=600&output=jpg'},
+    {a:'Brasilia',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/br.png&w=600&output=jpg'},
+    {a:'Norja',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/no.png&w=600&output=jpg'},
+    {a:'Ruotsi',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/se.png&w=600&output=jpg'},
+    {a:'Tanska',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/dk.png&w=600&output=jpg'},
+    {a:'Sveitsi',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/ch.png&w=600&output=jpg'},
+    {a:'Kreikka',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/gr.png&w=600&output=jpg'},
+    {a:'Turkki',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/tr.png&w=600&output=jpg'},
+    {a:'Intia',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/in.png&w=600&output=jpg'},
+    {a:'Meksiko',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/mx.png&w=600&output=jpg'},
+    {a:'Australia',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/au.png&w=600&output=jpg'},
+    {a:'Portugali',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/pt.png&w=600&output=jpg'},
   ]},
   {id:'food',name:'Ruoka',icon:'🍕',questions:[
-    {a:'Pizza',    d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/600px-Eq_it-na_pizza-margherita_sep2005_sml.jpg'},
-    {a:'Sushi',    d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/600px-Sushi_platter.jpg'},
-    {a:'Hampurilainen',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg/600px-Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg'},
-    {a:'Taco',     d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/600px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg'},
-    {a:'Croissant',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Croissant_Knipser.jpg/600px-Croissant_Knipser.jpg'},
-    {a:'Ramen',    d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Tonkotsu_ramen.jpg/600px-Tonkotsu_ramen.jpg'},
-    {a:'Wafeli',   d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Waffles_with_strawberries.jpg/600px-Waffles_with_strawberries.jpg'},
-    {a:'Paella',   d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Paella_Valenciana_by_TasteTravelBelgium.jpg/600px-Paella_Valenciana_by_TasteTravelBelgium.jpg'},
-    {a:'Tiramisu', d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tiramisu_-_Raffaele_Diomede.jpg/600px-Tiramisu_-_Raffaele_Diomede.jpg'},
-    {a:'Guacamole',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Guacamole.jpg/600px-Guacamole.jpg'},
+    {a:'Pizza',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/600px-Eq_it-na_pizza-margherita_sep2005_sml.jpg&w=600&output=jpg'},
+    {a:'Sushi',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/600px-Sushi_platter.jpg&w=600&output=jpg'},
+    {a:'Hampurilainen',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg/600px-Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg&w=600&output=jpg'},
+    {a:'Taco',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/600px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg&w=600&output=jpg'},
+    {a:'Croissant',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/57/Croissant_Knipser.jpg/600px-Croissant_Knipser.jpg&w=600&output=jpg'},
+    {a:'Ramen',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Tonkotsu_ramen.jpg/600px-Tonkotsu_ramen.jpg&w=600&output=jpg'},
+    {a:'Wafeli',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Waffles_with_strawberries.jpg/600px-Waffles_with_strawberries.jpg&w=600&output=jpg'},
+    {a:'Paella',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/27/Paella_Valenciana_by_TasteTravelBelgium.jpg/600px-Paella_Valenciana_by_TasteTravelBelgium.jpg&w=600&output=jpg'},
+    {a:'Tiramisu',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tiramisu_-_Raffaele_Diomede.jpg/600px-Tiramisu_-_Raffaele_Diomede.jpg&w=600&output=jpg'},
+    {a:'Guacamole',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/23/Guacamole.jpg/600px-Guacamole.jpg&w=600&output=jpg'},
   ]},
   {id:'landmarks',name:'Maamerkit',icon:'🗼',questions:[
-    {a:'Eiffel-torni',   d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/600px-Camponotus_flavomarginatus_ant.jpg'.replace('ant.jpg','..').replace('..','') || 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/600px-Sightseeing_in_Paris.jpg'},
-    {a:'Eiffel-torni',   d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/600px-Sightseeing_in_Paris.jpg'},
-    {a:'Colosseum',      d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/600px-Colosseo_2020.jpg'},
-    {a:'Taj Mahal',      d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/600px-Taj_Mahal_%28Edited%29.jpeg'},
-    {a:'Vapaudenpatsas', d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/600px-Statue_of_Liberty_7.jpg'},
-    {a:'Sydney Opera',   d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/600px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg'},
-    {a:'Big Ben',        d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Big_Ben_2013_01.jpg/600px-Big_Ben_2013_01.jpg'},
-    {a:'Sagrada Familia',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sagrada_Familia_01.jpg/600px-Sagrada_Familia_01.jpg'},
-    {a:'Akropolis',      d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/600px-The_Parthenon_in_Athens.jpg'},
-    {a:'Kiinan muuri',   d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/600px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg'},
-    {a:'Pisa torni',     d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Leaning_tower_of_pisa.jpg/600px-Leaning_tower_of_pisa.jpg'},
+    {a:'Eiffel-torni',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/600px-Sightseeing_in_Paris.jpg&w=600&output=jpg'},
+    {a:'Colosseum',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/600px-Colosseo_2020.jpg&w=600&output=jpg'},
+    {a:'Taj Mahal',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/600px-Taj_Mahal_%28Edited%29.jpeg&w=600&output=jpg'},
+    {a:'Vapaudenpatsas',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/600px-Statue_of_Liberty_7.jpg&w=600&output=jpg'},
+    {a:'Sydney Opera',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/600px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg&w=600&output=jpg'},
+    {a:'Big Ben',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Big_Ben_2013_01.jpg/600px-Big_Ben_2013_01.jpg&w=600&output=jpg'},
+    {a:'Sagrada Familia',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sagrada_Familia_01.jpg/600px-Sagrada_Familia_01.jpg&w=600&output=jpg'},
+    {a:'Akropolis',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/600px-The_Parthenon_in_Athens.jpg&w=600&output=jpg'},
+    {a:'Kiinan muuri',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/600px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg&w=600&output=jpg'},
+    {a:'Pisan torni',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Leaning_tower_of_pisa.jpg/600px-Leaning_tower_of_pisa.jpg&w=600&output=jpg'},
   ]},
 ];
 
@@ -786,15 +783,19 @@ function applyPlayerQuestion(msg){
   buildTimerStrip([p0idx,p1idx]);
   renderTimers(timers,activeSlot);
 
-  // Image with blur effect for difficulty
+  // Load image reliably via preloader (no setTimeout race condition)
   const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
-  pp.style.display='flex';pp.textContent='📷';pi.style.display='none';
+  pp.style.display='flex';pp.textContent='⏳';pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
-  pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
-  pi.onerror=()=>{pp.textContent='❓';};
-  pi.src='';
-  // Small delay so filter applies before image shows
-  setTimeout(()=>{ pi.src=img; },30);
+  const _loader=new Image();
+  _loader.onload=()=>{pi.src=img;pi.style.display='block';pp.style.display='none';};
+  _loader.onerror=()=>{
+    const _l2=new Image();
+    _l2.onload=()=>{pi.src=img;pi.style.display='block';pp.style.display='none';};
+    _l2.onerror=()=>{pp.style.display='flex';pp.textContent='❌';};
+    _l2.src=img;
+  };
+  _loader.src=img;
 
   document.getElementById('playerCat').textContent=icon+' '+cat;
 
