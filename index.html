@@ -12,8 +12,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 #app{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden}
 .screen.active{display:flex}
-
-/* HOME */
 #home{align-items:center;justify-content:center;padding:2rem;position:relative;overflow:hidden}
 #home::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 28%,#c8a84b1a,transparent 65%);pointer-events:none}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,22vw,108px);color:var(--gold);line-height:.88;text-align:center;letter-spacing:.04em}
@@ -28,8 +26,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .code-input:focus{outline:none;border-color:var(--gold)}
 .go-btn{width:100%;margin-top:8px;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:14px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
 .err{color:var(--red);font-size:13px;text-align:center;margin-top:6px;min-height:16px}
-
-/* LOBBY */
 #lobby{align-items:center;justify-content:center;text-align:center;padding:2rem;gap:.6rem}
 .lbl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
 .room-code{font-family:'Bebas Neue',sans-serif;font-size:clamp(88px,26vw,128px);color:var(--gold);letter-spacing:.14em;line-height:1}
@@ -37,8 +33,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .dots span:nth-child(2){animation-delay:.22s}.dots span:nth-child(3){animation-delay:.44s}
 @keyframes dot{0%,80%,100%{opacity:0}40%{opacity:1}}
 .back-btn{margin-top:1rem;background:transparent;color:var(--muted);border:1px solid var(--gray3);border-radius:6px;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
-
-/* PROFILES */
 #profiles{overflow:hidden}
 .page-header{padding:1rem 1rem .5rem;flex-shrink:0;border-bottom:1px solid var(--gray2)}
 .page-title{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);letter-spacing:.07em}
@@ -55,13 +49,9 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .profile-footer{padding:.75rem 1rem 1rem;border-top:1px solid var(--gray2);flex-shrink:0}
 .gold-btn{width:100%;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:16px;font-size:17px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer}
 .gold-btn:disabled{opacity:.3;cursor:not-allowed}
-
-/* WAITING */
 #waiting{align-items:center;justify-content:center;text-align:center;padding:2rem;gap:1.2rem}
 .waiting-players{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:.5rem}
 .w-chip{padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600}
-
-/* JUDGE CAT SELECT */
 #judgesetup{overflow:hidden}
 .cat-scroll{flex:1;overflow-y:auto;padding:.75rem 1rem}
 .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -69,8 +59,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .cat-card.sel{border-color:var(--gold);background:#1b1500}
 .cicon{font-size:26px}.cname{font-size:14px;font-weight:600}.ccount{font-size:11px;color:var(--muted)}
 .bottom-bar{padding:.75rem 1rem 1rem;border-top:1px solid var(--gray2);flex-shrink:0}
-
-/* PAIRING */
 #pairingscreen{overflow:hidden}
 .pairing-list{flex:1;overflow-y:auto;padding:.75rem 1rem}
 .pair-card{background:var(--gray2);border-radius:12px;margin-bottom:12px;overflow:hidden}
@@ -84,8 +72,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .pair-name{font-size:15px;font-weight:600}
 .pair-vs{font-size:12px;color:var(--muted);flex-shrink:0}
 .start-match-btn{margin:0 14px 12px;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:11px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;width:calc(100% - 28px);display:block}
-
-/* PLAYER MATCH SCREEN */
 #playerscreen{overflow:hidden}
 .timer-strip{display:flex;flex-direction:row;flex-shrink:0;background:var(--gray2)}
 .p-timer{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 4px;transition:opacity .3s,background .3s}
@@ -102,13 +88,8 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none;transition:filter .6s ease}
 .img-ph{width:100%;max-height:200px;aspect-ratio:4/3;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
 .cat-badge{font-size:11px;color:var(--muted);margin-top:.35rem;letter-spacing:.08em;text-transform:uppercase}
-/* Difficulty label */
 .diff-label{position:absolute;top:.5rem;right:.5rem;font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
-.diff-1{background:#2d8a4e33;color:#4AE07A}
-.diff-2{background:#c8a84b33;color:#E0C04A}
-.diff-3{background:#d63b2f33;color:#E05A4A}
-
-/* JUDGE SCREEN */
+.diff-1{background:#2d8a4e33;color:#4AE07A}.diff-2{background:#c8a84b33;color:#E0C04A}.diff-3{background:#d63b2f33;color:#E05A4A}
 #judgescreen{overflow:hidden}
 .judge-header{display:flex;align-items:center;justify-content:space-between;padding:.55rem 1rem;background:var(--gray2);flex-shrink:0}
 .jactive-wrap{display:flex;align-items:center;gap:6px}
@@ -134,8 +115,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .jbtn:active{transform:scale(.94)}.jbtn:disabled{opacity:.35;cursor:not-allowed}
 .jbtn .bi{font-size:22px}
 .jok{background:var(--green);color:#fff}.jno{background:var(--red);color:#fff}
-
-/* SCOREBOARD */
 #scoreboard{padding:1.25rem;overflow-y:auto;gap:.5rem}
 .sb-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);letter-spacing:.08em}
 .sb-row{background:var(--gray);border-radius:8px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
@@ -144,19 +123,11 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .sb-row.winner{border:2px solid var(--gold)}
 .sb-sub{font-size:13px;color:var(--muted);text-align:center}
 .sb-btn{background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:16px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:auto;width:100%}
-
-/* FLASH */
 .flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:.04em;z-index:200;pointer-events:none;opacity:0;transition:opacity .12s;text-align:center;padding:1rem;line-height:1.1}
 .flash.show{opacity:1}
-.flash.ok{background:#2d8a4ecc;color:#fff}
-.flash.no{background:#d63b2fcc;color:#fff}
-.flash.time{background:#c8a84bcc;color:var(--black)}
-
-/* TOAST */
+.flash.ok{background:#2d8a4ecc;color:#fff}.flash.no{background:#d63b2fcc;color:#fff}.flash.time{background:#c8a84bcc;color:var(--black)}
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--gray3);color:var(--white);padding:10px 22px;border-radius:999px;font-size:14px;z-index:300;pointer-events:none;opacity:0;transition:opacity .2s;white-space:nowrap;max-width:90vw}
 .toast.show{opacity:1}
-
-/* CONNECTING */
 #connecting{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;z-index:400}
 #connecting.show{display:flex}
 .conn-box{background:var(--gray);border-radius:10px;padding:2rem;text-align:center;font-size:15px;color:var(--muted)}
@@ -164,22 +135,18 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 </head>
 <body>
 <div id="app">
-
-  <!-- HOME -->
   <div id="home" class="screen active">
     <div class="logo">THE<br>FLOOR</div>
     <div class="logo-sub">Kuvatunnistuspeli</div>
     <button class="hbtn hbtn-gold" onclick="createGame()">Luo peli (Tuomari) 🎤</button>
     <button class="hbtn hbtn-outline" onclick="toggleJoin()">Liity peliin (Pelaajat) 📱</button>
     <div class="join-wrap" id="joinWrap">
-      <input class="code-input" id="joinCode" maxlength="4" placeholder="KOODI"
-        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"/>
+      <input class="code-input" id="joinCode" maxlength="4" placeholder="KOODI" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"/>
       <button class="go-btn" onclick="joinGame()">Liity →</button>
       <div class="err" id="joinErr"></div>
     </div>
   </div>
 
-  <!-- LOBBY -->
   <div id="lobby" class="screen">
     <div class="lbl">Pelin koodi – jaa pelaajille</div>
     <div class="room-code" id="lobbyCode">----</div>
@@ -190,7 +157,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     <button class="back-btn" onclick="goHome()">← Peruuta</button>
   </div>
 
-  <!-- PROFILES (player phone) -->
   <div id="profiles" class="screen">
     <div class="page-header">
       <div class="page-title">Pelaajat</div>
@@ -202,7 +168,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     </div>
   </div>
 
-  <!-- WAITING (player phone) -->
   <div id="waiting" class="screen">
     <div style="font-size:56px">🏁</div>
     <div class="lbl" style="font-size:14px;letter-spacing:.1em">Pelaajat lähetetty!</div>
@@ -211,7 +176,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     <div class="dots" style="margin-top:1rem"><span>●</span><span>●</span><span>●</span></div>
   </div>
 
-  <!-- JUDGE CAT SELECT -->
   <div id="judgesetup" class="screen">
     <div class="page-header">
       <div class="page-title">Kategoriat</div>
@@ -223,7 +187,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     </div>
   </div>
 
-  <!-- PAIRING (judge) -->
   <div id="pairingscreen" class="screen">
     <div class="page-header">
       <div class="page-title">Erät</div>
@@ -235,7 +198,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     </div>
   </div>
 
-  <!-- PLAYER MATCH SCREEN -->
   <div id="playerscreen" class="screen">
     <div class="timer-strip" id="timerStrip"></div>
     <div class="img-area">
@@ -246,7 +208,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     </div>
   </div>
 
-  <!-- JUDGE MATCH SCREEN -->
   <div id="judgescreen" class="screen">
     <div class="judge-header">
       <div class="jactive-wrap">
@@ -269,7 +230,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     </div>
   </div>
 
-  <!-- SCOREBOARD -->
   <div id="scoreboard" class="screen">
     <div class="sb-title" id="sbTitle">Pisteet</div>
     <div id="sbRows"></div>
@@ -284,112 +244,234 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
-// ─── CATEGORIES ────────────────────────────────────────────────────────────
-// All images use sources guaranteed to work in mobile browsers:
-// - flagcdn.com for flags (perfect CORS, always works)
-// - upload.wikimedia.org JPEG thumbnails (CORS open for browsers)
-// - commons.wikimedia.org/wiki/Special:FilePath redirects for JPEGs
-// Difficulty 1=easy, 2=medium, 3=hard
+// wsrv.nl proxies any image with correct CORS headers – works in all browsers
+function w(p){return'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/'+p+'&w=600&output=jpg';}
+function we(p){return'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/en/thumb/'+p+'&w=600&output=jpg';}
+function flag(c){return'https://wsrv.nl/?url=flagcdn.com/w640/'+c+'.png&w=600&output=jpg';}
+
 const CATS=[
   {id:'cars',name:'Automerkit',icon:'🚗',questions:[
-    {a:'Ferrari',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Ferrari_SF90_Stradale.jpg/800px-Ferrari_SF90_Stradale.jpg&w=600&output=jpg'},
-    {a:'Lamborghini',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Lamborghini_Huracan_EVO_RWD_Spyder%2C_orange%2C_2023_%28cropped%29.jpg/800px-Lamborghini_Huracan_EVO_RWD_Spyder%2C_orange%2C_2023_%28cropped%29.jpg&w=600&output=jpg'},
-    {a:'Volkswagen',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/7e/2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg/800px-2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg&w=600&output=jpg'},
-    {a:'Toyota',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/96/Toyota_Corolla_E210_IMG_4571.jpg/800px-Toyota_Corolla_E210_IMG_4571.jpg&w=600&output=jpg'},
-    {a:'BMW',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/2a/2019_BMW_330i_%28G20%29_Sport_Line_sedan_%282019-10-11%29_01.jpg/800px-2019_BMW_330i_%28G20%29_Sport_Line_sedan_%282019-10-11%29_01.jpg&w=600&output=jpg'},
-    {a:'Mercedes-Benz',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/3e/2020_Mercedes-Benz_A_180_Sport_Premium_Plus_1.3_Front.jpg/800px-2020_Mercedes-Benz_A_180_Sport_Premium_Plus_1.3_Front.jpg&w=600&output=jpg'},
-    {a:'Audi',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/10/2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg/800px-2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg&w=600&output=jpg'},
-    {a:'Ford',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/13/2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg/800px-2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg&w=600&output=jpg'},
-    {a:'Porsche',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/80/Porsche_911_996_silver.jpg/800px-Porsche_911_996_silver.jpg&w=600&output=jpg'},
-    {a:'Honda',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg/800px-Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg&w=600&output=jpg'},
-    {a:'Volvo',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg/800px-Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg&w=600&output=jpg'},
-    {a:'Jeep',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/48/Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg/800px-Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg&w=600&output=jpg'},
-  ]},
-  {id:'flowers',name:'Kukat',icon:'🌸',questions:[
-    {a:'Auringonkukka',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/600px-Sunflower_sky_backdrop.jpg&w=600&output=jpg'},
-    {a:'Ruusu',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Rosa_rubiginosa_1.jpg/600px-Rosa_rubiginosa_1.jpg&w=600&output=jpg'},
-    {a:'Tulppaani',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/41/Amst_tulips.jpg/600px-Amst_tulips.jpg&w=600&output=jpg'},
-    {a:'Laventeli',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Lavand%C3%A8re-2.jpg/600px-Lavand%C3%A8re-2.jpg&w=600&output=jpg'},
-    {a:'Orvokki',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Viola_x_wittrockiana2.jpg/600px-Viola_x_wittrockiana2.jpg&w=600&output=jpg'},
-    {a:'Päivänkakkara',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Leucanthemum_vulgare_Daisy.JPG/600px-Leucanthemum_vulgare_Daisy.JPG&w=600&output=jpg'},
-    {a:'Magnolia',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/48/Magnolia_%C3%97_soulangeana_002.jpg/600px-Magnolia_%C3%97_soulangeana_002.jpg&w=600&output=jpg'},
-    {a:'Krysanteemi',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/600px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg&w=600&output=jpg'},
-    {a:'Orkidea',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Dendrobium_nobile2.jpg/600px-Dendrobium_nobile2.jpg&w=600&output=jpg'},
-    {a:'Unikko',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Papaver_rhoeas_LC0109.jpg/600px-Papaver_rhoeas_LC0109.jpg&w=600&output=jpg'},
+    {a:'Ferrari',d:1,img:w('9/9d/Ferrari_SF90_Stradale.jpg/800px-Ferrari_SF90_Stradale.jpg')},
+    {a:'Toyota',d:1,img:w('9/96/Toyota_Corolla_E210_IMG_4571.jpg/800px-Toyota_Corolla_E210_IMG_4571.jpg')},
+    {a:'BMW',d:1,img:w('2/2a/2019_BMW_330i_%28G20%29_Sport_Line_sedan_%282019-10-11%29_01.jpg/800px-2019_BMW_330i_%28G20%29_Sport_Line_sedan_%282019-10-11%29_01.jpg')},
+    {a:'Volkswagen',d:1,img:w('7/7e/2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg/800px-2019_Volkswagen_Golf_1.5_TSI_EVO_SE_Nav_front_8.1.19.jpg')},
+    {a:'Lamborghini',d:1,img:w('c/c9/Lamborghini_Huracan_EVO_RWD_Spyder%2C_orange%2C_2023_%28cropped%29.jpg/800px-Lamborghini_Huracan_EVO_RWD_Spyder%2C_orange%2C_2023_%28cropped%29.jpg')},
+    {a:'Mercedes-Benz',d:2,img:w('3/3e/2020_Mercedes-Benz_A_180_Sport_Premium_Plus_1.3_Front.jpg/800px-2020_Mercedes-Benz_A_180_Sport_Premium_Plus_1.3_Front.jpg')},
+    {a:'Audi',d:2,img:w('1/10/2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg/800px-2019_Audi_A6_saloon_%28facelift%2C_grey%29%2C_front_8.1.19.jpg')},
+    {a:'Ford',d:2,img:w('1/13/2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg/800px-2019_Ford_Focus_ST-Line_1.0T_EcoBoost_125PS_front_8.10.19.jpg')},
+    {a:'Porsche',d:2,img:w('8/80/Porsche_911_996_silver.jpg/800px-Porsche_911_996_silver.jpg')},
+    {a:'Tesla',d:2,img:w('9/91/2019_Tesla_Model_3_Performance_AWD_%28facelift%2C_red%29%2C_front_8.15.19.jpg/800px-2019_Tesla_Model_3_Performance_AWD_%28facelift%2C_red%29%2C_front_8.15.19.jpg')},
+    {a:'Volvo',d:2,img:w('a/a7/Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg/800px-Volvo_XC60_2.0_D4_Momentum_%282015%29_%28cropped%29.jpg')},
+    {a:'Honda',d:3,img:w('5/5e/Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg/800px-Honda_Civic_Type_R_%28FK8%29_front_8.4.18.jpg')},
+    {a:'Renault',d:3,img:w('0/01/2019_Renault_Clio_Intens_1.0_TCe_front_7.12.19.jpg/800px-2019_Renault_Clio_Intens_1.0_TCe_front_7.12.19.jpg')},
+    {a:'Peugeot',d:3,img:w('5/52/Peugeot_208_II_IMG_3541.jpg/800px-Peugeot_208_II_IMG_3541.jpg')},
+    {a:'Mazda',d:3,img:w('e/e3/2019_Mazda_CX-5_Sport_Nav%2B_2.0_Front.jpg/800px-2019_Mazda_CX-5_Sport_Nav%2B_2.0_Front.jpg')},
+    {a:'Jeep',d:3,img:w('4/48/Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg/800px-Jeep_Wrangler_%28JK%29_Rubicon_--_2016_NAIAS.jpg')},
+    {a:'Subaru',d:3,img:w('d/d2/2018_Subaru_Impreza_Sport_5-door_AOB.jpg/800px-2018_Subaru_Impreza_Sport_5-door_AOB.jpg')},
+    {a:'Hyundai',d:3,img:w('7/7d/2021_Hyundai_i20_N_Line_1.0_T-GDi_%28facelift%2C_blue%29%2C_front_8.7.21.jpg/800px-2021_Hyundai_i20_N_Line_1.0_T-GDi_%28facelift%2C_blue%29%2C_front_8.7.21.jpg')},
   ]},
   {id:'animals',name:'Eläimet',icon:'🦁',questions:[
-    {a:'Leijona',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/600px-Lion_waiting_in_Namibia.jpg&w=600&output=jpg'},
-    {a:'Elefantti',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/37/African_Bush_Elephant.jpg/600px-African_Bush_Elephant.jpg&w=600&output=jpg'},
-    {a:'Panda',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/600px-Grosser_Panda.JPG&w=600&output=jpg'},
-    {a:'Pingviini',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/33/P._papua_Manchot_papou.jpg/600px-P._papua_Manchot_papou.jpg&w=600&output=jpg'},
-    {a:'Flamingo',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Pink_flamingo_Luc_Viatour.jpg/600px-Pink_flamingo_Luc_Viatour.jpg&w=600&output=jpg'},
-    {a:'Koala',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/49/Koala_climbing_tree.jpg/600px-Koala_climbing_tree.jpg&w=600&output=jpg'},
-    {a:'Delfiini',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/10/Tursiops_truncatus_01.jpg/600px-Tursiops_truncatus_01.jpg&w=600&output=jpg'},
-    {a:'Zebra',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Plains_Zebra_Equus_quagga.jpg/600px-Plains_Zebra_Equus_quagga.jpg&w=600&output=jpg'},
-    {a:'Gepardi',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/600px-The_Cheetah_Acinonyx_jubatus_-_8.jpg&w=600&output=jpg'},
-    {a:'Gorilla',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/600px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg&w=600&output=jpg'},
-    {a:'Kameleontti',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Chameleon_perezi_%283%29.jpg/600px-Chameleon_perezi_%283%29.jpg&w=600&output=jpg'},
-    {a:'Jääkarhu',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg/600px-Polar_Bear_-_Alaska_%28cropped%29.jpg&w=600&output=jpg'},
+    {a:'Leijona',d:1,img:w('7/73/Lion_waiting_in_Namibia.jpg/600px-Lion_waiting_in_Namibia.jpg')},
+    {a:'Elefantti',d:1,img:w('3/37/African_Bush_Elephant.jpg/600px-African_Bush_Elephant.jpg')},
+    {a:'Panda',d:1,img:w('0/0f/Grosser_Panda.JPG/600px-Grosser_Panda.JPG')},
+    {a:'Pingviini',d:1,img:w('3/33/P._papua_Manchot_papou.jpg/600px-P._papua_Manchot_papou.jpg')},
+    {a:'Tiikeri',d:1,img:w('3/3f/Walking_tiger_female.jpg/600px-Walking_tiger_female.jpg')},
+    {a:'Jääkarhu',d:1,img:w('6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg/600px-Polar_Bear_-_Alaska_%28cropped%29.jpg')},
+    {a:'Gorilla',d:2,img:w('b/b5/Western_gorilla_%28Gorilla_gorilla%29_2.jpg/600px-Western_gorilla_%28Gorilla_gorilla%29_2.jpg')},
+    {a:'Flamingo',d:2,img:w('a/a6/Pink_flamingo_Luc_Viatour.jpg/600px-Pink_flamingo_Luc_Viatour.jpg')},
+    {a:'Koala',d:2,img:w('4/49/Koala_climbing_tree.jpg/600px-Koala_climbing_tree.jpg')},
+    {a:'Delfiini',d:2,img:w('1/10/Tursiops_truncatus_01.jpg/600px-Tursiops_truncatus_01.jpg')},
+    {a:'Zebra',d:2,img:w('e/e3/Plains_Zebra_Equus_quagga.jpg/600px-Plains_Zebra_Equus_quagga.jpg')},
+    {a:'Sarvikuono',d:2,img:w('c/c9/White_rhinoceros.jpg/600px-White_rhinoceros.jpg')},
+    {a:'Gepardi',d:3,img:w('0/09/The_Cheetah_Acinonyx_jubatus_-_8.jpg/600px-The_Cheetah_Acinonyx_jubatus_-_8.jpg')},
+    {a:'Kameleontti',d:3,img:w('b/b2/Chameleon_perezi_%283%29.jpg/600px-Chameleon_perezi_%283%29.jpg')},
+    {a:'Okapi',d:3,img:w('5/54/Okapi2.jpg/600px-Okapi2.jpg')},
+    {a:'Platypus',d:3,img:w('e/e0/Platypus.jpg/600px-Platypus.jpg')},
+    {a:'Lemuri',d:3,img:w('a/a5/Ring_tailed_lemur.jpg/600px-Ring_tailed_lemur.jpg')},
+    {a:'Laama',d:2,img:w('b/bc/Llama_lying_down.jpg/600px-Llama_lying_down.jpg')},
+  ]},
+  {id:'flowers',name:'Kukat',icon:'🌸',questions:[
+    {a:'Auringonkukka',d:1,img:w('4/40/Sunflower_sky_backdrop.jpg/600px-Sunflower_sky_backdrop.jpg')},
+    {a:'Ruusu',d:1,img:w('f/f6/Rosa_rubiginosa_1.jpg/600px-Rosa_rubiginosa_1.jpg')},
+    {a:'Tulppaani',d:1,img:w('4/41/Amst_tulips.jpg/600px-Amst_tulips.jpg')},
+    {a:'Laventeli',d:2,img:w('6/6a/Lavand%C3%A8re-2.jpg/600px-Lavand%C3%A8re-2.jpg')},
+    {a:'Orvokki',d:2,img:w('e/e7/Viola_x_wittrockiana2.jpg/600px-Viola_x_wittrockiana2.jpg')},
+    {a:'Päivänkakkara',d:2,img:w('a/a9/Leucanthemum_vulgare_Daisy.JPG/600px-Leucanthemum_vulgare_Daisy.JPG')},
+    {a:'Magnolia',d:2,img:w('4/48/Magnolia_%C3%97_soulangeana_002.jpg/600px-Magnolia_%C3%97_soulangeana_002.jpg')},
+    {a:'Lootus',d:2,img:w('b/b0/NelumboNucifera.jpg/600px-NelumboNucifera.jpg')},
+    {a:'Jasmiini',d:2,img:w('1/14/Jasminum_polyanthum2.jpg/600px-Jasminum_polyanthum2.jpg')},
+    {a:'Krysanteemi',d:3,img:w('0/0a/Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg/600px-Chrysanthemum_garden_Nan_Tien_temple_1_gobeirne.jpg')},
+    {a:'Orkidea',d:3,img:w('6/6b/Dendrobium_nobile2.jpg/600px-Dendrobium_nobile2.jpg')},
+    {a:'Unikko',d:3,img:w('4/4e/Papaver_rhoeas_LC0109.jpg/600px-Papaver_rhoeas_LC0109.jpg')},
+    {a:'Hortensia',d:3,img:w('1/17/Hydrangea_macrophylla_Mathilda_Gutges_2zz.jpg/600px-Hydrangea_macrophylla_Mathilda_Gutges_2zz.jpg')},
+    {a:'Lumikello',d:3,img:w('5/56/Galanthus_woronowii_2.jpg/600px-Galanthus_woronowii_2.jpg')},
+    {a:'Dahlia',d:3,img:w('1/12/Dahlia_x_hybrida.jpg/600px-Dahlia_x_hybrida.jpg')},
   ]},
   {id:'flags',name:'Liput',icon:'🚩',questions:[
-    {a:'Suomi',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/fi.png&w=600&output=jpg'},
-    {a:'Japani',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/jp.png&w=600&output=jpg'},
-    {a:'Kanada',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/ca.png&w=600&output=jpg'},
-    {a:'Ranska',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/fr.png&w=600&output=jpg'},
-    {a:'Saksa',d:1,img:'https://wsrv.nl/?url=flagcdn.com/w640/de.png&w=600&output=jpg'},
-    {a:'Italia',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/it.png&w=600&output=jpg'},
-    {a:'Espanja',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/es.png&w=600&output=jpg'},
-    {a:'Brasilia',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/br.png&w=600&output=jpg'},
-    {a:'Norja',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/no.png&w=600&output=jpg'},
-    {a:'Ruotsi',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/se.png&w=600&output=jpg'},
-    {a:'Tanska',d:2,img:'https://wsrv.nl/?url=flagcdn.com/w640/dk.png&w=600&output=jpg'},
-    {a:'Sveitsi',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/ch.png&w=600&output=jpg'},
-    {a:'Kreikka',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/gr.png&w=600&output=jpg'},
-    {a:'Turkki',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/tr.png&w=600&output=jpg'},
-    {a:'Intia',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/in.png&w=600&output=jpg'},
-    {a:'Meksiko',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/mx.png&w=600&output=jpg'},
-    {a:'Australia',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/au.png&w=600&output=jpg'},
-    {a:'Portugali',d:3,img:'https://wsrv.nl/?url=flagcdn.com/w640/pt.png&w=600&output=jpg'},
+    {a:'Suomi',d:1,img:flag('fi')},{a:'Japani',d:1,img:flag('jp')},{a:'Kanada',d:1,img:flag('ca')},
+    {a:'Ranska',d:1,img:flag('fr')},{a:'Saksa',d:1,img:flag('de')},{a:'Italia',d:1,img:flag('it')},
+    {a:'USA',d:1,img:flag('us')},{a:'Iso-Britannia',d:2,img:flag('gb')},
+    {a:'Espanja',d:2,img:flag('es')},{a:'Brasilia',d:2,img:flag('br')},
+    {a:'Norja',d:2,img:flag('no')},{a:'Ruotsi',d:2,img:flag('se')},
+    {a:'Tanska',d:2,img:flag('dk')},{a:'Alankomaat',d:2,img:flag('nl')},
+    {a:'Belgia',d:2,img:flag('be')},{a:'Sveitsi',d:2,img:flag('ch')},
+    {a:'Kreikka',d:3,img:flag('gr')},{a:'Turkki',d:3,img:flag('tr')},
+    {a:'Intia',d:3,img:flag('in')},{a:'Meksiko',d:3,img:flag('mx')},
+    {a:'Australia',d:3,img:flag('au')},{a:'Portugali',d:3,img:flag('pt')},
+    {a:'Puola',d:3,img:flag('pl')},{a:'Itävalta',d:3,img:flag('at')},
+    {a:'Argentiina',d:3,img:flag('ar')},{a:'Ukraina',d:3,img:flag('ua')},
   ]},
   {id:'food',name:'Ruoka',icon:'🍕',questions:[
-    {a:'Pizza',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/600px-Eq_it-na_pizza-margherita_sep2005_sml.jpg&w=600&output=jpg'},
-    {a:'Sushi',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/600px-Sushi_platter.jpg&w=600&output=jpg'},
-    {a:'Hampurilainen',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg/600px-Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg&w=600&output=jpg'},
-    {a:'Taco',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/600px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg&w=600&output=jpg'},
-    {a:'Croissant',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/57/Croissant_Knipser.jpg/600px-Croissant_Knipser.jpg&w=600&output=jpg'},
-    {a:'Ramen',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Tonkotsu_ramen.jpg/600px-Tonkotsu_ramen.jpg&w=600&output=jpg'},
-    {a:'Wafeli',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Waffles_with_strawberries.jpg/600px-Waffles_with_strawberries.jpg&w=600&output=jpg'},
-    {a:'Paella',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/27/Paella_Valenciana_by_TasteTravelBelgium.jpg/600px-Paella_Valenciana_by_TasteTravelBelgium.jpg&w=600&output=jpg'},
-    {a:'Tiramisu',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/46/Tiramisu_-_Raffaele_Diomede.jpg/600px-Tiramisu_-_Raffaele_Diomede.jpg&w=600&output=jpg'},
-    {a:'Guacamole',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/23/Guacamole.jpg/600px-Guacamole.jpg&w=600&output=jpg'},
+    {a:'Pizza',d:1,img:w('a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/600px-Eq_it-na_pizza-margherita_sep2005_sml.jpg')},
+    {a:'Sushi',d:1,img:w('6/60/Sushi_platter.jpg/600px-Sushi_platter.jpg')},
+    {a:'Hampurilainen',d:1,img:w('0/0b/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg/600px-Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg')},
+    {a:'Pasta',d:1,img:w('3/35/Spaghetti_bolognese_%28hozinja%29.jpg/600px-Spaghetti_bolognese_%28hozinja%29.jpg')},
+    {a:'Taco',d:2,img:w('7/73/001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg/600px-001_Tacos_de_carnitas%2C_carne_asada_y_al_pastor.jpg')},
+    {a:'Croissant',d:2,img:w('5/57/Croissant_Knipser.jpg/600px-Croissant_Knipser.jpg')},
+    {a:'Ramen',d:2,img:w('d/d0/Tonkotsu_ramen.jpg/600px-Tonkotsu_ramen.jpg')},
+    {a:'Wafeli',d:2,img:w('e/e9/Waffles_with_strawberries.jpg/600px-Waffles_with_strawberries.jpg')},
+    {a:'Donitsi',d:2,img:w('a/a5/Glazed-Donut.jpg/600px-Glazed-Donut.jpg')},
+    {a:'Nachos',d:2,img:w('c/c3/Nachos1.jpg/600px-Nachos1.jpg')},
+    {a:'Paella',d:3,img:w('2/27/Paella_Valenciana_by_TasteTravelBelgium.jpg/600px-Paella_Valenciana_by_TasteTravelBelgium.jpg')},
+    {a:'Tiramisu',d:3,img:w('4/46/Tiramisu_-_Raffaele_Diomede.jpg/600px-Tiramisu_-_Raffaele_Diomede.jpg')},
+    {a:'Guacamole',d:3,img:w('2/23/Guacamole.jpg/600px-Guacamole.jpg')},
+    {a:'Pho',d:3,img:w('a/a1/Pho-Beef-Noodles-2008.jpg/600px-Pho-Beef-Noodles-2008.jpg')},
+    {a:'Falafel',d:3,img:w('8/81/Falafel_balls.jpg/600px-Falafel_balls.jpg')},
+    {a:'Currykana',d:2,img:w('c/c5/Chicken_curry_%28gravy%29.jpg/600px-Chicken_curry_%28gravy%29.jpg')},
   ]},
   {id:'landmarks',name:'Maamerkit',icon:'🗼',questions:[
-    {a:'Eiffel-torni',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/85/Sightseeing_in_Paris.jpg/600px-Sightseeing_in_Paris.jpg&w=600&output=jpg'},
-    {a:'Colosseum',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/600px-Colosseo_2020.jpg&w=600&output=jpg'},
-    {a:'Taj Mahal',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/600px-Taj_Mahal_%28Edited%29.jpeg&w=600&output=jpg'},
-    {a:'Vapaudenpatsas',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7.jpg/600px-Statue_of_Liberty_7.jpg&w=600&output=jpg'},
-    {a:'Sydney Opera',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/600px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg&w=600&output=jpg'},
-    {a:'Big Ben',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Big_Ben_2013_01.jpg/600px-Big_Ben_2013_01.jpg&w=600&output=jpg'},
-    {a:'Sagrada Familia',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sagrada_Familia_01.jpg/600px-Sagrada_Familia_01.jpg&w=600&output=jpg'},
-    {a:'Akropolis',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/da/The_Parthenon_in_Athens.jpg/600px-The_Parthenon_in_Athens.jpg&w=600&output=jpg'},
-    {a:'Kiinan muuri',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/600px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg&w=600&output=jpg'},
-    {a:'Pisan torni',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Leaning_tower_of_pisa.jpg/600px-Leaning_tower_of_pisa.jpg&w=600&output=jpg'},
+    {a:'Eiffel-torni',d:1,img:w('8/85/Sightseeing_in_Paris.jpg/600px-Sightseeing_in_Paris.jpg')},
+    {a:'Colosseum',d:1,img:w('d/de/Colosseo_2020.jpg/600px-Colosseo_2020.jpg')},
+    {a:'Niagaran putoukset',d:1,img:w('a/a5/Niagara_Falls_2010.jpg/600px-Niagara_Falls_2010.jpg')},
+    {a:'Taj Mahal',d:2,img:w('1/1d/Taj_Mahal_%28Edited%29.jpeg/600px-Taj_Mahal_%28Edited%29.jpeg')},
+    {a:'Vapaudenpatsas',d:2,img:w('a/a1/Statue_of_Liberty_7.jpg/600px-Statue_of_Liberty_7.jpg')},
+    {a:'Sydney Opera',d:2,img:w('a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/600px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg')},
+    {a:'Big Ben',d:2,img:w('f/f4/Big_Ben_2013_01.jpg/600px-Big_Ben_2013_01.jpg')},
+    {a:'Kremlin',d:2,img:w('d/d7/Kremlin_27.06.2008.jpg/600px-Kremlin_27.06.2008.jpg')},
+    {a:'Burj Khalifa',d:2,img:w('9/93/Burj_Khalifa.jpg/600px-Burj_Khalifa.jpg')},
+    {a:'Notre-Dame',d:2,img:w('f/f9/Notre-Dame_de_Paris%2C_4_nivose_2013.jpg/600px-Notre-Dame_de_Paris%2C_4_nivose_2013.jpg')},
+    {a:'Sagrada Familia',d:3,img:w('b/be/Sagrada_Familia_01.jpg/600px-Sagrada_Familia_01.jpg')},
+    {a:'Akropolis',d:3,img:w('d/da/The_Parthenon_in_Athens.jpg/600px-The_Parthenon_in_Athens.jpg')},
+    {a:'Kiinan muuri',d:3,img:w('2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/600px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg')},
+    {a:'Pisan torni',d:3,img:w('d/d7/Leaning_tower_of_pisa.jpg/600px-Leaning_tower_of_pisa.jpg')},
+    {a:'Machu Picchu',d:3,img:w('e/eb/Machu_Picchu%2C_Peru.jpg/600px-Machu_Picchu%2C_Peru.jpg')},
+    {a:'Stonehenge',d:3,img:w('3/3c/Stonehenge2007_07_30.jpg/600px-Stonehenge2007_07_30.jpg')},
+    {a:'Angkor Wat',d:3,img:w('a/a0/Angkor_Wat%2C_Angkor%2C_Cambodia.jpg/600px-Angkor_Wat%2C_Angkor%2C_Cambodia.jpg')},
+    {a:'Petra',d:3,img:w('4/42/Al_Khazneh_Petra_crop.jpg/600px-Al_Khazneh_Petra_crop.jpg')},
+  ]},
+  {id:'birds',name:'Linnut',icon:'🦜',questions:[
+    {a:'Kotka',d:1,img:w('1/1e/Bald_Eagle_Portrait.jpg/600px-Bald_Eagle_Portrait.jpg')},
+    {a:'Papukaija',d:1,img:w('4/4c/Scarlet_Macaw_Ara_macao.jpg/600px-Scarlet_Macaw_Ara_macao.jpg')},
+    {a:'Strutsi',d:1,img:w('9/96/Ostrich_Struthio_camelus_Male_Etosha.jpg/600px-Ostrich_Struthio_camelus_Male_Etosha.jpg')},
+    {a:'Flamingo',d:1,img:w('a/a6/Pink_flamingo_Luc_Viatour.jpg/600px-Pink_flamingo_Luc_Viatour.jpg')},
+    {a:'Pöllö',d:2,img:w('a/ad/Snowy_Owl_%28Bubo_scandiacus%29_2.jpg/600px-Snowy_Owl_%28Bubo_scandiacus%29_2.jpg')},
+    {a:'Pelikaani',d:2,img:w('5/54/Pelecanus_occidentalis_-_Brown_Pelican.jpg/600px-Pelecanus_occidentalis_-_Brown_Pelican.jpg')},
+    {a:'Haikara',d:2,img:w('0/0d/Great_blue_heron_in_flight.jpg/600px-Great_blue_heron_in_flight.jpg')},
+    {a:'Tukaanikko',d:2,img:w('4/4e/Ramphastos_toco_1_-_Houston_Zoo.jpg/600px-Ramphastos_toco_1_-_Houston_Zoo.jpg')},
+    {a:'Riikinkukko',d:2,img:w('a/a9/Pavo_cristatus_-_Hyderabad%2C_India_-_Nov_2007.jpg/600px-Pavo_cristatus_-_Hyderabad%2C_India_-_Nov_2007.jpg')},
+    {a:'Kuningaspingviini',d:2,img:w('b/b7/King_Penguins_%28Aptenodytes_patagonicus%29_%2810%29.jpg/600px-King_Penguins_%28Aptenodytes_patagonicus%29_%2810%29.jpg')},
+    {a:'Kolibri',d:3,img:w('b/b9/Ruby-throated_hummingbird_moving.jpg/600px-Ruby-throated_hummingbird_moving.jpg')},
+    {a:'Kasuaari',d:3,img:w('2/25/Cassowary_2_%28Piotr_Chara%C5%9B%29.jpg/600px-Cassowary_2_%28Piotr_Chara%C5%9B%29.jpg')},
+    {a:'Albatrossi',d:3,img:w('a/ac/Diomedea_exulans_in_flight_-_SE_Tasmania.jpg/600px-Diomedea_exulans_in_flight_-_SE_Tasmania.jpg')},
+    {a:'Flamingo',d:1,img:w('a/a6/Pink_flamingo_Luc_Viatour.jpg/600px-Pink_flamingo_Luc_Viatour.jpg')},
+  ]},
+  {id:'sea',name:'Merieläimet',icon:'🐙',questions:[
+    {a:'Hai',d:1,img:w('5/56/White_shark.jpg/600px-White_shark.jpg')},
+    {a:'Mustekala',d:1,img:w('e/e3/Octopus3.jpg/600px-Octopus3.jpg')},
+    {a:'Meritähti',d:1,img:w('6/68/Sea_star_%28Ophidiaster_ophidianus%29.jpg/600px-Sea_star_%28Ophidiaster_ophidianus%29.jpg')},
+    {a:'Kilpikonna',d:1,img:w('b/b0/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg')},
+    {a:'Hummeri',d:2,img:w('2/22/Lobster_hg.jpg/600px-Lobster_hg.jpg')},
+    {a:'Meriratsu',d:2,img:w('a/ab/Hippocampus_kuda_%28Spotted_seahorse%29.jpg/600px-Hippocampus_kuda_%28Spotted_seahorse%29.jpg')},
+    {a:'Meduusa',d:2,img:w('5/51/Jelly_cc11.jpg/600px-Jelly_cc11.jpg')},
+    {a:'Rapu',d:2,img:w('4/43/Christmas_Island_Red_Crab.jpg/600px-Christmas_Island_Red_Crab.jpg')},
+    {a:'Manta-rausku',d:3,img:w('e/ea/Manta_birostris-thailand.jpg/600px-Manta_birostris-thailand.jpg')},
+    {a:'Kalmari',d:3,img:w('6/68/Sepioteuthis_sepioidea.jpg/600px-Sepioteuthis_sepioidea.jpg')},
+    {a:'Narvaali',d:3,img:w('b/b9/Narwhals_breach.jpg/600px-Narwhals_breach.jpg')},
+    {a:'Merinokkanainen',d:3,img:w('4/43/Christmas_Island_Red_Crab.jpg/600px-Christmas_Island_Red_Crab.jpg')},
+  ]},
+  {id:'fruits',name:'Hedelmät',icon:'🍉',questions:[
+    {a:'Ananasi',d:1,img:w('8/88/Pineapple_and_cross_section.jpg/600px-Pineapple_and_cross_section.jpg')},
+    {a:'Vesimeloni',d:1,img:w('4/4c/Watermelon_closeup.jpg/600px-Watermelon_closeup.jpg')},
+    {a:'Banaani',d:1,img:w('8/8a/Banana-Fruits.jpg/600px-Banana-Fruits.jpg')},
+    {a:'Avokado',d:1,img:w('c/c6/Avocado_Whole_and_Sliced_edit.jpg/600px-Avocado_Whole_and_Sliced_edit.jpg')},
+    {a:'Mansikka',d:1,img:w('2/29/PerfectStrawberry.jpg/600px-PerfectStrawberry.jpg')},
+    {a:'Granaattiomena',d:2,img:w('9/90/PomegranateOpen.jpg/600px-PomegranateOpen.jpg')},
+    {a:'Papaya',d:2,img:w('a/a5/Papaya_cross_section_BNC.jpg/600px-Papaya_cross_section_BNC.jpg')},
+    {a:'Passionhedelmä',d:2,img:w('3/30/Passionfruit_cross_section.jpg/600px-Passionfruit_cross_section.jpg')},
+    {a:'Dragonfruit',d:3,img:w('4/44/Dragon_fruit_cross_section_edit.jpg/600px-Dragon_fruit_cross_section_edit.jpg')},
+    {a:'Duriani',d:3,img:w('6/6b/Durian_Bangladesh.jpg/600px-Durian_Bangladesh.jpg')},
+    {a:'Jackfruit',d:3,img:w('d/d2/Jackfruit_hanging.jpg/600px-Jackfruit_hanging.jpg')},
+    {a:'Viikuna',d:3,img:w('9/9b/Ficus_carica_-_Fig_-_Flickr_-_treegrow_%286%29.jpg/600px-Ficus_carica_-_Fig_-_Flickr_-_treegrow_%286%29.jpg')},
+    {a:'Kiivi',d:2,img:w('d/d3/Kiwi_aka.jpg/600px-Kiwi_aka.jpg')},
+    {a:'Mango',d:2,img:w('9/90/Hapus_Mango.jpg/600px-Hapus_Mango.jpg')},
+  ]},
+  {id:'geo',name:'Maantiede',icon:'🌍',questions:[
+    {a:'Grand Canyon',d:1,img:w('f/f9/USA_09847_Grand_Canyon_Luca_Galuzzi_2007.jpg/600px-USA_09847_Grand_Canyon_Luca_Galuzzi_2007.jpg')},
+    {a:'Sahara',d:1,img:w('f/f6/Sahara_Morocco_desert.jpg/600px-Sahara_Morocco_desert.jpg')},
+    {a:'Fuji-vuori',d:1,img:w('7/77/Mt_Fuji_from_Shinkansen_N3.jpg/600px-Mt_Fuji_from_Shinkansen_N3.jpg')},
+    {a:'Revontulet',d:1,img:w('4/4f/Polarlicht_2.jpg/600px-Polarlicht_2.jpg')},
+    {a:'Everest',d:2,img:w('e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/600px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg')},
+    {a:'Fjordi',d:2,img:w('e/e8/Geirangerfjord_norway_2006.jpg/600px-Geirangerfjord_norway_2006.jpg')},
+    {a:'Alpit',d:2,img:w('7/7e/Alps_Panorama.jpg/600px-Alps_Panorama.jpg')},
+    {a:'Vesiputoukset',d:2,img:w('1/13/Iguazu_Argentina.jpg/600px-Iguazu_Argentina.jpg')},
+    {a:'Aurora',d:2,img:w('4/4f/Polarlicht_2.jpg/600px-Polarlicht_2.jpg')},
+    {a:'Yellowstone',d:3,img:w('e/ed/Grand_Prismatic_Spring_and_Midway_Geyser_Basin_aerial.jpg/600px-Grand_Prismatic_Spring_and_Midway_Geyser_Basin_aerial.jpg')},
+    {a:'Galapagos',d:3,img:w('e/e4/Fernandina_-_Punta_Espinosa_2.jpg/600px-Fernandina_-_Punta_Espinosa_2.jpg')},
+    {a:'Koralliriffi',d:3,img:w('5/56/Coral_reef_at_palmyra.jpg/600px-Coral_reef_at_palmyra.jpg')},
+    {a:'Jäätikkö',d:3,img:w('b/b4/Perito_moreno_glacier.jpg/600px-Perito_moreno_glacier.jpg')},
+  ]},
+  {id:'arch',name:'Arkkitehtuuri',icon:'🏛️',questions:[
+    {a:'Empire State',d:1,img:w('b/bf/Empire_State_Building_%28aerial_view%29.jpg/600px-Empire_State_Building_%28aerial_view%29.jpg')},
+    {a:'Burj Khalifa',d:1,img:w('9/93/Burj_Khalifa.jpg/600px-Burj_Khalifa.jpg')},
+    {a:'Sydney Opera',d:1,img:w('a/a0/Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg/600px-Sydney_NSW_2000%2C_Australia_-_panoramio_%2811%29.jpg')},
+    {a:'Louvre',d:2,img:w('6/66/Louvre_Museum_Wikimedia_Commons.jpg/600px-Louvre_Museum_Wikimedia_Commons.jpg')},
+    {a:'Hagia Sophia',d:2,img:w('2/22/Hagia_Sophia_Mars_2013.jpg/600px-Hagia_Sophia_Mars_2013.jpg')},
+    {a:'Notre-Dame',d:2,img:w('f/f9/Notre-Dame_de_Paris%2C_4_nivose_2013.jpg/600px-Notre-Dame_de_Paris%2C_4_nivose_2013.jpg')},
+    {a:'Kremlin',d:2,img:w('d/d7/Kremlin_27.06.2008.jpg/600px-Kremlin_27.06.2008.jpg')},
+    {a:'Versailles',d:3,img:w('d/d8/Versailles_-_Galerie_des_Glaces_-_Flickr_-_Guillaume_Baviere.jpg/600px-Versailles_-_Galerie_des_Glaces_-_Flickr_-_Guillaume_Baviere.jpg')},
+    {a:'Sagrada Familia',d:3,img:w('b/be/Sagrada_Familia_01.jpg/600px-Sagrada_Familia_01.jpg')},
+    {a:'Alhambra',d:3,img:w('2/24/Palacio_de_Comares%2C_Alhambra%2C_Granada%2C_Spain.jpg/600px-Palacio_de_Comares%2C_Alhambra%2C_Granada%2C_Spain.jpg')},
+    {a:'Neuschwanstein',d:3,img:w('f/f8/Schloss_Neuschwanstein_2013.jpg/600px-Schloss_Neuschwanstein_2013.jpg')},
+    {a:'Guggenheim Bilbao',d:3,img:w('3/3c/Guggenheim-bilbao-jan05.jpg/600px-Guggenheim-bilbao-jan05.jpg')},
+  ]},
+  {id:'sports',name:'Urheilu',icon:'⚽',questions:[
+    {a:'Jalkapallo',d:1,img:w('6/64/Germany_vs_Argentina_-_2014_FIFA_World_Cup_Final_%2802%29.jpg/600px-Germany_vs_Argentina_-_2014_FIFA_World_Cup_Final_%2802%29.jpg')},
+    {a:'Tennis',d:1,img:w('d/d5/US_Open_Tennis_2007%2C_NYC%2C_NY.jpg/600px-US_Open_Tennis_2007%2C_NYC%2C_NY.jpg')},
+    {a:'Koripallo',d:1,img:w('1/1e/NBA_vs_NBDL.jpg/600px-NBA_vs_NBDL.jpg')},
+    {a:'Golf',d:2,img:w('8/8b/Golfball-3.jpg/600px-Golfball-3.jpg')},
+    {a:'Jääkiekko',d:2,img:w('f/f0/IcehockeyXX.jpg/600px-IcehockeyXX.jpg')},
+    {a:'Sumo',d:2,img:w('5/55/SumoWajima.jpg/600px-SumoWajima.jpg')},
+    {a:'F1',d:2,img:w('1/10/Vettel_2011_Suzuka.jpg/600px-Vettel_2011_Suzuka.jpg')},
+    {a:'Pyöräily',d:3,img:w('a/a1/TdF_2017_-_Stage_1%2C_peloton_%282%29_%2836066468415%29.jpg/600px-TdF_2017_-_Stage_1%2C_peloton_%282%29_%2836066468415%29.jpg')},
+    {a:'Surffaus',d:3,img:w('6/6c/Surfing_in_Santa_Cruz.jpg/600px-Surfing_in_Santa_Cruz.jpg')},
+    {a:'Rugby',d:3,img:w('4/4e/2015_Rugby_World_Cup_final_05.jpg/600px-2015_Rugby_World_Cup_final_05.jpg')},
+    {a:'Nyrkkeily',d:2,img:w('3/35/2013_Aiba_Youth_World_Boxing_Championships%2C_Kharkiv%2C_Ukraine%2C_day_3%2C_Jul_26_2013_%2C_%286%29.jpg/600px-2013_Aiba_Youth_World_Boxing_Championships%2C_Kharkiv%2C_Ukraine%2C_day_3%2C_Jul_26_2013_%2C_%286%29.jpg')},
+    {a:'Kiipeily',d:3,img:w('a/a4/A_woman_rock_climbing.jpg/600px-A_woman_rock_climbing.jpg')},
+  ]},
+  {id:'nature',name:'Luonto',icon:'🌿',questions:[
+    {a:'Sateenkaari',d:1,img:w('6/6b/Rainbow_below_Buckingham_Palace%2C_April_2013.jpg/600px-Rainbow_below_Buckingham_Palace%2C_April_2013.jpg')},
+    {a:'Tornado',d:1,img:w('5/5e/TornadoAllegretti.jpg/600px-TornadoAllegretti.jpg')},
+    {a:'Tulivuori',d:1,img:w('2/27/Kamokuna_ocean_entry_c.jpg/600px-Kamokuna_ocean_entry_c.jpg')},
+    {a:'Lumi',d:1,img:w('5/51/Snow_scene_at_Shinjuku_gyoen_2.jpg/600px-Snow_scene_at_Shinjuku_gyoen_2.jpg')},
+    {a:'Koralliriffi',d:2,img:w('5/56/Coral_reef_at_palmyra.jpg/600px-Coral_reef_at_palmyra.jpg')},
+    {a:'Jäätikkö',d:2,img:w('b/b4/Perito_moreno_glacier.jpg/600px-Perito_moreno_glacier.jpg')},
+    {a:'Kaktus',d:2,img:w('a/ab/Saguaro_blooming_crop.jpg/600px-Saguaro_blooming_crop.jpg')},
+    {a:'Bambu',d:2,img:w('b/b2/Bamboo_in_Rockefeller_Park.jpg/600px-Bamboo_in_Rockefeller_Park.jpg')},
+    {a:'Salama',d:2,img:w('4/4d/Lightning_over_Oradea_Romania_2.jpg/600px-Lightning_over_Oradea_Romania_2.jpg')},
+    {a:'Revontulet',d:1,img:w('4/4f/Polarlicht_2.jpg/600px-Polarlicht_2.jpg')},
+    {a:'Mammuttipuu',d:3,img:w('9/9d/General_Sherman_tree_looking_up.jpg/600px-General_Sherman_tree_looking_up.jpg')},
+    {a:'Kuumailmapallo',d:2,img:w('5/5e/Balloons-1.jpg/600px-Balloons-1.jpg')},
+    {a:'Hiekkaerämaa',d:2,img:w('f/f6/Sahara_Morocco_desert.jpg/600px-Sahara_Morocco_desert.jpg')},
   ]},
 ];
 
-// Difficulty blur levels: correct answers in this match → blur px
-// 0 correct = blur 12 (hard to see), more correct = clearer
-function difficultyBlur(correctCount){
-  if(correctCount<=1) return 0;   // first questions: no blur
-  if(correctCount<=3) return 3;   // a bit blurry
-  if(correctCount<=6) return 7;   // harder
-  return 12;                       // very blurry
-}
-function difficultyLabel(correctCount){
-  if(correctCount<=1) return {text:'⭐ Helppo',cls:'diff-1'};
-  if(correctCount<=3) return {text:'⭐⭐ Keskitaso',cls:'diff-2'};
-  if(correctCount<=6) return {text:'⭐⭐⭐ Vaikea',cls:'diff-3'};
-  return {text:'💀 Haastava',cls:'diff-3'};
+// ─── DIFFICULTY ────────────────────────────────────────────────────────────
+function diffBlur(n){if(n<=1)return 0;if(n<=3)return 3;if(n<=6)return 7;return 12;}
+function diffLabel(n){
+  if(n<=1)return{text:'⭐ Helppo',cls:'diff-1'};
+  if(n<=3)return{text:'⭐⭐ Keskitaso',cls:'diff-2'};
+  if(n<=6)return{text:'⭐⭐⭐ Vaikea',cls:'diff-3'};
+  return{text:'💀 Haastava',cls:'diff-3'};
 }
 
 const P_COLORS=['#4A9FE0','#E05A4A','#4AE07A','#E0C04A','#C04AE0','#4AE0D4','#E0844A','#E04AA0'];
@@ -398,22 +480,11 @@ const EMOJIS=['😎','🦁','🔥','⚡','🌟','🎯','🚀','🐉'];
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let peer=null,conn=null;
 let G={
-  role:null,
-  players:[],
-  selectedCatIds:[],
-  // Per-category sorted question lists (by difficulty)
-  // Judge keeps this, sends only one question at a time to player
-  catQueues:{},       // {catId: [...questions sorted by d]}
-  catProgress:{},     // {catId: nextIdx}
-  pairs:[],
-  currentPairIdx:null,
-  activeSlot:0,
-  timers:[60,60],
-  matchScores:[0,0],
-  correctCount:0,     // how many correct in this match (drives difficulty)
-  currentQ:null,      // {a,d,img,cat,icon,blur}
-  timerInt:null,
-  judged:false,
+  role:null,players:[],selectedCatIds:[],
+  catQueues:{},catProgress:{},
+  pairs:[],currentPairIdx:null,
+  activeSlot:0,timers:[60,60],matchScores:[0,0],
+  correctCount:0,currentQ:null,timerInt:null,judged:false,
 };
 
 // ─── PEER ──────────────────────────────────────────────────────────────────
@@ -479,20 +550,14 @@ function createGame(){
   });
   peer.on('error',e=>{showToast('Virhe: '+e.type);console.error(e);});
 }
-
-function judgeGoSetup(){
-  send('go_profiles');
-  buildCatGrid();
-  show('judgesetup');
-}
+function judgeGoSetup(){send('go_profiles');buildCatGrid();show('judgesetup');}
 
 // ─── JOIN ──────────────────────────────────────────────────────────────────
 function joinGame(){
   const code=document.getElementById('joinCode').value.trim().toUpperCase();
   document.getElementById('joinErr').textContent='';
   if(code.length!==4){document.getElementById('joinErr').textContent='Anna 4-merkkinen koodi';return;}
-  G.role='player';
-  show('waiting');
+  G.role='player';show('waiting');
   document.getElementById('connecting').classList.add('show');
   peer=makePeer();
   peer.on('open',()=>{
@@ -525,47 +590,29 @@ function buildProfilesScreen(){
   list.appendChild(addBtn);
   show('profiles');
 }
-
 function addProfile(def=''){
   const list=document.getElementById('profileList');
-  // Insert before the add button if it exists
   const addBtn=list.querySelector('.add-profile-btn');
   const idx=list.querySelectorAll('.profile-card').length;
   const color=P_COLORS[idx%P_COLORS.length];
   const emoji=EMOJIS[idx%EMOJIS.length];
   const card=document.createElement('div');
-  card.className='profile-card';
-  card.dataset.color=color;card.dataset.emoji=emoji;
-  card.innerHTML=`
-    <div class="profile-avatar" style="background:${color}">${emoji}</div>
-    <div class="profile-info">
-      <input class="profile-name-input" value="${def}" placeholder="Nimi" oninput="checkReady()" maxlength="14"/>
-      <div class="profile-sub" style="color:${color}">Pelaaja ${idx+1}</div>
-    </div>
-    <button class="profile-del" onclick="delProfile(this)">✕</button>`;
-  if(addBtn) list.insertBefore(card,addBtn);
-  else list.appendChild(card);
+  card.className='profile-card';card.dataset.color=color;card.dataset.emoji=emoji;
+  card.innerHTML=`<div class="profile-avatar" style="background:${color}">${emoji}</div><div class="profile-info"><input class="profile-name-input" value="${def}" placeholder="Nimi" oninput="checkReady()" maxlength="14"/><div class="profile-sub" style="color:${color}">Pelaaja ${idx+1}</div></div><button class="profile-del" onclick="delProfile(this)">✕</button>`;
+  if(addBtn)list.insertBefore(card,addBtn);else list.appendChild(card);
   checkReady();
 }
-
 function delProfile(btn){
   const cards=document.getElementById('profileList').querySelectorAll('.profile-card');
   if(cards.length<=2){showToast('Vähintään 2 pelaajaa!');return;}
-  btn.closest('.profile-card').remove();
-  checkReady();
+  btn.closest('.profile-card').remove();checkReady();
 }
-
 function checkReady(){
-  const n=document.querySelectorAll('.profile-name-input').length;
-  document.getElementById('readyBtn').disabled=n<2;
+  document.getElementById('readyBtn').disabled=document.querySelectorAll('.profile-name-input').length<2;
 }
-
 function sendReady(){
   const cards=Array.from(document.querySelectorAll('.profile-card'));
-  G.players=cards.map((card,i)=>({
-    name:card.querySelector('.profile-name-input').value.trim()||'Pelaaja '+(i+1),
-    color:card.dataset.color,emoji:card.dataset.emoji,score:0,wins:0,
-  }));
+  G.players=cards.map((card,i)=>({name:card.querySelector('.profile-name-input').value.trim()||'Pelaaja '+(i+1),color:card.dataset.color,emoji:card.dataset.emoji,score:0,wins:0}));
   send('players_ready',{players:G.players});
   const wp=document.getElementById('waitingPlayers');
   wp.innerHTML=G.players.map(p=>`<span class="w-chip" style="background:${p.color}22;color:${p.color};border:1px solid ${p.color}44">${p.emoji} ${p.name}</span>`).join('');
@@ -591,35 +638,24 @@ function toggleCat(id,el){
 
 // ─── PAIRING ───────────────────────────────────────────────────────────────
 function judgeGoPairing(){
-  // Build per-category queues sorted by difficulty, then shuffled within each level
   G.catQueues={};G.catProgress={};
   G.selectedCatIds.forEach(cid=>{
     const cat=CATS.find(c=>c.id===cid);
     const d1=shuffle(cat.questions.filter(q=>q.d===1));
     const d2=shuffle(cat.questions.filter(q=>q.d===2));
     const d3=shuffle(cat.questions.filter(q=>q.d===3));
-    G.catQueues[cid]=[...d1,...d2,...d3]; // easy first
+    G.catQueues[cid]=[...d1,...d2,...d3];
     G.catProgress[cid]=0;
   });
   G.pairs=generatePairs();
-  renderPairingScreen();
-  show('pairingscreen');
+  renderPairingScreen();show('pairingscreen');
 }
-
 function generatePairs(){
-  const n=G.players.length;
-  const pairs=[];
-  const cats=shuffle([...G.selectedCatIds]);
-  let ci=0;
-  for(let i=0;i<n;i++){
-    for(let j=i+1;j<n;j++){
-      pairs.push({p0:i,p1:j,catId:cats[ci%cats.length],done:false,winner:null});
-      ci++;
-    }
-  }
+  const n=G.players.length;const pairs=[];
+  const cats=shuffle([...G.selectedCatIds]);let ci=0;
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){pairs.push({p0:i,p1:j,catId:cats[ci%cats.length],done:false,winner:null});ci++;}
   return shuffle(pairs);
 }
-
 function renderPairingScreen(){
   const list=document.getElementById('pairingList');list.innerHTML='';
   const done=G.pairs.filter(p=>p.done).length;
@@ -627,147 +663,72 @@ function renderPairingScreen(){
   G.pairs.forEach((pair,idx)=>{
     const p0=G.players[pair.p0],p1=G.players[pair.p1];
     const cat=CATS.find(c=>c.id===pair.catId);
-    const card=document.createElement('div');card.className='pair-card';
-    card.style.opacity=pair.done?'0.45':'1';
-    card.innerHTML=`
-      <div class="pair-header">
-        <span class="pair-num">Erä ${idx+1}</span>
-        <span class="pair-cat-badge">${cat.icon} ${cat.name}</span>
-        ${pair.done?`<span class="pair-done-tag">✓ ${pair.winner} voitti</span>`:''}
-      </div>
-      <div class="pair-players">
-        <div class="pair-player">
-          <div class="pair-dot" style="background:${p0.color}"></div>
-          <div class="pair-name">${p0.emoji} ${p0.name}</div>
-        </div>
-        <div class="pair-vs">VS</div>
-        <div class="pair-player" style="justify-content:flex-end">
-          <div class="pair-name">${p1.name} ${p1.emoji}</div>
-          <div class="pair-dot" style="background:${p1.color}"></div>
-        </div>
-      </div>
-      ${!pair.done?`<button class="start-match-btn" onclick="startMatch(${idx})">▶ Aloita erä</button>`:''}`;
+    const card=document.createElement('div');card.className='pair-card';card.style.opacity=pair.done?'0.45':'1';
+    card.innerHTML=`<div class="pair-header"><span class="pair-num">Erä ${idx+1}</span><span class="pair-cat-badge">${cat.icon} ${cat.name}</span>${pair.done?`<span class="pair-done-tag">✓ ${pair.winner} voitti</span>`:''}</div><div class="pair-players"><div class="pair-player"><div class="pair-dot" style="background:${p0.color}"></div><div class="pair-name">${p0.emoji} ${p0.name}</div></div><div class="pair-vs">VS</div><div class="pair-player" style="justify-content:flex-end"><div class="pair-name">${p1.name} ${p1.emoji}</div><div class="pair-dot" style="background:${p1.color}"></div></div></div>${!pair.done?`<button class="start-match-btn" onclick="startMatch(${idx})">▶ Aloita erä</button>`:''}`;
     list.appendChild(card);
   });
   if(G.pairs.every(p=>p.done)){
     document.getElementById('pairingSub').textContent='Kaikki erät pelattu! 🏆';
-    const btn=document.createElement('button');
-    btn.className='gold-btn';btn.style.marginTop='.75rem';btn.textContent='Lopputulokset 🏆';
-    btn.onclick=showFinalScoreboard;list.appendChild(btn);
+    const btn=document.createElement('button');btn.className='gold-btn';btn.style.marginTop='.75rem';btn.textContent='Lopputulokset 🏆';btn.onclick=showFinalScoreboard;list.appendChild(btn);
   }
 }
 
 // ─── MATCH ─────────────────────────────────────────────────────────────────
 function startMatch(pairIdx){
-  G.currentPairIdx=pairIdx;
-  G.activeSlot=0;G.timers=[60,60];G.matchScores=[0,0];G.correctCount=0;G.judged=false;
-  const pair=G.pairs[pairIdx];
-  // Reset category progress for this match
-  G.catProgress[pair.catId]=0;
-  // Tell player phone the players for this match
-  send('match_init',{
-    players:G.players,
-    p0idx:pair.p0,p1idx:pair.p1,
-    timers:[60,60],activeSlot:0,
-  });
+  G.currentPairIdx=pairIdx;G.activeSlot=0;G.timers=[60,60];G.matchScores=[0,0];G.correctCount=0;G.judged=false;
+  const pair=G.pairs[pairIdx];G.catProgress[pair.catId]=0;
+  send('match_init',{players:G.players,p0idx:pair.p0,p1idx:pair.p1,timers:[60,60],activeSlot:0});
   beginTurn();
 }
-
 function pickQ(){
-  const pair=G.pairs[G.currentPairIdx];
-  const cid=pair.catId;
-  const queue=G.catQueues[cid];
-  const idx=G.catProgress[cid]%queue.length;
-  G.catProgress[cid]++;
-  const q=queue[idx];
+  const pair=G.pairs[G.currentPairIdx];const cid=pair.catId;
+  const queue=G.catQueues[cid];const idx=G.catProgress[cid]%queue.length;
+  G.catProgress[cid]++;const q=queue[idx];
   const cat=CATS.find(c=>c.id===cid);
-  const blur=difficultyBlur(G.correctCount);
-  return {a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur};
+  return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
 }
-
 function beginTurn(){
-  clearInterval(G.timerInt);
-  G.judged=false;
-  G.currentQ=pickQ();
-
-  // Send ONLY the current question to player (small payload!)
+  clearInterval(G.timerInt);G.judged=false;G.currentQ=pickQ();
   const pair=G.pairs[G.currentPairIdx];
-  send('question',{
-    img:G.currentQ.img,
-    cat:G.currentQ.cat,
-    icon:G.currentQ.icon,
-    blur:G.currentQ.blur,
-    d:G.currentQ.d,
-    timers:[...G.timers],
-    activeSlot:G.activeSlot,
-    p0idx:pair.p0,p1idx:pair.p1,
-    matchScores:[...G.matchScores],
-    correctCount:G.correctCount,
-  });
-
-  applyJudgeUI();
-  startTimer();
+  send('question',{img:G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
+  applyJudgeUI();startTimer();
 }
-
 function startTimer(){
   clearInterval(G.timerInt);
   G.timerInt=setInterval(()=>{
     G.timers[G.activeSlot]--;
     send('tick',{timers:[...G.timers],activeSlot:G.activeSlot});
-    renderTimers(G.timers,G.activeSlot);
-    updateJudgeTimers();
-    if(G.timers[G.activeSlot]<=0){
-      clearInterval(G.timerInt);
-      judgeResult('timeout');
-    }
+    renderTimers(G.timers,G.activeSlot);updateJudgeTimers();
+    if(G.timers[G.activeSlot]<=0){clearInterval(G.timerInt);judgeResult('timeout');}
   },1000);
 }
 
 // ─── JUDGE UI ──────────────────────────────────────────────────────────────
 function applyJudgeUI(){
-  const pair=G.pairs[G.currentPairIdx];
-  const slots=[pair.p0,pair.p1];
+  const pair=G.pairs[G.currentPairIdx];const slots=[pair.p0,pair.p1];
   const ap=G.players[slots[G.activeSlot]];
   document.getElementById('jActiveDot').style.background=ap.color;
   document.getElementById('jActiveName').textContent=ap.emoji+' '+ap.name;
   document.getElementById('jAnswer').textContent=G.currentQ.a;
-
-  const dl=difficultyLabel(G.correctCount);
-  const diffEl=document.getElementById('jDiff');
-  diffEl.textContent=dl.text;diffEl.className='adiff '+dl.cls;
-
-  const ji=document.getElementById('judgeImg');
-  ji.style.filter=`blur(${G.currentQ.blur}px)`;
-  ji.src=G.currentQ.img;ji.style.display='block';
-  document.getElementById('btnOk').disabled=false;
-  document.getElementById('btnNo').disabled=false;
-  const sc=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
-  document.getElementById('jScores').textContent=sc;
-  buildJudgeTimersUI(slots);
-  updateJudgeTimers();
-  show('judgescreen');
+  const dl=diffLabel(G.correctCount);
+  const de=document.getElementById('jDiff');de.textContent=dl.text;de.className='adiff '+dl.cls;
+  const ji=document.getElementById('judgeImg');ji.style.filter=`blur(${G.currentQ.blur}px)`;ji.src=G.currentQ.img;ji.style.display='block';
+  document.getElementById('btnOk').disabled=false;document.getElementById('btnNo').disabled=false;
+  document.getElementById('jScores').textContent=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
+  buildJudgeTimersUI(slots);updateJudgeTimers();show('judgescreen');
 }
-
 const CJT=2*Math.PI*14;
 function buildJudgeTimersUI(slots){
   const wrap=document.getElementById('judgeTimers');wrap.innerHTML='';
   slots.forEach((pi,slot)=>{
-    const p=G.players[pi];
-    const div=document.createElement('div');div.className='jt-block';
-    div.innerHTML=`
-      <div class="jt-name" style="color:${p.color}">${p.emoji} ${p.name}</div>
-      <svg class="jt-arc" viewBox="0 0 36 36" style="transform:rotate(-90deg)">
-        <circle class="jt-track" cx="18" cy="18" r="14"/>
-        <circle class="jt-fill" id="jtArc${slot}" cx="18" cy="18" r="14"/>
-      </svg>
-      <div class="jt-num" id="jtNum${slot}">${G.timers[slot]}</div>`;
+    const p=G.players[pi];const div=document.createElement('div');div.className='jt-block';
+    div.innerHTML=`<div class="jt-name" style="color:${p.color}">${p.emoji} ${p.name}</div><svg class="jt-arc" viewBox="0 0 36 36" style="transform:rotate(-90deg)"><circle class="jt-track" cx="18" cy="18" r="14"/><circle class="jt-fill" id="jtArc${slot}" cx="18" cy="18" r="14"/></svg><div class="jt-num" id="jtNum${slot}">${G.timers[slot]}</div>`;
     wrap.appendChild(div);
   });
 }
 function updateJudgeTimers(){
   G.timers.forEach((t,slot)=>{
-    const arc=document.getElementById('jtArc'+slot);
-    const num=document.getElementById('jtNum'+slot);
+    const arc=document.getElementById('jtArc'+slot);const num=document.getElementById('jtNum'+slot);
     if(!arc||!num)return;
     const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
     arc.style.strokeDasharray=CJT;arc.style.strokeDashoffset=CJT*(1-t/60);arc.style.stroke=col;
@@ -777,13 +738,10 @@ function updateJudgeTimers(){
 
 // ─── PLAYER UI ─────────────────────────────────────────────────────────────
 function applyPlayerQuestion(msg){
-  const {img,cat,icon,blur,d,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
+  const{img,cat,icon,blur,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
   G.timers=[...timers];G.activeSlot=activeSlot;
-
-  buildTimerStrip([p0idx,p1idx]);
-  renderTimers(timers,activeSlot);
-
-  // Load image reliably via preloader (no setTimeout race condition)
+  buildTimerStrip([p0idx,p1idx]);renderTimers(timers,activeSlot);
+  // Reliable image loader – no race conditions
   const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
   pp.style.display='flex';pp.textContent='⏳';pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
@@ -792,51 +750,32 @@ function applyPlayerQuestion(msg){
   _loader.onerror=()=>{
     const _l2=new Image();
     _l2.onload=()=>{pi.src=img;pi.style.display='block';pp.style.display='none';};
-    _l2.onerror=()=>{pp.style.display='flex';pp.textContent='❌';};
+    _l2.onerror=()=>{pp.textContent='❌';};
     _l2.src=img;
   };
   _loader.src=img;
-
   document.getElementById('playerCat').textContent=icon+' '+cat;
-
-  // Difficulty label
-  const dl=difficultyLabel(correctCount||0);
-  const dlEl=document.getElementById('diffLabel');
-  dlEl.textContent=dl.text;dlEl.className='diff-label '+dl.cls;
-
+  const dl=diffLabel(correctCount||0);
+  const dlEl=document.getElementById('diffLabel');dlEl.textContent=dl.text;dlEl.className='diff-label '+dl.cls;
   show('playerscreen');
 }
-
 const CARC=2*Math.PI*18;
 let _stripKey='';
 function buildTimerStrip(slots){
-  const key=slots.join('-');
-  if(_stripKey===key)return;
-  _stripKey=key;
+  const key=slots.join('-');if(_stripKey===key)return;_stripKey=key;
   const strip=document.getElementById('timerStrip');strip.innerHTML='';
   slots.forEach((pi,slot)=>{
     const p=G.players[pi];
     if(slot===1){const d=document.createElement('div');d.className='vs-div';strip.appendChild(d);}
-    const block=document.createElement('div');
-    block.className='p-timer';block.id='pBlock'+slot;
-    block.innerHTML=`
-      <div class="p-timer-name" style="color:${p.color}">${p.emoji} ${p.name}</div>
-      <svg class="arc-svg" viewBox="0 0 44 44" style="transform:rotate(-90deg)">
-        <circle class="arc-track" cx="22" cy="22" r="18"/>
-        <circle class="arc-fill" id="pArc${slot}" cx="22" cy="22" r="18"/>
-      </svg>
-      <div class="p-timer-num" id="pNum${slot}">60</div>
-      <div class="active-dot" id="pDot${slot}" style="display:none"></div>`;
+    const block=document.createElement('div');block.className='p-timer';block.id='pBlock'+slot;
+    block.innerHTML=`<div class="p-timer-name" style="color:${p.color}">${p.emoji} ${p.name}</div><svg class="arc-svg" viewBox="0 0 44 44" style="transform:rotate(-90deg)"><circle class="arc-track" cx="22" cy="22" r="18"/><circle class="arc-fill" id="pArc${slot}" cx="22" cy="22" r="18"/></svg><div class="p-timer-num" id="pNum${slot}">60</div><div class="active-dot" id="pDot${slot}" style="display:none"></div>`;
     if(slot===0)strip.prepend(block);else strip.appendChild(block);
   });
 }
-
 function renderTimers(timers,activeSlot){
   timers.forEach((t,slot)=>{
-    const arc=document.getElementById('pArc'+slot);
-    const num=document.getElementById('pNum'+slot);
-    const block=document.getElementById('pBlock'+slot);
-    const dot=document.getElementById('pDot'+slot);
+    const arc=document.getElementById('pArc'+slot);const num=document.getElementById('pNum'+slot);
+    const block=document.getElementById('pBlock'+slot);const dot=document.getElementById('pDot'+slot);
     if(!arc)return;
     const col=t>20?'#2d8a4e':t>10?'#c8a84b':'#d63b2f';
     arc.style.strokeDasharray=CARC;arc.style.strokeDashoffset=CARC*(1-t/60);arc.style.stroke=col;
@@ -848,88 +787,51 @@ function renderTimers(timers,activeSlot){
 
 // ─── JUDGE RESULT ──────────────────────────────────────────────────────────
 async function judgeResult(outcome){
-  if(G.judged)return;
-  G.judged=true;
+  if(G.judged)return;G.judged=true;
   clearInterval(G.timerInt);
-  document.getElementById('btnOk').disabled=true;
-  document.getElementById('btnNo').disabled=true;
-
+  document.getElementById('btnOk').disabled=true;document.getElementById('btnNo').disabled=true;
   if(outcome==='correct'){
-    G.matchScores[G.activeSlot]++;
-    G.correctCount++;
+    G.matchScores[G.activeSlot]++;G.correctCount++;
     send('flash',{cls:'ok',txt:'✓ OIKEIN!'});
     await doFlash('ok','✓ OIKEIN!');
-    // Switch slot, timer of other continues where it was
-    G.activeSlot=G.activeSlot===0?1:0;
-    G.judged=false;
-    beginTurn();
-    return;
+    G.activeSlot=G.activeSlot===0?1:0;G.judged=false;
+    beginTurn();return;
   }
-
   if(outcome==='wrong'){
     send('flash',{cls:'no',txt:'✗ VÄÄRIN'});
     await doFlash('no','✗ VÄÄRIN');
-    // Same player, new image same category, timer continues
-    G.judged=false;
-    beginTurn();
-    return;
+    G.judged=false;beginTurn();return;
   }
-
   // timeout
-  const loserSlot=G.activeSlot;
-  const winnerSlot=loserSlot===0?1:0;
-  const pair=G.pairs[G.currentPairIdx];
-  const slots=[pair.p0,pair.p1];
-  const winner=G.players[slots[winnerSlot]];
-  const loser=G.players[slots[loserSlot]];
+  const loserSlot=G.activeSlot;const winnerSlot=loserSlot===0?1:0;
+  const pair=G.pairs[G.currentPairIdx];const slots=[pair.p0,pair.p1];
+  const winner=G.players[slots[winnerSlot]];const loser=G.players[slots[loserSlot]];
   send('flash',{cls:'time',txt:'⏱ AIKA!\n'+loser.name+' hävisi'});
   await doFlash('time','⏱ AIKA!');
-
   pair.done=true;pair.winner=winner.name;
   winner.wins=(winner.wins||0)+1;
-  G.players[slots[0]].score+=G.matchScores[0];
-  G.players[slots[1]].score+=G.matchScores[1];
-
-  const sbData={
-    title:`${winner.emoji} ${winner.name} voitti!`,
-    sub:`${G.matchScores[winnerSlot]}–${G.matchScores[loserSlot]} (${winner.name} vs ${loser.name})`,
-    players:G.players,isJudge:true,
-  };
-  send('scoreboard',sbData);
-  renderScoreboard(sbData);
+  G.players[slots[0]].score+=G.matchScores[0];G.players[slots[1]].score+=G.matchScores[1];
+  const sbData={title:`${winner.emoji} ${winner.name} voitti!`,sub:`${G.matchScores[winnerSlot]}–${G.matchScores[loserSlot]}`,players:G.players,isJudge:true};
+  send('scoreboard',sbData);renderScoreboard(sbData);
 }
 
 // ─── SCOREBOARD ────────────────────────────────────────────────────────────
 function renderScoreboard({title,sub,players,isJudge}){
   const sorted=[...players].sort((a,b)=>(b.wins||0)-(a.wins||0)||(b.score||0)-(a.score||0));
   document.getElementById('sbTitle').textContent=title;
-  document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`
-    <div class="sb-row ${i===0?'winner':''}">
-      <span class="sn"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};display:inline-block"></span>${p.emoji} ${p.name}</span>
-      <span class="sp">${p.wins||0}<span style="font-size:14px;color:var(--muted)"> voittoa</span></span>
-    </div>`).join('');
+  document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`<div class="sb-row ${i===0?'winner':''}"><span class="sn"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};display:inline-block"></span>${p.emoji} ${p.name}</span><span class="sp">${p.wins||0}<span style="font-size:14px;color:var(--muted)"> v</span></span></div>`).join('');
   document.getElementById('sbSub').textContent=sub||'';
   const btn=document.getElementById('sbBtn');
-  if(isJudge){
-    btn.style.display='block';btn.textContent='Takaisin pareihin →';
-    btn.onclick=()=>{renderPairingScreen();show('pairingscreen');};
-  } else {
-    btn.style.display='none';
-  }
+  if(isJudge){btn.style.display='block';btn.textContent='Takaisin pareihin →';btn.onclick=()=>{renderPairingScreen();show('pairingscreen');};}
+  else btn.style.display='none';
   show('scoreboard');
 }
-
 function showFinalScoreboard(){
   const sorted=[...G.players].sort((a,b)=>(b.wins||0)-(a.wins||0));
   document.getElementById('sbTitle').textContent='🏆 Lopputulos';
-  document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`
-    <div class="sb-row ${i===0?'winner':''}">
-      <span class="sn"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};display:inline-block"></span>${p.emoji} ${p.name}</span>
-      <span class="sp">${p.wins||0}<span style="font-size:14px;color:var(--muted)"> voittoa</span></span>
-    </div>`).join('');
+  document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`<div class="sb-row ${i===0?'winner':''}"><span class="sn"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};display:inline-block"></span>${p.emoji} ${p.name}</span><span class="sp">${p.wins||0}<span style="font-size:14px;color:var(--muted)"> voittoa</span></span></div>`).join('');
   document.getElementById('sbSub').textContent=sorted[0].name+' voitti koko turnauksen! 🎉';
-  const btn=document.getElementById('sbBtn');
-  btn.textContent='Uusi peli';btn.style.display='block';btn.onclick=goHome;
+  const btn=document.getElementById('sbBtn');btn.textContent='Uusi peli';btn.style.display='block';btn.onclick=goHome;
   send('scoreboard',{title:'🏆 Lopputulos',sub:sorted[0].name+' voitti!',players:G.players,isJudge:false});
   show('scoreboard');
 }
@@ -941,25 +843,15 @@ function onMsg(msg){
     document.getElementById('lobbyPlayers').innerHTML=msg.players.map(p=>`${p.emoji} ${p.name}`).join(' · ');
     showToast(msg.players.length+' pelaajaa rekisteröity!');
   }
-  if(msg.type==='go_profiles'&&G.role==='player'){
-    buildProfilesScreen();
-  }
+  if(msg.type==='go_profiles'&&G.role==='player') buildProfilesScreen();
   if(msg.type==='match_init'&&G.role==='player'){
-    G.players=msg.players;
-    _stripKey=''; // force rebuild
-    buildTimerStrip([msg.p0idx,msg.p1idx]);
-    renderTimers(msg.timers,msg.activeSlot);
-    show('playerscreen');
+    G.players=msg.players;_stripKey='';
+    buildTimerStrip([msg.p0idx,msg.p1idx]);renderTimers(msg.timers,msg.activeSlot);show('playerscreen');
   }
-  if(msg.type==='question'&&G.role==='player'){
-    applyPlayerQuestion(msg);
-  }
-  if(msg.type==='tick'&&G.role==='player'){
-    G.timers=[...msg.timers];G.activeSlot=msg.activeSlot;
-    renderTimers(msg.timers,msg.activeSlot);
-  }
-  if(msg.type==='flash'){doFlash(msg.cls,msg.txt);}
-  if(msg.type==='scoreboard'&&G.role==='player'){renderScoreboard(msg);}
+  if(msg.type==='question'&&G.role==='player') applyPlayerQuestion(msg);
+  if(msg.type==='tick'&&G.role==='player'){G.timers=[...msg.timers];G.activeSlot=msg.activeSlot;renderTimers(msg.timers,msg.activeSlot);}
+  if(msg.type==='flash') doFlash(msg.cls,msg.txt);
+  if(msg.type==='scoreboard'&&G.role==='player') renderScoreboard(msg);
 }
 </script>
 </body>
