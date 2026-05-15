@@ -88,7 +88,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .active-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:2px}
 .vs-div{width:1px;background:var(--gray3);flex-shrink:0;align-self:stretch;margin:10px 0}
 .img-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem;overflow:hidden;min-height:0;position:relative}
-.qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:block;transition:filter .6s ease}
+.qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none;transition:filter .6s ease}
 .img-ph{width:100%;max-height:200px;aspect-ratio:4/3;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
 .cat-badge{font-size:11px;color:var(--muted);margin-top:.35rem;letter-spacing:.08em;text-transform:uppercase}
 .diff-label{position:absolute;top:.5rem;right:.5rem;font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
@@ -105,7 +105,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,10vw,56px);color:var(--gold);letter-spacing:.04em;line-height:1.05}
 .adiff{font-size:11px;margin-top:.3rem}
 .judge-img{flex:1;min-height:0;overflow:hidden;padding:0 1rem;display:flex;align-items:center;justify-content:center}
-.judge-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.33;display:block;transition:filter .6s,opacity .4s}
+.judge-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.33;display:none;transition:filter .6s}
 .judge-timers{display:flex;align-items:center;justify-content:center;gap:24px;padding:.3rem 1rem;flex-shrink:0}
 .jt-block{display:flex;flex-direction:column;align-items:center;gap:1px}
 .jt-name{font-size:10px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
@@ -141,7 +141,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
   <div id="home" class="screen active">
     <div class="logo">THE<br>FLOOR</div>
     <div class="logo-sub">Kuvatunnistuspeli</div>
-    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v3.0 · 44 kategoriaa · 2640 kuvaa</div>
+    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v3.5 · 44 kategoriaa · 2640 kuvaa</div>
     <button class="hbtn hbtn-gold" onclick="createGame()">Luo peli (Tuomari) 🎤</button>
     <button class="hbtn hbtn-outline" onclick="toggleJoin()">Liity peliin (Pelaajat) 📱</button>
     <div class="join-wrap" id="joinWrap">
@@ -206,7 +206,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     <div class="timer-strip" id="timerStrip"></div>
     <div class="img-area">
       <div class="diff-label" id="diffLabel"></div>
-      <img class="qimg" id="playerImg" alt="" style="display:none"/>
+      <img class="qimg" id="playerImg" alt=""/>
       <div class="img-ph" id="playerPh">📷</div>
       <div class="cat-badge" id="playerCat"></div>
     </div>
@@ -3234,10 +3234,8 @@ function applyJudgeUI(){
   const de=document.getElementById('jDiff');de.textContent=dl.text;de.className='adiff '+dl.cls;
   const ji=document.getElementById('judgeImg');
   ji.style.filter=`blur(${G.currentQ.blur}px)`;
-  ji.style.display='block';
-  const tryLoadJudge=(url,fallback)=>{ji.onerror=()=>{if(fallback){ji.onerror=null;tryLoadJudge(fallback,null);}else{ji.style.display='none';}};ji.src='';ji.src=url;};
-  let jFallback=null;if(G.currentQ.img.includes('wsrv.nl')){const m=G.currentQ.img.match(/wsrv\.nl\/\?url=([^&]+)/);if(m)jFallback='https://'+decodeURIComponent(m[1]);}
-  tryLoadJudge(G.currentQ.img,jFallback);
+  ji.src='';ji.src=G.currentQ.img;ji.style.display='block';
+  ji.onerror=()=>{ji.onerror=null;if(G.currentQ.img.includes('wsrv.nl')){const m=G.currentQ.img.match(/wsrv\.nl\/\?url=([^&]+)/);if(m)ji.src='https://'+decodeURIComponent(m[1]);}};
   document.getElementById('btnOk').disabled=false;document.getElementById('btnNo').disabled=false;
   document.getElementById('jScores').textContent=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
   buildJudgeTimersUI(slots);updateJudgeTimers();show('judgescreen');
@@ -3266,25 +3264,34 @@ function applyPlayerQuestion(msg){
   const{img,cat,icon,blur,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
   G.timers=[...timers];G.activeSlot=activeSlot;
   buildTimerStrip([p0idx,p1idx]);renderTimers(timers,activeSlot);
-  // Robust image loader with fallback
+  // Bulletproof image loader
   const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
   pp.style.display='flex';pp.textContent='⏳';
   pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
-  // Build fallback: wsrv.nl → direct URL
+
+  // Extract fallback URL from wsrv proxy
   let fallbackUrl=null;
-  if(img.includes('wsrv.nl')){const m=img.match(/wsrv\.nl\/\?url=([^&]+)/);if(m)fallbackUrl='https://'+decodeURIComponent(m[1]);}
-  // Try primary URL, then fallback
-  pi.onload=null;pi.onerror=null;pi.src='';
-  pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
-  pi.onerror=()=>{
-    if(fallbackUrl){
-      const fb=fallbackUrl;fallbackUrl=null;
-      pi.onerror=()=>{pp.textContent='❌';};
-      pi.src='';pi.src=fb;
-    } else {pp.textContent='❌';}
-  };
-  pi.src=img;
+  if(img&&img.includes('wsrv.nl')){
+    try{
+      const m=img.match(/[?&]url=([^&]+)/);
+      if(m) fallbackUrl='https://'+decodeURIComponent(m[1]);
+    }catch(e){}
+  }
+
+  let tried=0;
+  const urls=[img,fallbackUrl].filter(Boolean);
+
+  function tryNext(){
+    if(tried>=urls.length){pp.textContent='❌';return;}
+    const url=urls[tried++];
+    pi.onload=null;pi.onerror=null;
+    pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
+    pi.onerror=()=>tryNext();
+    pi.src='';
+    setTimeout(()=>{pi.src=url;},10);
+  }
+  tryNext();
   document.getElementById('playerCat').textContent=icon+' '+cat;
   const dl=diffLabel(correctCount||0);
   const dlEl=document.getElementById('diffLabel');dlEl.textContent=dl.text;dlEl.className='diff-label '+dl.cls;
