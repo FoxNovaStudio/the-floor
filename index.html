@@ -3235,7 +3235,7 @@ function applyJudgeUI(){
   const ji=document.getElementById('judgeImg');
   ji.style.filter=`blur(${G.currentQ.blur}px)`;
   ji.src='';ji.src=G.currentQ.img;ji.style.display='block';
-  ji.onerror=()=>{ji.onerror=null;if(G.currentQ.img.includes('wsrv.nl')){const m=G.currentQ.img.match(/wsrv\.nl\/\?url=([^&]+)/);if(m)ji.src='https://'+decodeURIComponent(m[1]);}};
+  ji.onerror=null;
   document.getElementById('btnOk').disabled=false;document.getElementById('btnNo').disabled=false;
   document.getElementById('jScores').textContent=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
   buildJudgeTimersUI(slots);updateJudgeTimers();show('judgescreen');
@@ -3264,32 +3264,30 @@ function applyPlayerQuestion(msg){
   const{img,cat,icon,blur,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
   G.timers=[...timers];G.activeSlot=activeSlot;
   buildTimerStrip([p0idx,p1idx]);renderTimers(timers,activeSlot);
-  // Bulletproof image loader
+  // Simple direct image load
   const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
   pp.style.display='flex';pp.textContent='⏳';
   pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
 
-  // Extract fallback URL from wsrv proxy
-  let fallbackUrl=null;
+  // Build URL list: wsrv.nl first, then direct wikimedia
+  const urls=[];
+  if(img) urls.push(img);
   if(img&&img.includes('wsrv.nl')){
     try{
       const m=img.match(/[?&]url=([^&]+)/);
-      if(m) fallbackUrl='https://'+decodeURIComponent(m[1]);
+      if(m) urls.push('https://'+decodeURIComponent(m[1]));
     }catch(e){}
   }
 
   let tried=0;
-  const urls=[img,fallbackUrl].filter(Boolean);
-
   function tryNext(){
-    if(tried>=urls.length){pp.textContent='❌';return;}
+    if(tried>=urls.length){pp.textContent='❌ Kuva ei lataudu';return;}
     const url=urls[tried++];
-    pi.onload=null;pi.onerror=null;
+    pi.onload=null; pi.onerror=null;
     pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
-    pi.onerror=()=>tryNext();
-    pi.src='';
-    setTimeout(()=>{pi.src=url;},10);
+    pi.onerror=()=>{console.warn('img fail',url.substring(0,60));tryNext();};
+    pi.src=url;
   }
   tryNext();
   document.getElementById('playerCat').textContent=icon+' '+cat;
