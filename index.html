@@ -3207,10 +3207,34 @@ function pickQ(){
   const cat=CATS.find(c=>c.id===cid);
   return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
 }
-function beginTurn(){
+async function imgToBase64(url){
+  // Try wsrv.nl first, then direct URL
+  const urls=[url];
+  if(url&&url.includes('wsrv.nl')){
+    try{const m=url.match(/[?&]url=([^&]+)/);if(m)urls.push('https://'+decodeURIComponent(m[1]));}catch(e){}
+  }
+  for(const u of urls){
+    try{
+      const resp=await fetch(u);
+      if(!resp.ok)continue;
+      const blob=await resp.blob();
+      return await new Promise((res,rej)=>{
+        const r=new FileReader();
+        r.onload=()=>res(r.result);
+        r.onerror=rej;
+        r.readAsDataURL(blob);
+      });
+    }catch(e){console.warn('fetch fail',u);}
+  }
+  return null; // all failed, fall back to URL
+}
+
+async function beginTurn(){
   clearInterval(G.timerInt);G.judged=false;G.currentQ=pickQ();
   const pair=G.pairs[G.currentPairIdx];
-  send('question',{img:G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
+  // Fetch image on judge side (TV) and send as base64 to player phone
+  const imgData=await imgToBase64(G.currentQ.img);
+  send('question',{img:imgData||G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
   applyJudgeUI();startTimer();
 }
 function startTimer(){
@@ -3234,8 +3258,8 @@ function applyJudgeUI(){
   const de=document.getElementById('jDiff');de.textContent=dl.text;de.className='adiff '+dl.cls;
   const ji=document.getElementById('judgeImg');
   ji.style.filter=`blur(${G.currentQ.blur}px)`;
+  ji.onerror=()=>{console.warn('Judge img failed');};
   ji.src='';ji.src=G.currentQ.img;ji.style.display='block';
-  ji.onerror=null;
   document.getElementById('btnOk').disabled=false;document.getElementById('btnNo').disabled=false;
   document.getElementById('jScores').textContent=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
   buildJudgeTimersUI(slots);updateJudgeTimers();show('judgescreen');
@@ -3264,32 +3288,19 @@ function applyPlayerQuestion(msg){
   const{img,cat,icon,blur,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
   G.timers=[...timers];G.activeSlot=activeSlot;
   buildTimerStrip([p0idx,p1idx]);renderTimers(timers,activeSlot);
-  // Simple direct image load
+  // Load image – arrives as base64 data URI (fetched by judge/TV) or URL fallback
   const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
   pp.style.display='flex';pp.textContent='⏳';
   pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
-
-  // Build URL list: wsrv.nl first, then direct wikimedia
-  const urls=[];
-  if(img) urls.push(img);
-  if(img&&img.includes('wsrv.nl')){
-    try{
-      const m=img.match(/[?&]url=([^&]+)/);
-      if(m) urls.push('https://'+decodeURIComponent(m[1]));
-    }catch(e){}
-  }
-
-  let tried=0;
-  function tryNext(){
-    if(tried>=urls.length){pp.textContent='❌ Kuva ei lataudu';return;}
-    const url=urls[tried++];
-    pi.onload=null; pi.onerror=null;
+  pi.onload=null;pi.onerror=null;
+  if(img){
     pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
-    pi.onerror=()=>{console.warn('img fail',url.substring(0,60));tryNext();};
-    pi.src=url;
+    pi.onerror=()=>{pp.textContent='❌ Kuva ei lataudu';console.warn('img load failed');};
+    pi.src=img;
+  } else {
+    pp.textContent='❌ Ei kuvaa';
   }
-  tryNext();
   document.getElementById('playerCat').textContent=icon+' '+cat;
   const dl=diffLabel(correctCount||0);
   const dlEl=document.getElementById('diffLabel');dlEl.textContent=dl.text;dlEl.className='diff-label '+dl.cls;
