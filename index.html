@@ -186,6 +186,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
       <div class="page-sub">Valitse 1–4 kategoriaa</div>
     </div>
     <div class="cat-scroll"><div class="cat-grid" id="catGrid"></div></div>
+    <div id="playerReadyStatus" style="text-align:center;font-size:13px;color:var(--muted);padding:.5rem 1rem;min-height:1.5em">⏳ Odota että pelaaja syöttää nimet ja painaa Valmis!</div>
     <div class="bottom-bar">
       <button class="gold-btn" id="catNextBtn" onclick="judgeGoPairing()" disabled>Luo parit →</button>
     </div>
@@ -3158,6 +3159,7 @@ function toggleCat(id,el){
 
 // ─── PAIRING ───────────────────────────────────────────────────────────────
 function judgeGoPairing(){
+  if(G.players.length<2){showToast('Odota että pelaaja on syöttänyt nimet ja painanut Valmis! ✋');return;}
   G.catQueues={};G.catProgress={};
   G.selectedCatIds.forEach(cid=>{
     const cat=CATS.find(c=>c.id===cid);
@@ -3264,27 +3266,32 @@ function applyPlayerQuestion(msg){
   const{img,cat,icon,blur,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
   G.timers=[...timers];G.activeSlot=activeSlot;
   buildTimerStrip([p0idx,p1idx]);renderTimers(timers,activeSlot);
-  // Direct image load – same as working 9.5. version
+  // Simple direct image load
   const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
   pp.style.display='flex';pp.textContent='⏳';
   pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
-  if(img){
-    pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
-    pi.onerror=()=>{
-      // fallback: try direct wikimedia URL if wsrv.nl fails
-      if(pi.src.includes('wsrv.nl')){
-        try{
-          const m=img.match(/[?&]url=([^&]+)/);
-          if(m){pi.onerror=()=>{pp.textContent='❌ Kuva ei lataudu';};pi.src='https://'+decodeURIComponent(m[1]);return;}
-        }catch(e){}
-      }
-      pp.textContent='❌ Kuva ei lataudu';
-    };
-    pi.src=img;
-  } else {
-    pp.textContent='❌ Ei kuvaa';
+
+  // Build URL list: wsrv.nl first, then direct wikimedia
+  const urls=[];
+  if(img) urls.push(img);
+  if(img&&img.includes('wsrv.nl')){
+    try{
+      const m=img.match(/[?&]url=([^&]+)/);
+      if(m) urls.push('https://'+decodeURIComponent(m[1]));
+    }catch(e){}
   }
+
+  let tried=0;
+  function tryNext(){
+    if(tried>=urls.length){pp.textContent='❌ Kuva ei lataudu';return;}
+    const url=urls[tried++];
+    pi.onload=null; pi.onerror=null;
+    pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
+    pi.onerror=()=>{console.warn('img fail',url.substring(0,60));tryNext();};
+    pi.src=url;
+  }
+  tryNext();
   document.getElementById('playerCat').textContent=icon+' '+cat;
   const dl=diffLabel(correctCount||0);
   const dlEl=document.getElementById('diffLabel');dlEl.textContent=dl.text;dlEl.className='diff-label '+dl.cls;
@@ -3373,6 +3380,11 @@ function onMsg(msg){
     G.players=msg.players;
     document.getElementById('lobbyPlayers').innerHTML=msg.players.map(p=>`${p.emoji} ${p.name}`).join(' · ');
     showToast(msg.players.length+' pelaajaa rekisteröity!');
+    // Update catNextBtn label to show players are ready
+    const btn=document.getElementById('catNextBtn');
+    if(btn&&G.selectedCatIds&&G.selectedCatIds.length>0) btn.disabled=false;
+    const sub=document.getElementById('playerReadyStatus');
+    if(sub) sub.textContent='✅ '+msg.players.length+' pelaajaa valmis: '+msg.players.map(p=>p.emoji+p.name).join(', ');
   }
   if(msg.type==='go_profiles'&&G.role==='player') buildProfilesScreen();
   if(msg.type==='match_init'&&G.role==='player'){
