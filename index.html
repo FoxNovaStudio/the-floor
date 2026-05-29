@@ -3209,10 +3209,31 @@ function pickQ(){
   const cat=CATS.find(c=>c.id===cid);
   return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
 }
-function beginTurn(){
+async function fetchImgAsDataURI(url){
+  try{
+    const resp=await fetch(url,{mode:'cors'});
+    if(!resp.ok)throw new Error('http '+resp.status);
+    const blob=await resp.blob();
+    const bmp=await createImageBitmap(blob);
+    const MAX=300;
+    const scale=Math.min(1,MAX/Math.max(bmp.width||1,bmp.height||1));
+    const w=Math.max(1,Math.round(bmp.width*scale));
+    const h=Math.max(1,Math.round(bmp.height*scale));
+    const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+    cv.getContext('2d').drawImage(bmp,0,0,w,h);
+    return cv.toDataURL('image/jpeg',0.6);
+  }catch(e){
+    console.warn('fetchImgAsDataURI fail:',e.message);
+    return null;
+  }
+}
+
+async function beginTurn(){
   clearInterval(G.timerInt);G.judged=false;G.currentQ=pickQ();
   const pair=G.pairs[G.currentPairIdx];
-  send('question',{img:G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
+  const dataUri=await fetchImgAsDataURI(G.currentQ.img);
+  const imgToSend=dataUri||G.currentQ.img;
+  send('question',{img:imgToSend,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
   applyJudgeUI();startTimer();
 }
 function startTimer(){
@@ -3272,22 +3293,10 @@ function applyPlayerQuestion(msg){
   pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
 
-  // Direct load from Wikimedia/flagcdn
-  console.log('Loading img:', img ? img.substring(0,100) : 'NULL');
+  // Img arrives as data URI (fetched+resized by judge TV) - set directly, no network needed
   if(img){
-    pi.onload=()=>{console.log('IMG OK');pi.style.display='block';pp.style.display='none';};
-    pi.onerror=()=>{
-      console.warn('IMG FAIL, trying Wikipedia mirror...');
-      // Try en.m.wikipedia.org thumb mirror as fallback
-      const fallback = img.replace('upload.wikimedia.org/wikipedia/commons/thumb','commons.wikimedia.org/wiki/Special:FilePath').replace(/\/\d+px-[^/]+$/,'');
-      if(pi.src !== fallback && !pi.src.includes('FilePath')){
-        pi.onerror=()=>{pp.textContent='❌ Kuva ei lataudu';};
-        pi.src=fallback;
-      } else {
-        pp.textContent='❌ Kuva ei lataudu';
-      }
-    };
-    pi.src='';
+    pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
+    pi.onerror=()=>{pp.textContent='❌ Kuva ei lataudu';};
     pi.src=img;
   } else {
     pp.textContent='❌ Ei kuvaa';
