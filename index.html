@@ -141,7 +141,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
   <div id="home" class="screen active">
     <div class="logo">THE<br>FLOOR</div>
     <div class="logo-sub">Kuvatunnistuspeli</div>
-    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v4.2 · 44 kategoriaa · 2640 kuvaa</div>
+    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v4.3 · 44 kategoriaa · 2640 kuvaa</div>
     <button class="hbtn hbtn-gold" onclick="createGame()">Luo peli (Tuomari) 🎤</button>
     <button class="hbtn hbtn-outline" onclick="toggleJoin()">Liity peliin (Pelaajat) 📱</button>
     <div class="join-wrap" id="joinWrap">
@@ -3210,25 +3210,38 @@ function pickQ(){
   return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
 }
 async function fetchImgAsDataURI(url){
-  try{
-    const resp=await fetch(url,{mode:'cors'});
-    if(!resp.ok)throw new Error('http '+resp.status);
-    const blob=await resp.blob();
-    const bmp=await createImageBitmap(blob);
-    const MAX=300;
-    const scale=Math.min(1,MAX/Math.max(bmp.width||1,bmp.height||1));
-    const w=Math.max(1,Math.round(bmp.width*scale));
-    const h=Math.max(1,Math.round(bmp.height*scale));
-    const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-    cv.getContext('2d').drawImage(bmp,0,0,w,h);
-    const uri=cv.toDataURL('image/jpeg',0.6);
-    showToast('✅ Kuva OK – '+Math.round(uri.length/1024)+'KB');
-    return uri;
-  }catch(e){
-    showToast('❌ Kuvan haku epäonnistui: '+e.message);
-    console.warn('fetchImgAsDataURI fail:',e.message,url);
-    return null;
-  }
+  return new Promise((resolve)=>{
+    const img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>{
+      try{
+        const MAX=300;
+        const scale=Math.min(1,MAX/Math.max(img.naturalWidth||1,img.naturalHeight||1));
+        const w=Math.max(1,Math.round(img.naturalWidth*scale));
+        const h=Math.max(1,Math.round(img.naturalHeight*scale));
+        const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        const uri=cv.toDataURL('image/jpeg',0.6);
+        showToast('✅ Kuva OK – '+Math.round(uri.length/1024)+'KB');
+        resolve(uri);
+      }catch(e){
+        // Canvas tainted - try without crossOrigin
+        showToast('⚠️ Canvas estetty, yritetään ilman CORS…');
+        const img2=new Image();
+        img2.onload=()=>{
+          try{
+            const cv=document.createElement('canvas');cv.width=img2.naturalWidth;cv.height=img2.naturalHeight;
+            cv.getContext('2d').drawImage(img2,0,0);
+            resolve(cv.toDataURL('image/jpeg',0.6));
+          }catch(e2){showToast('❌ Canvas estetty: '+e2.message);resolve(null);}
+        };
+        img2.onerror=()=>{showToast('❌ Kuva ei lataudu (2)');resolve(null);};
+        img2.src=url+'?_='+(Date.now());
+      }
+    };
+    img.onerror=()=>{showToast('❌ Kuva ei lataudu: '+url.slice(-40));resolve(null);};
+    img.src=url;
+  });
 }
 
 async function beginTurn(){
