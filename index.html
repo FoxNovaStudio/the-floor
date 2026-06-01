@@ -141,7 +141,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
   <div id="home" class="screen active">
     <div class="logo">THE<br>FLOOR</div>
     <div class="logo-sub">Kuvatunnistuspeli</div>
-    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v4.4 · 44 kategoriaa · 2640 kuvaa</div>
+    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v4.5 · 44 kategoriaa · 2640 kuvaa</div>
     <button class="hbtn hbtn-gold" onclick="createGame()">Luo peli (Tuomari) 🎤</button>
     <button class="hbtn hbtn-outline" onclick="toggleJoin()">Liity peliin (Pelaajat) 📱</button>
     <div class="join-wrap" id="joinWrap">
@@ -250,9 +250,9 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
 // Direct Wikimedia/flagcdn image URLs
-function w(p){return'https://upload.wikimedia.org/wikipedia/commons/thumb/'+p;}
-function we(p){return'https://upload.wikimedia.org/wikipedia/en/thumb/'+p;}
-function flag(c){return'https://flagcdn.com/w640/'+c+'.png';}
+function w(p){return'https://little-field-bc7e.tavesouth.workers.dev/?url=upload.wikimedia.org/wikipedia/commons/thumb/'+p;}
+function we(p){return'https://little-field-bc7e.tavesouth.workers.dev/?url=upload.wikimedia.org/wikipedia/en/thumb/'+p;}
+function flag(c){return'https://little-field-bc7e.tavesouth.workers.dev/?url=flagcdn.com/w640/'+c+'.png';}
 
 const CATS=[
   {id:'cars',name:'Automerkit',icon:'🚗',questions:[
@@ -3210,46 +3210,24 @@ function pickQ(){
   return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
 }
 async function fetchImgAsDataURI(url){
-  return new Promise((resolve)=>{
-    // Load WITHOUT crossOrigin – Wikimedia rejects crossOrigin requests (400)
-    const img=new Image();
-    img.onload=()=>{
-      const MAX=300;
-      const scale=Math.min(1,MAX/Math.max(img.naturalWidth||1,img.naturalHeight||1));
-      const w=Math.max(1,Math.round(img.naturalWidth*scale));
-      const h=Math.max(1,Math.round(img.naturalHeight*scale));
-      const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-      try{
-        cv.getContext('2d').drawImage(img,0,0,w,h);
-        const uri=cv.toDataURL('image/jpeg',0.6);
-        showToast('✅ Kuva OK – '+Math.round(uri.length/1024)+'KB');
-        resolve(uri);
-      }catch(e){
-        // Canvas tainted (no CORS headers) – use offscreen Image trick via createImageBitmap
-        showToast('⚠️ Canvas tainted, yritetään fetch…');
-        fetch(url).then(r=>r.blob()).then(blob=>{
-          const fr=new FileReader();
-          fr.onload=()=>{
-            const img2=new Image();
-            img2.onload=()=>{
-              const cv2=document.createElement('canvas');
-              cv2.width=w;cv2.height=h;
-              cv2.getContext('2d').drawImage(img2,0,0,w,h);
-              try{
-                const uri2=cv2.toDataURL('image/jpeg',0.6);
-                showToast('✅ Kuva OK (blob) – '+Math.round(uri2.length/1024)+'KB');
-                resolve(uri2);
-              }catch(e2){showToast('❌ '+e2.message);resolve(null);}
-            };
-            img2.src=fr.result;
-          };
-          fr.readAsDataURL(blob);
-        }).catch(e=>{showToast('❌ Fetch epäonnistui: '+e.message);resolve(null);});
-      }
-    };
-    img.onerror=()=>{showToast('❌ Kuva ei lataudu');resolve(null);};
-    img.src=url;
-  });
+  try{
+    const resp=await fetch(url);
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const blob=await resp.blob();
+    const bmp=await createImageBitmap(blob);
+    const MAX=300;
+    const scale=Math.min(1,MAX/Math.max(bmp.width||1,bmp.height||1));
+    const w=Math.max(1,Math.round(bmp.width*scale));
+    const h=Math.max(1,Math.round(bmp.height*scale));
+    const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+    cv.getContext('2d').drawImage(bmp,0,0,w,h);
+    const uri=cv.toDataURL('image/jpeg',0.6);
+    showToast('✅ Kuva OK – '+Math.round(uri.length/1024)+'KB');
+    return uri;
+  }catch(e){
+    showToast('❌ Proxy-virhe: '+e.message);
+    return null;
+  }
 }
 
 async function beginTurn(){
