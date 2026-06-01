@@ -141,7 +141,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
   <div id="home" class="screen active">
     <div class="logo">THE<br>FLOOR</div>
     <div class="logo-sub">Kuvatunnistuspeli</div>
-    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v4.5 · 44 kategoriaa · 2640 kuvaa</div>
+    <div style="font-size:10px;color:#555;letter-spacing:.15em;position:absolute;bottom:1.2rem">v4.6 · 44 kategoriaa · 2640 kuvaa</div>
     <button class="hbtn hbtn-gold" onclick="createGame()">Luo peli (Tuomari) 🎤</button>
     <button class="hbtn hbtn-outline" onclick="toggleJoin()">Liity peliin (Pelaajat) 📱</button>
     <div class="join-wrap" id="joinWrap">
@@ -250,9 +250,9 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
 // Direct Wikimedia/flagcdn image URLs
-function w(p){return'https://little-field-bc7e.tavesouth.workers.dev/?url=upload.wikimedia.org/wikipedia/commons/thumb/'+p;}
-function we(p){return'https://little-field-bc7e.tavesouth.workers.dev/?url=upload.wikimedia.org/wikipedia/en/thumb/'+p;}
-function flag(c){return'https://little-field-bc7e.tavesouth.workers.dev/?url=flagcdn.com/w640/'+c+'.png';}
+function w(p){return'https://upload.wikimedia.org/wikipedia/commons/thumb/'+p;}
+function we(p){return'https://upload.wikimedia.org/wikipedia/en/thumb/'+p;}
+function flag(c){return'https://flagcdn.com/w640/'+c+'.png';}
 
 const CATS=[
   {id:'cars',name:'Automerkit',icon:'🚗',questions:[
@@ -3209,33 +3209,10 @@ function pickQ(){
   const cat=CATS.find(c=>c.id===cid);
   return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
 }
-async function fetchImgAsDataURI(url){
-  try{
-    const resp=await fetch(url);
-    if(!resp.ok)throw new Error('HTTP '+resp.status);
-    const blob=await resp.blob();
-    const bmp=await createImageBitmap(blob);
-    const MAX=300;
-    const scale=Math.min(1,MAX/Math.max(bmp.width||1,bmp.height||1));
-    const w=Math.max(1,Math.round(bmp.width*scale));
-    const h=Math.max(1,Math.round(bmp.height*scale));
-    const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-    cv.getContext('2d').drawImage(bmp,0,0,w,h);
-    const uri=cv.toDataURL('image/jpeg',0.6);
-    showToast('✅ Kuva OK – '+Math.round(uri.length/1024)+'KB');
-    return uri;
-  }catch(e){
-    showToast('❌ Proxy-virhe: '+e.message);
-    return null;
-  }
-}
-
-async function beginTurn(){
+function beginTurn(){
   clearInterval(G.timerInt);G.judged=false;G.currentQ=pickQ();
   const pair=G.pairs[G.currentPairIdx];
-  const dataUri=await fetchImgAsDataURI(G.currentQ.img);
-  const imgToSend=dataUri||G.currentQ.img;
-  send('question',{img:imgToSend,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
+  send('question',{img:G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
   applyJudgeUI();startTimer();
 }
 function startTimer(){
@@ -3295,7 +3272,7 @@ function applyPlayerQuestion(msg){
   pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
 
-  // Img arrives as data URI (fetched+resized by judge TV) - set directly, no network needed
+  // Load image directly from URL
   if(img){
     pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
     pi.onerror=()=>{pp.textContent='❌ Kuva ei lataudu';};
