@@ -226,7 +226,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
       <div class="aval" id="jAnswer">–</div>
       <div class="adiff" id="jDiff"></div>
     </div>
-    <div class="judge-img"><img id="judgeImg" alt=""/></div>
+    <div class="judge-img" style="position:relative"><img id="judgeImg" alt=""/><div id="judgeImgPh" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:14px;color:var(--muted);background:var(--gray);border-radius:10px;text-align:center;padding:8px">❌ Kuva ei lataudu</div></div>
     <div class="judge-timers" id="judgeTimers"></div>
     <div class="judge-actions">
       <button class="jbtn jok" id="btnOk" onclick="judgeResult('correct')"><span class="bi">✓</span>Oikein</button>
@@ -3288,10 +3288,9 @@ function applyJudgeUI(){
   document.getElementById('jAnswer').textContent=G.currentQ.a;
   const dl=diffLabel(G.correctCount);
   const de=document.getElementById('jDiff');de.textContent=dl.text;de.className='adiff '+dl.cls;
-  const ji=document.getElementById('judgeImg');
+  const ji=document.getElementById('judgeImg');const jph=document.getElementById('judgeImgPh');
   ji.style.filter=`blur(${G.currentQ.blur}px)`;
-  ji.src='';ji.src=G.currentQ.img;ji.style.display='block';
-  ji.onerror=null;
+  loadWithFallback(ji,jph,G.currentQ.img);
   document.getElementById('btnOk').disabled=false;document.getElementById('btnNo').disabled=false;
   document.getElementById('jScores').textContent=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
   buildJudgeTimersUI(slots);updateJudgeTimers();show('judgescreen');
@@ -3315,6 +3314,37 @@ function updateJudgeTimers(){
   });
 }
 
+// ─── KUVAN LATAUS (fallback-ketju) ────────────────────────────────────────
+// Yrittää ensin annettua URL:a (yleensä wsrv.nl-proxy), ja jos se epäonnistuu,
+// puretaan proxy pois päältä ja yritetään alkuperäistä Wikimedia-osoitetta
+// suoraan. Jos molemmat epäonnistuvat, näytetään virheteksti.
+function loadWithFallback(imgEl,phEl,src){
+  const urls=[];
+  if(src) urls.push(src);
+  if(src&&src.includes('wsrv.nl')){
+    try{
+      const m=src.match(/[?&]url=([^&]+)/);
+      if(m) urls.push('https://'+decodeURIComponent(m[1]));
+    }catch(e){}
+  }
+  if(phEl){phEl.style.display='none';}
+  imgEl.style.display='none';
+  let tried=0;
+  function tryNext(){
+    if(tried>=urls.length){
+      console.warn('Kaikki kuvalähteet epäonnistuivat:',src);
+      if(phEl){phEl.style.display='flex';phEl.textContent='❌ Kuva ei lataudu';}
+      return;
+    }
+    const url=urls[tried++];
+    imgEl.onload=null;imgEl.onerror=null;
+    imgEl.onload=()=>{imgEl.style.display='block';if(phEl)phEl.style.display='none';};
+    imgEl.onerror=()=>{console.warn('Kuva epäonnistui ('+(tried)+'/'+urls.length+'):',url);tryNext();};
+    imgEl.src=url;
+  }
+  tryNext();
+}
+
 // ─── PLAYER UI ─────────────────────────────────────────────────────────────
 function applyPlayerQuestion(msg){
   const{img,cat,icon,blur,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
@@ -3325,27 +3355,7 @@ function applyPlayerQuestion(msg){
   pp.style.display='flex';pp.textContent='⏳';
   pi.style.display='none';
   pi.style.filter=`blur(${blur}px)`;
-
-  // Build URL list: wsrv.nl first, then direct wikimedia
-  const urls=[];
-  if(img) urls.push(img);
-  if(img&&img.includes('wsrv.nl')){
-    try{
-      const m=img.match(/[?&]url=([^&]+)/);
-      if(m) urls.push('https://'+decodeURIComponent(m[1]));
-    }catch(e){}
-  }
-
-  let tried=0;
-  function tryNext(){
-    if(tried>=urls.length){pp.textContent='❌ Kuva ei lataudu';return;}
-    const url=urls[tried++];
-    pi.onload=null; pi.onerror=null;
-    pi.onload=()=>{pi.style.display='block';pp.style.display='none';};
-    pi.onerror=()=>{console.warn('img fail',url.substring(0,60));tryNext();};
-    pi.src=url;
-  }
-  tryNext();
+  loadWithFallback(pi,pp,img);
   document.getElementById('playerCat').textContent=icon+' '+cat;
   const dl=diffLabel(correctCount||0);
   const dlEl=document.getElementById('diffLabel');dlEl.textContent=dl.text;dlEl.className='diff-label '+dl.cls;
