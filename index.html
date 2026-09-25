@@ -3319,8 +3319,10 @@ function updateJudgeTimers(){
 // puretaan proxy pois päältä ja yritetään alkuperäistä Wikimedia-osoitetta
 // suoraan. Jos molemmat epäonnistuvat, näytetään virheteksti.
 function loadWithFallback(imgEl,phEl,src){
-  // Suora Wikimedia-osoite ensin (ei riipu kolmannen osapuolen proxysta),
-  // wsrv.nl-proxy vasta toissijaisena varana.
+  // wsrv.nl osoittautui epäluotettavaksi kolmannen osapuolen välipalveluksi
+  // (havaittu: suora Wikimedia-osoite toimi, wsrv.nl-versio samasta kuvasta ei).
+  // Käytetään SIKSI VAIN suoraa lähdeosoitetta (puretaan wsrv.nl-kääre pois),
+  // koska Wikimedia/flagcdn tuottavat oikeankokoiset kuvat jo itse.
   const urls=[];
   if(src&&src.includes('wsrv.nl')){
     try{
@@ -3328,7 +3330,7 @@ function loadWithFallback(imgEl,phEl,src){
       if(m) urls.push('https://'+decodeURIComponent(m[1]));
     }catch(e){}
   }
-  if(src) urls.push(src);
+  if(urls.length===0 && src) urls.push(src); // varalta, jos src ei ollutkaan wsrv-kääritty
   if(phEl){phEl.style.display='none';}
   imgEl.style.display='none';
   let tried=0;const failedUrls=[];
