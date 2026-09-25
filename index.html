@@ -3319,27 +3319,34 @@ function updateJudgeTimers(){
 // puretaan proxy pois päältä ja yritetään alkuperäistä Wikimedia-osoitetta
 // suoraan. Jos molemmat epäonnistuvat, näytetään virheteksti.
 function loadWithFallback(imgEl,phEl,src){
+  // Suora Wikimedia-osoite ensin (ei riipu kolmannen osapuolen proxysta),
+  // wsrv.nl-proxy vasta toissijaisena varana.
   const urls=[];
-  if(src) urls.push(src);
   if(src&&src.includes('wsrv.nl')){
     try{
       const m=src.match(/[?&]url=([^&]+)/);
       if(m) urls.push('https://'+decodeURIComponent(m[1]));
     }catch(e){}
   }
+  if(src) urls.push(src);
   if(phEl){phEl.style.display='none';}
   imgEl.style.display='none';
-  let tried=0;
+  let tried=0;const failedUrls=[];
   function tryNext(){
     if(tried>=urls.length){
       console.warn('Kaikki kuvalähteet epäonnistuivat:',src);
-      if(phEl){phEl.style.display='flex';phEl.textContent='❌ Kuva ei lataudu';}
+      if(phEl){
+        phEl.style.display='flex';
+        phEl.style.flexDirection='column';phEl.style.gap='4px';
+        phEl.innerHTML='<div style="font-size:15px">❌ Kuva ei lataudu</div><div style="font-size:9px;opacity:.6;word-break:break-all;max-width:95%;font-family:monospace;padding:0 4px">'+
+          failedUrls.map(u=>u.substring(0,70)).join('<br>')+'</div>';
+      }
       return;
     }
     const url=urls[tried++];
     imgEl.onload=null;imgEl.onerror=null;
     imgEl.onload=()=>{imgEl.style.display='block';if(phEl)phEl.style.display='none';};
-    imgEl.onerror=()=>{console.warn('Kuva epäonnistui ('+(tried)+'/'+urls.length+'):',url);tryNext();};
+    imgEl.onerror=()=>{console.warn('Kuva epäonnistui ('+tried+'/'+urls.length+'):',url);failedUrls.push(url);tryNext();};
     imgEl.src=url;
   }
   tryNext();
