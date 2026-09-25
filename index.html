@@ -183,7 +183,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
   <div id="judgesetup" class="screen">
     <div class="page-header">
       <div class="page-title">Kategoriat</div>
-      <div class="page-sub">Valitse 1–4 kategoriaa</div>
+      <div class="page-sub" id="judgesetupSub">Valitse 1–4 kategoriaa</div>
     </div>
     <div class="cat-scroll"><div class="cat-grid" id="catGrid"></div></div>
     <div class="bottom-bar">
@@ -3112,7 +3112,17 @@ function createGame(){
   });
   peer.on('error',e=>{showToast('Virhe: '+e.type);console.error(e);});
 }
-function judgeGoSetup(){send('go_profiles');buildCatGrid();show('judgesetup');}
+function judgeGoSetup(){send('go_profiles');buildCatGrid();updateJudgesetupSub();show('judgesetup');}
+function updateJudgesetupSub(){
+  const el=document.getElementById('judgesetupSub');if(!el)return;
+  if(!G.players||G.players.length<2){
+    el.textContent='⏳ Odotetaan pelaajia... (avaa pelaaja-välilehti ja paina Valmis!)';
+    el.style.color='var(--gold)';
+  }else{
+    el.textContent=`✓ ${G.players.length} pelaajaa valmiina · Valitse 1–4 kategoriaa`;
+    el.style.color='var(--muted)';
+  }
+}
 
 // ─── JOIN ──────────────────────────────────────────────────────────────────
 function joinGame(){
@@ -3200,6 +3210,10 @@ function toggleCat(id,el){
 
 // ─── PAIRING ───────────────────────────────────────────────────────────────
 function judgeGoPairing(){
+  if(!G.players||G.players.length<2){
+    showToast('⏳ Pelaajat eivät ole vielä valmiina! Avaa pelaaja-välilehti ja paina "Valmis!"');
+    return;
+  }
   G.catQueues={};G.catProgress={};
   G.selectedCatIds.forEach(cid=>{
     const cat=CATS.find(c=>c.id===cid);
@@ -3419,7 +3433,8 @@ function onMsg(msg){
   if(msg.type==='players_ready'&&G.role==='judge'){
     G.players=msg.players;
     document.getElementById('lobbyPlayers').innerHTML=msg.players.map(p=>`${p.emoji} ${p.name}`).join(' · ');
-    showToast(msg.players.length+' pelaajaa rekisteröity!');
+    showToast('✓ '+msg.players.length+' pelaajaa rekisteröity!');
+    updateJudgesetupSub();
   }
   if(msg.type==='go_profiles'&&G.role==='player') buildProfilesScreen();
   if(msg.type==='match_init'&&G.role==='player'){
