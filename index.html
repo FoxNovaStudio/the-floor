@@ -3229,8 +3229,15 @@ function judgeGoPairing(){
 }
 function generatePairs(){
   const n=G.players.length;const pairs=[];
-  const cats=shuffle([...G.selectedCatIds]);let ci=0;
-  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){pairs.push({p0:i,p1:j,catId:cats[ci%cats.length],done:false,winner:null});ci++;}
+  const cats=shuffle([...G.selectedCatIds]);
+  if(n===2){
+    // Vain 2 pelaajaa: uutta vastustajayhdistelmää ei koskaan tule, joten
+    // pelataan yksi erä JOKAISTA valittua kategoriaa kohden samalla parilla.
+    cats.forEach(catId=>{pairs.push({p0:0,p1:1,catId,done:false,winner:null});});
+  }else{
+    let ci=0;
+    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){pairs.push({p0:i,p1:j,catId:cats[ci%cats.length],done:false,winner:null});ci++;}
+  }
   return shuffle(pairs);
 }
 function renderPairingScreen(){
@@ -3469,8 +3476,9 @@ async function judgeResult(outcome){
   pair.done=true;pair.winner=winner.name;
   winner.wins=(winner.wins||0)+1;
   G.players[slots[0]].score+=G.matchScores[0];G.players[slots[1]].score+=G.matchScores[1];
-  const sbData={title:`${winner.emoji} ${winner.name} voitti!`,sub:`${G.matchScores[winnerSlot]}–${G.matchScores[loserSlot]}`,players:G.players,isJudge:true};
-  send('scoreboard',sbData);renderScoreboard(sbData);
+  const title=`${winner.emoji} ${winner.name} voitti!`;
+  send('scoreboard',{title,sub:'',players:G.players,isJudge:false});
+  renderScoreboard({title,sub:'',players:G.players,isJudge:true});
 }
 
 // ─── SCOREBOARD ────────────────────────────────────────────────────────────
@@ -3480,16 +3488,37 @@ function renderScoreboard({title,sub,players,isJudge}){
   document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`<div class="sb-row ${i===0?'winner':''}"><span class="sn"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};display:inline-block"></span>${p.emoji} ${p.name}</span><span class="sp">${p.wins||0}<span style="font-size:14px;color:var(--muted)"> v</span></span></div>`).join('');
   document.getElementById('sbSub').textContent=sub||'';
   const btn=document.getElementById('sbBtn');
-  if(isJudge){btn.style.display='block';btn.textContent='Takaisin pareihin →';btn.onclick=()=>{renderPairingScreen();show('pairingscreen');};}
-  else btn.style.display='none';
+  if(isJudge){
+    btn.style.display='block';
+    // Mennään suoraan seuraavaan pelaamattomaan erään, jos sellainen on
+    // valituissa kategorioissa - ei tarvitse palata parilistalle erikseen.
+    const nextIdx=G.pairs.findIndex(p=>!p.done);
+    if(nextIdx!==-1){
+      btn.textContent='Seuraava erä →';
+      btn.onclick=()=>startMatch(nextIdx);
+    }else{
+      btn.textContent='Lopputulokset 🏆';
+      btn.onclick=showFinalScoreboard;
+    }
+  }else{
+    btn.style.display='none';
+  }
   show('scoreboard');
+}
+function newTournament(){
+  // "Uusi peli": säilytä peer-to-peer-yhteys ja pelaajat, nollaa vain
+  // pisteet/erät ja anna pelinjohtajan valita uudet kategoriat.
+  G.selectedCatIds=[];G.pairs=[];G.currentPairIdx=null;G.catQueues={};G.catProgress={};
+  G.matchScores=[0,0];G.correctCount=0;
+  G.players.forEach(p=>{p.wins=0;p.score=0;});
+  buildCatGrid();updateJudgesetupSub();show('judgesetup');
 }
 function showFinalScoreboard(){
   const sorted=[...G.players].sort((a,b)=>(b.wins||0)-(a.wins||0));
   document.getElementById('sbTitle').textContent='🏆 Lopputulos';
   document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`<div class="sb-row ${i===0?'winner':''}"><span class="sn"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};display:inline-block"></span>${p.emoji} ${p.name}</span><span class="sp">${p.wins||0}<span style="font-size:14px;color:var(--muted)"> voittoa</span></span></div>`).join('');
   document.getElementById('sbSub').textContent=sorted[0].name+' voitti koko turnauksen! 🎉';
-  const btn=document.getElementById('sbBtn');btn.textContent='Uusi peli';btn.style.display='block';btn.onclick=goHome;
+  const btn=document.getElementById('sbBtn');btn.textContent='Uusi peli';btn.style.display='block';btn.onclick=newTournament;
   send('scoreboard',{title:'🏆 Lopputulos',sub:sorted[0].name+' voitti!',players:G.players,isJudge:false});
   show('scoreboard');
 }
