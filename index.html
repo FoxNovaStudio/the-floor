@@ -3047,6 +3047,7 @@ let G={
   pairs:[],currentPairIdx:null,
   activeSlot:0,timers:[60,60],matchScores:[0,0],
   correctCount:0,currentQ:null,timerInt:null,judged:false,
+  turnId:0,
 };
 
 // ─── PEER ──────────────────────────────────────────────────────────────────
@@ -3082,7 +3083,7 @@ function goHome(){
   if(conn){try{conn.close();}catch(e){}}
   if(peer){try{peer.destroy();}catch(e){}}
   conn=null;peer=null;
-  G={role:null,players:[],selectedCatIds:[],catQueues:{},catProgress:{},pairs:[],currentPairIdx:null,activeSlot:0,timers:[60,60],matchScores:[0,0],correctCount:0,currentQ:null,timerInt:null,judged:false};
+  G={role:null,players:[],selectedCatIds:[],catQueues:{},catProgress:{},pairs:[],currentPairIdx:null,activeSlot:0,timers:[60,60],matchScores:[0,0],correctCount:0,currentQ:null,timerInt:null,judged:false,turnId:0};
   document.getElementById('joinCode').value='';
   document.getElementById('joinErr').textContent='';
   document.getElementById('joinWrap').classList.remove('open');
@@ -3263,8 +3264,11 @@ function pickQ(){
   const cat=CATS.find(c=>c.id===cid);
   return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
 }
-function beginTurn(){
+async function beginTurn(){
   clearInterval(G.timerInt);G.judged=false;G.currentQ=pickQ();
+  const myTurnId=++G.turnId;
+  G.currentQ.img=await resolveQuestionImage(G.currentQ);
+  if(myTurnId!==G.turnId) return; // pelaaja/tuomari ehti jo vaihtaa kysymystä kesken haun
   const pair=G.pairs[G.currentPairIdx];
   send('question',{img:G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
   applyJudgeUI();startTimer();
@@ -3312,6 +3316,49 @@ function updateJudgeTimers(){
     arc.style.strokeDasharray=CJT;arc.style.strokeDashoffset=CJT*(1-t/60);arc.style.stroke=col;
     num.textContent=t;num.style.color=col;
   });
+}
+
+// ─── ELÄVÄ WIKIPEDIA-VARAHAKU ──────────────────────────────────────────────
+// Jos kovakoodattu kuva ei lataudu, haetaan tuore kuva suoraan Wikipedian
+// REST-summary-APIsta kysymyksen NIMEN perusteella (ei tiedostonimen, joka
+// saattaa olla väärä/olematon). Tätä ajaa vain tuomarin laite ennen kuin
+// kysymys lähetetään pelaajalle, joten pelaaja ei koskaan näe itse nimeä –
+// vain sen perusteella löytynyt toimiva kuva.
+function probeImage(url,timeoutMs=4000){
+  return new Promise(resolve=>{
+    if(!url){resolve(false);return;}
+    const img=new Image();let done=false;
+    const finish=ok=>{if(done)return;done=true;resolve(ok);};
+    img.onload=()=>finish(true);img.onerror=()=>finish(false);
+    img.src=url;
+    setTimeout(()=>finish(false),timeoutMs);
+  });
+}
+function directUrlFrom(src){
+  if(src&&src.includes('wsrv.nl')){
+    try{
+      const m=src.match(/[?&]url=([^&]+)/);
+      if(m) return 'https://'+decodeURIComponent(m[1]);
+    }catch(e){}
+  }
+  return src;
+}
+async function fetchWikiThumbForName(name){
+  try{
+    const r=await fetch('https://fi.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(name));
+    if(!r.ok) return null;
+    const d=await r.json();
+    return (d.thumbnail&&d.thumbnail.source)||(d.originalimage&&d.originalimage.source)||null;
+  }catch(e){return null;}
+}
+async function resolveQuestionImage(q){
+  const direct=directUrlFrom(q.img);
+  if(await probeImage(direct)) return direct;
+  console.warn('Kovakoodattu kuva ei toiminut, haetaan elävästi:',q.a);
+  const live=await fetchWikiThumbForName(q.a);
+  if(live && await probeImage(live)){console.log('✅ Löytyi elävä varakuva:',q.a,'→',live);return live;}
+  console.warn('Ei löytynyt toimivaa kuvaa ollenkaan:',q.a);
+  return direct;
 }
 
 // ─── KUVAN LATAUS (fallback-ketju) ────────────────────────────────────────
