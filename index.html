@@ -113,11 +113,11 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .jt-arc{width:34px;height:34px}
 .jt-track{fill:none;stroke:var(--gray3);stroke-width:4}
 .jt-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
-.judge-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:.5rem 1rem .85rem;flex-shrink:0}
+.judge-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:.5rem 1rem .85rem;flex-shrink:0}
 .jbtn{padding:16px 8px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .1s}
 .jbtn:active{transform:scale(.94)}.jbtn:disabled{opacity:.35;cursor:not-allowed}
 .jbtn .bi{font-size:22px}
-.jok{background:var(--green);color:#fff}.jno{background:var(--red);color:#fff}.jskip{background:var(--gold);color:var(--black)}
+.jok{background:var(--green);color:#fff}.jskip{background:var(--gold);color:var(--black)}
 #scoreboard{padding:1.25rem;overflow-y:auto;gap:.5rem}
 .sb-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);letter-spacing:.08em}
 .sb-row{background:var(--gray);border-radius:8px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
@@ -234,7 +234,6 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     <div class="judge-actions">
       <button class="jbtn jok" id="btnOk" onclick="judgeResult('correct')"><span class="bi">✓</span>Oikein</button>
       <button class="jbtn jskip" id="btnSkip" onclick="judgeResult('skip')"><span class="bi">⏭</span>Ohi</button>
-      <button class="jbtn jno" id="btnNo" onclick="judgeResult('wrong')"><span class="bi">✗</span>Väärin</button>
     </div>
   </div>
 
@@ -649,7 +648,7 @@ function applyJudgeUI(){
   const ji=document.getElementById('judgeImg');const jph=document.getElementById('judgeImgPh');
   ji.style.filter=`blur(${G.currentQ.blur}px)`;
   loadWithFallback(ji,jph,G.currentQ.img);
-  document.getElementById('btnOk').disabled=false;document.getElementById('btnNo').disabled=false;document.getElementById('btnSkip').disabled=false;
+  document.getElementById('btnOk').disabled=false;document.getElementById('btnSkip').disabled=false;
   document.getElementById('jScores').textContent=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
   buildJudgeTimersUI(slots);updateJudgeTimers();show('judgescreen');
 }
@@ -825,7 +824,7 @@ function renderTimers(timers,activeSlot){
 async function judgeResult(outcome){
   if(G.judged)return;G.judged=true;
   clearInterval(G.timerInt);
-  document.getElementById('btnOk').disabled=true;document.getElementById('btnNo').disabled=true;document.getElementById('btnSkip').disabled=true;
+  document.getElementById('btnOk').disabled=true;document.getElementById('btnSkip').disabled=true;
   if(outcome==='correct'){
     G.matchScores[G.activeSlot]++;G.correctCount++;
     playSound('oikein');send('sfx',{name:'oikein'});
@@ -838,11 +837,6 @@ async function judgeResult(outcome){
     playSound('ohi');send('sfx',{name:'ohi'});
     send('flash',{cls:'time',txt:'⏭ OHI'});
     await doFlash('time','⏭ OHI');
-    G.judged=false;beginTurn();return;
-  }
-  if(outcome==='wrong'){
-    send('flash',{cls:'no',txt:'✗ VÄÄRIN'});
-    await doFlash('no','✗ VÄÄRIN');
     G.judged=false;beginTurn();return;
   }
   // timeout
