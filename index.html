@@ -77,19 +77,19 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .start-match-btn{margin:0 14px 12px;background:var(--gold);color:var(--black);border:none;border-radius:6px;padding:11px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;width:calc(100% - 28px);display:block}
 #playerscreen{overflow:hidden}
 .timer-strip{display:flex;flex-direction:row;flex-shrink:0;background:var(--gray2)}
-.p-timer{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 4px;transition:opacity .3s,background .3s}
+.p-timer{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 4px;transition:opacity .3s,background .3s}
 .p-timer.active-side{background:var(--gray3)}
 .p-timer.inactive-side{opacity:.35}
-.p-timer-name{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:center;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.p-timer-num{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1}
-.arc-svg{width:42px;height:42px}
-.arc-track{fill:none;stroke:var(--gray3);stroke-width:5}
-.arc-fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
+.p-timer-name{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:center;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-timer-num{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1}
+.arc-svg{width:28px;height:28px}
+.arc-track{fill:none;stroke:var(--gray3);stroke-width:4}
+.arc-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
 .active-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:2px}
 .vs-div{width:1px;background:var(--gray3);flex-shrink:0;align-self:stretch;margin:10px 0}
-.img-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem;overflow:hidden;min-height:0;position:relative}
-.qimg{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none;transition:filter .6s ease}
-.img-ph{width:100%;max-height:200px;aspect-ratio:4/3;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.img-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.4rem;overflow:hidden;min-height:0;position:relative}
+.qimg{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;display:none;transition:filter .6s ease}
+.img-ph{width:100%;max-height:280px;aspect-ratio:4/3;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px}
 .cat-badge{font-size:11px;color:var(--muted);margin-top:.35rem;letter-spacing:.08em;text-transform:uppercase}
 .diff-label{position:absolute;top:.5rem;right:.5rem;font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
 .diff-1{background:#2d8a4e33;color:#4AE07A}.diff-2{background:#c8a84b33;color:#E0C04A}.diff-3{background:#d63b2f33;color:#E05A4A}
@@ -104,15 +104,15 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .albl{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
 .aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,10vw,56px);color:var(--gold);letter-spacing:.04em;line-height:1.05}
 .adiff{font-size:11px;margin-top:.3rem}
-.judge-img{flex:1;min-height:0;overflow:hidden;padding:0 1rem;display:flex;align-items:center;justify-content:center}
-.judge-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.33;display:none;transition:filter .6s}
-.judge-timers{display:flex;align-items:center;justify-content:center;gap:24px;padding:.3rem 1rem;flex-shrink:0}
+.judge-img{flex:1;min-height:0;overflow:hidden;padding:0 .5rem;display:flex;align-items:center;justify-content:center}
+.judge-img img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.33;display:none;transition:filter .6s}
+.judge-timers{display:flex;align-items:center;justify-content:center;gap:20px;padding:.15rem 1rem;flex-shrink:0}
 .jt-block{display:flex;flex-direction:column;align-items:center;gap:1px}
 .jt-name{font-size:10px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
-.jt-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1}
-.jt-arc{width:34px;height:34px}
-.jt-track{fill:none;stroke:var(--gray3);stroke-width:4}
-.jt-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
+.jt-num{font-family:'Bebas Neue',sans-serif;font-size:15px;line-height:1}
+.jt-arc{width:24px;height:24px}
+.jt-track{fill:none;stroke:var(--gray3);stroke-width:3}
+.jt-fill{fill:none;stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
 .judge-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:.5rem 1rem .85rem;flex-shrink:0}
 .jbtn{padding:16px 8px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .1s}
 .jbtn:active{transform:scale(.94)}.jbtn:disabled{opacity:.35;cursor:not-allowed}
@@ -348,7 +348,7 @@ const CATS=[
 
 
 // ─── DIFFICULTY ────────────────────────────────────────────────────────────
-function diffBlur(n){if(n<=1)return 0;if(n<=3)return 3;if(n<=6)return 7;return 12;}
+function diffBlur(n){return 0;}
 function diffLabel(n){
   if(n<=1)return{text:'⭐ Helppo',cls:'diff-1'};
   if(n<=3)return{text:'⭐⭐ Keskitaso',cls:'diff-2'};
