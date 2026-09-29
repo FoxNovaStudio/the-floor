@@ -104,7 +104,10 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .albl{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
 .aval{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,10vw,56px);color:var(--gold);letter-spacing:.04em;line-height:1.05}
 .adiff{font-size:11px;margin-top:.3rem}
-.judge-img{flex:1;min-height:0;overflow:hidden;padding:0 .5rem;display:flex;align-items:center;justify-content:center}
+/* Kohdistettu tekstisumennus: peittää vain kuvan sen osan jossa vastaus lukisi tekstinä
+   (esim. tuotteen kyljessä oleva merkki), loppuosa kuvasta pysyy terävänä. */
+.censor-box{position:absolute;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(20,18,15,.38);border-radius:5px;display:none;pointer-events:none}
+.judge-img{flex:1;min-height:0;overflow:hidden;padding:0 .5rem;display:flex;align-items:center;justify-content:center;position:relative}
 .judge-img img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;opacity:.33;display:none;transition:filter .6s}
 .judge-timers{display:flex;align-items:center;justify-content:center;gap:20px;padding:.15rem 1rem;flex-shrink:0}
 .jt-block{display:flex;flex-direction:column;align-items:center;gap:1px}
@@ -211,6 +214,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
       <div class="diff-label" id="diffLabel"></div>
       <img class="qimg" id="playerImg" alt=""/>
       <div class="img-ph" id="playerPh">📷</div>
+      <div class="censor-box" id="playerCensor"></div>
       <div class="cat-badge" id="playerCat"></div>
     </div>
   </div>
@@ -229,7 +233,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
       <div class="aval" id="jAnswer">–</div>
       <div class="adiff" id="jDiff"></div>
     </div>
-    <div class="judge-img" style="position:relative"><img id="judgeImg" alt=""/><div id="judgeImgPh" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:14px;color:var(--muted);background:var(--gray);border-radius:10px;text-align:center;padding:8px">❌ Kuva ei lataudu</div></div>
+    <div class="judge-img" style="position:relative"><img id="judgeImg" alt=""/><div id="judgeImgPh" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:14px;color:var(--muted);background:var(--gray);border-radius:10px;text-align:center;padding:8px">❌ Kuva ei lataudu</div><div class="censor-box" id="judgeCensor"></div></div>
     <div class="judge-timers" id="judgeTimers"></div>
     <div class="judge-actions">
       <button class="jbtn jok" id="btnOk" onclick="judgeResult('correct')"><span class="bi">✓</span>Oikein</button>
@@ -343,7 +347,326 @@ const CATS=[
   {id:'nature',name:'Luonto',icon:'🌿',questions:[{a:'Sateenkaari',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Rainbow_below_Buckingham_Palace%2C_April_2013.jpg/500px-Rainbow_below_Buckingham_Palace%2C_April_2013.jpg&w=500&output=jpg'},{a:'Tornado',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c2/TornadoAllegretti.jpg/500px-TornadoAllegretti.jpg&w=500&output=jpg'},{a:'Tulivuori',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/95/Kamokuna_ocean_entry_c.jpg/500px-Kamokuna_ocean_entry_c.jpg&w=500&output=jpg'},{a:'Lumi',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Snow_scene_at_Shinjuku_gyoen_2.jpg/500px-Snow_scene_at_Shinjuku_gyoen_2.jpg&w=500&output=jpg'},{a:'Revontulet',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Polarlicht_2.jpg/500px-Polarlicht_2.jpg&w=500&output=jpg'},{a:'Vesiputoukset',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/76/Iguazu_Argentina.jpg/500px-Iguazu_Argentina.jpg&w=500&output=jpg'},{a:'Salama',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Lightning_over_Oradea_Romania_2.jpg/500px-Lightning_over_Oradea_Romania_2.jpg&w=500&output=jpg'},{a:'Kaktus',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/09/Saguaro_blooming_crop.jpg/500px-Saguaro_blooming_crop.jpg&w=500&output=jpg'},{a:'Bambu',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/47/Bamboo_in_Rockefeller_Park.jpg/500px-Bamboo_in_Rockefeller_Park.jpg&w=500&output=jpg'},{a:'Kuumailmapallo',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/04/Balloons-1.jpg/500px-Balloons-1.jpg&w=500&output=jpg'},{a:'Koralli',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Coral_reef_at_palmyra.jpg/500px-Coral_reef_at_palmyra.jpg&w=500&output=jpg'},{a:'Jäätikkö',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Perito_moreno_glacier.jpg/500px-Perito_moreno_glacier.jpg&w=500&output=jpg'},{a:'Fjordi',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/25/Geirangerfjord_norway_2006.jpg/500px-Geirangerfjord_norway_2006.jpg&w=500&output=jpg'},{a:'Aavikko',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Sahara_Morocco_desert.jpg/500px-Sahara_Morocco_desert.jpg&w=500&output=jpg'},{a:'Mammuttipuu',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/46/General_Sherman_tree_looking_up.jpg/500px-General_Sherman_tree_looking_up.jpg&w=500&output=jpg'},{a:'Baobab-puu',d:2,img:''},{a:'Sammal',d:1,img:''},{a:'Jäkälä',d:2,img:''},{a:'Geysir',d:1,img:''},{a:'Suo',d:1,img:''},{a:'Trooppinen sademetsä',d:1,img:''},{a:'Mangrove',d:2,img:''},{a:'Tundra',d:2,img:''},{a:'Koski',d:1,img:''},{a:'Luola',d:1,img:''},{a:'Jäävuori',d:1,img:''},{a:'Delta',d:2,img:''},{a:'Preeria',d:2,img:''},{a:'Savanni',d:1,img:''},{a:'Kuura',d:2,img:''},{a:'Sekvoiametsä',d:1,img:''},{a:'Amazonin viidakko',d:1,img:''},{a:'Hiekkadyyni',d:1,img:''},{a:'Kuumat lähteet',d:1,img:''},{a:'Aavikkoruusu',d:2,img:''},{a:'Suolajärvi',d:2,img:''},{a:'Metsäpalo',d:1,img:''},{a:'Stalaktiitti',d:1,img:''},{a:'Stalagmiitti',d:1,img:''},{a:'Kalkkikivimuodostelma',d:2,img:''},{a:'Aavikon kukinta',d:3,img:''},{a:'Permafrosti',d:2,img:''},{a:'Jäätikön halkeama',d:2,img:''},{a:'Merenpohjan lähde',d:3,img:''},]},
   {id:'sports',name:'Urheilu',icon:'⚽',questions:[{a:'Jalkapallo',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/15/Germany_vs_Argentina_-_2014_FIFA_World_Cup_Final_%2802%29.jpg/500px-Germany_vs_Argentina_-_2014_FIFA_World_Cup_Final_%2802%29.jpg&w=500&output=jpg'},{a:'Tennis',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/7e/US_Open_Tennis_2007%2C_NYC%2C_NY.jpg/500px-US_Open_Tennis_2007%2C_NYC%2C_NY.jpg&w=500&output=jpg'},{a:'Koripallo',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/79/NBA_vs_NBDL.jpg/500px-NBA_vs_NBDL.jpg&w=500&output=jpg'},{a:'Uinti',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Swimming_pictogram.svg/500px-Swimming_pictogram.svg.png&w=500&output=jpg'},{a:'Golf',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Golfball-3.jpg/500px-Golfball-3.jpg&w=500&output=jpg'},{a:'Jääkiekko',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4f/IcehockeyXX.jpg/500px-IcehockeyXX.jpg&w=500&output=jpg'},{a:'Sumo',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/85/SumoWajima.jpg/500px-SumoWajima.jpg&w=500&output=jpg'},{a:'Formula 1',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Vettel_2011_Suzuka.jpg/500px-Vettel_2011_Suzuka.jpg&w=500&output=jpg'},{a:'Nyrkkeily',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f3/2013_Aiba_Youth_World_Boxing_Championships%2C_Kharkiv%2C_Ukraine%2C_day_3%2C_Jul_26_2013_%2C_%286%29.jpg/500px-2013_Aiba_Youth_World_Boxing_Championships%2C_Kharkiv%2C_Ukraine%2C_day_3%2C_Jul_26_2013_%2C_%286%29.jpg&w=500&output=jpg'},{a:'Baseball',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Baseball_pitcher.jpg/500px-Baseball_pitcher.jpg&w=500&output=jpg'},{a:'Amerikkalainen jalkapallo',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/be/Super_Bowl_XLVIII_Seahawks_vs_Broncos_action_shot.jpg/500px-Super_Bowl_XLVIII_Seahawks_vs_Broncos_action_shot.jpg&w=500&output=jpg'},{a:'Voimistelu',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Gymnastics_floor_exercise_%28worlds_2011%29.jpg/500px-Gymnastics_floor_exercise_%28worlds_2011%29.jpg&w=500&output=jpg'},{a:'Pyöräily',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4e/TdF_2017_-_Stage_1%2C_peloton_%282%29_%2836066468415%29.jpg/500px-TdF_2017_-_Stage_1%2C_peloton_%282%29_%2836066468415%29.jpg&w=500&output=jpg'},{a:'Surffaus',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Surfing_in_Santa_Cruz.jpg/500px-Surfing_in_Santa_Cruz.jpg&w=500&output=jpg'},{a:'Rugby',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/ea/2015_Rugby_World_Cup_final_05.jpg/500px-2015_Rugby_World_Cup_final_05.jpg&w=500&output=jpg'},{a:'Kiipeily',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/53/A_woman_rock_climbing.jpg/500px-A_woman_rock_climbing.jpg&w=500&output=jpg'},{a:'Curling',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Curling_Canada_Torino_2006.jpg/500px-Curling_Canada_Torino_2006.jpg&w=500&output=jpg'},{a:'Keihäänheitto',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Javelin_throw_Female.jpg/500px-Javelin_throw_Female.jpg&w=500&output=jpg'},{a:'Maratonjuoksu',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/fe/2016_Olympics_Men%27s_Marathon_Finish_%2828862754696%29.jpg/500px-2016_Olympics_Men%27s_Marathon_Finish_%2828862754696%29.jpg&w=500&output=jpg'},{a:'Purjehdus',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Laser_Radial_womens_sailing_2016_Olympics.jpg/500px-Laser_Radial_womens_sailing_2016_Olympics.jpg&w=500&output=jpg'},{a:'Lentopallo',d:1,img:''},{a:'Sulkapallo',d:1,img:''},{a:'Pöytätennis',d:1,img:''},{a:'Squash',d:2,img:''},{a:'Triathlon',d:2,img:''},{a:'Ratsastus',d:1,img:''},{a:'Keilailu',d:1,img:''},{a:'Tikanheitto',d:1,img:''},{a:'Ultimate frisbee',d:2,img:''},{a:'Motocross',d:2,img:''},{a:'Käsipallo',d:1,img:''},{a:'Vesihiihto',d:2,img:''},{a:'Pesäpallo',d:1,img:''},{a:'Petanque',d:1,img:''},{a:'Croquet',d:2,img:''},{a:'Snooker',d:1,img:''},{a:'Biljardi',d:1,img:''},{a:'Shakki',d:1,img:''},{a:'Rullaluistelu',d:1,img:''},{a:'Rullalautailu',d:1,img:''},{a:'Parkour',d:1,img:''},{a:'Voimanosto',d:1,img:''},{a:'Koiravaljakkoajo',d:2,img:''},{a:'Racquetball',d:2,img:''},{a:'Padel',d:1,img:''},{a:'Lacrosse',d:2,img:''},{a:'Krikettti',d:1,img:''},{a:'Taekwondo',d:1,img:''},{a:'Judo',d:1,img:''},{a:'Karate',d:1,img:''},{a:'Aikido',d:2,img:''},{a:'Miekkailu',d:2,img:''},{a:'Purjelautailu',d:2,img:''},{a:'Vesihyppy',d:1,img:''},{a:'Telinevoimistelu',d:1,img:''},{a:'Trampoliinivoimistelu',d:1,img:''},{a:'Bandy',d:2,img:''},{a:'Ringette',d:2,img:''},{a:'Kajakkislalom',d:2,img:''},{a:'Vuoristopyöräily',d:1,img:''},]},
   {id:'space',name:'Avaruus',icon:'🚀',questions:[{a:'Kuu',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/500px-FullMoon2010.jpg&w=500&output=jpg'},{a:'Mars',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/500px-OSIRIS_Mars_true_color.jpg&w=500&output=jpg'},{a:'Saturnus',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/29/Saturn_Storm.jpg/500px-Saturn_Storm.jpg&w=500&output=jpg'},{a:'Jupiter',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Jupiter.jpg/500px-Jupiter.jpg&w=500&output=jpg'},{a:'ISS avaruusasema',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/78/ISS_29_crew_selection_iss029e008093.jpg/500px-ISS_29_crew_selection_iss029e008093.jpg&w=500&output=jpg'},{a:'Luomisen pilarit',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/68/Pillars_of_creation_2014_HST_WFC3-UVIS_full-res_denoised.jpg/500px-Pillars_of_creation_2014_HST_WFC3-UVIS_full-res_denoised.jpg&w=500&output=jpg'},{a:'Avaruussukkula',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/41/Space_Shuttle_Columbia_launching.jpg/500px-Space_Shuttle_Columbia_launching.jpg&w=500&output=jpg'},{a:'Aurinko',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg/500px-The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg&w=500&output=jpg'},{a:'Venus',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Venus2_Mariner10.jpg/500px-Venus2_Mariner10.jpg&w=500&output=jpg'},{a:'Kometta',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/75/Comet_67P_on_19_September_2014_NavCam.jpg/500px-Comet_67P_on_19_September_2014_NavCam.jpg&w=500&output=jpg'},{a:'Hubble-teleskooppi',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/3f/HST-SM4.jpeg/500px-HST-SM4.jpeg&w=500&output=jpg'},{a:'Kuukävelyä',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/34/Buzz_Aldrin_Apollo_11_original.jpg/500px-Buzz_Aldrin_Apollo_11_original.jpg&w=500&output=jpg'},{a:'Maitotie',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Milky_Way_Night_Sky_Black_Rock_Desert_Nevada.jpg/500px-Milky_Way_Night_Sky_Black_Rock_Desert_Nevada.jpg&w=500&output=jpg'},{a:'Musta aukko',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Black_hole_-_Messier_87_crop_max_res.jpg/500px-Black_hole_-_Messier_87_crop_max_res.jpg&w=500&output=jpg'},{a:'Nebula',d:3,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Crab_Nebula.jpg/500px-Crab_Nebula.jpg'},{a:'Merkurius',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Mercury_in_color_-_Prockter07-edit1.jpg/500px-Mercury_in_color_-_Prockter07-edit1.jpg&w=500&output=jpg'},{a:'Neptunus',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/56/Neptune_Full.jpg/500px-Neptune_Full.jpg&w=500&output=jpg'},{a:'Andromeda-galaksi',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/98/Andromeda_Galaxy_%28with_h-alpha%29.jpg/500px-Andromeda_Galaxy_%28with_h-alpha%29.jpg&w=500&output=jpg'},{a:'Meteor',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leonid_Meteor.jpg/500px-Leonid_Meteor.jpg&w=500&output=jpg'},{a:'Uranus',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Uranus2.jpg/500px-Uranus2.jpg&w=500&output=jpg'},{a:'Pluto',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Pluto_in_True_Color_-_High-Res.jpg/500px-Pluto_in_True_Color_-_High-Res.jpg'},{a:'James Webb -teleskooppi',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/James_Webb_Space_Telescope.jpg/500px-James_Webb_Space_Telescope.jpg'},{a:'Marsmönkijä',d:2,img:''},{a:'Supernova',d:2,img:''},{a:'Revontulet',d:1,img:''},{a:'Rakettikäynnistys',d:1,img:''},{a:'Avaruuspuku',d:1,img:''},{a:'Kaksoistähti',d:3,img:''},{a:'Orionin sumu',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg/500px-Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg'},{a:'Halleyn komeetta',d:2,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Lspn_comet_halley.jpg/500px-Lspn_comet_halley.jpg'},{a:'Titan',d:2,img:''},{a:'Europa',d:2,img:''},{a:'Io',d:2,img:''},{a:'Ganymede',d:2,img:''},{a:'Enceladus',d:3,img:''},{a:'Kuiper-vyöhyke',d:3,img:''},{a:'Oortin pilvi',d:3,img:''},{a:'Eksoplaneetta',d:2,img:''},{a:'Punainen jättiläinen',d:2,img:''},{a:'Valkoinen kääpiö',d:2,img:''},{a:'Neutronitähti',d:2,img:''},{a:'Kvasaari',d:3,img:''},{a:'Voyager-luotain',d:2,img:''},{a:'Apollo 11',d:1,img:''},{a:'Cassini-luotain',d:2,img:''},]},
-  {id:'logos',name:'Logot',icon:'🔷',questions:[{a:'Apple',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/500px-Apple_logo_black.svg.png&w=500&output=jpg'},{a:'Nike',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Nike_Logo.svg/500px-Nike_Logo.svg.png&w=500&output=jpg'},{a:'Adidas',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/500px-Adidas_Logo.svg.png&w=500&output=jpg'},{a:'McDonalds',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/500px-McDonald%27s_Golden_Arches.svg.png&w=500&output=jpg'},{a:'Mercedes tähti',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Mercedes-Benz_Logo_2010.svg/500px-Mercedes-Benz_Logo_2010.svg.png&w=500&output=jpg'},{a:'IKEA',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/500px-Ikea_logo.svg.png&w=500&output=jpg'},{a:'Starbucks',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/500px-Starbucks_Corporation_Logo_2011.svg.png&w=500&output=jpg'},{a:'Google G',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/500px-Google_%22G%22_Logo.svg.png&w=500&output=jpg'},{a:'Spotify',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/500px-Spotify_logo_with_text.svg.png&w=500&output=jpg'},{a:'Youtube',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/500px-YouTube_full-color_icon_%282017%29.svg.png&w=500&output=jpg'},{a:'Instagram',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/96/Instagram.svg/500px-Instagram.svg.png&w=500&output=jpg'},{a:'Twitter X',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/500px-X_logo_2023_%28white%29.png&w=500&output=jpg'},{a:'BMW logo',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/500px-BMW.svg.png&w=500&output=jpg'},{a:'Ferrari logo',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Ferrari-Logo.svg/500px-Ferrari-Logo.svg.png&w=500&output=jpg'},{a:'Amazon',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png&w=500&output=jpg'},{a:'Coca-Cola',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/500px-Coca-Cola_logo.svg.png'},{a:'Pepsi',d:1,img:''},{a:'Facebook',d:1,img:''},{a:'Netflix',d:1,img:''},{a:'Microsoft',d:1,img:''},{a:'Toyota',d:2,img:''},{a:'Audi',d:2,img:''},{a:'Puma',d:2,img:''},{a:'Shell',d:2,img:''},{a:'Volkswagen',d:2,img:''},{a:'LEGO',d:1,img:''},{a:'Chanel',d:2,img:''},{a:'Rolex',d:2,img:''},{a:'Playstation',d:1,img:''},{a:'TikTok',d:1,img:''},{a:'Samsung',d:1,img:''},{a:'Sony',d:1,img:''},{a:'Nintendo',d:1,img:''},{a:'Canon',d:1,img:''},{a:'Nikon',d:1,img:''},{a:'Intel',d:1,img:''},{a:'AMD',d:2,img:''},{a:'NVIDIA',d:1,img:''},{a:'Tesla',d:1,img:''},{a:'SpaceX',d:1,img:''},{a:'Uber',d:1,img:''},{a:'Airbnb',d:1,img:''},{a:'Snapchat',d:1,img:''},{a:'WhatsApp',d:1,img:''},{a:'LinkedIn',d:1,img:''},{a:'Reddit',d:1,img:''},{a:'Twitch',d:1,img:''},{a:'Discord',d:1,img:''},{a:'Pinterest',d:1,img:''},{a:'Disney',d:1,img:''},{a:'H&M',d:1,img:''},{a:'Zara',d:1,img:''},{a:'Gucci',d:1,img:''},{a:'Prada',d:2,img:''},{a:'Versace',d:2,img:''},{a:'Nissan',d:1,img:''},{a:'Honda',d:1,img:''},{a:'Ford',d:1,img:''},{a:'Porsche',d:1,img:''},{a:'Louis Vuitton',d:1,img:''},]},
+  {id:'logos',name:'Logot',icon:'🔷',questions:[{a:'Apple',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/500px-Apple_logo_black.svg.png&w=500&output=jpg'},{a:'Nike',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Nike_Logo.svg/500px-Nike_Logo.svg.png&w=500&output=jpg'},{a:'Adidas',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/500px-Adidas_Logo.svg.png&w=500&output=jpg'},{a:'McDonalds',d:1,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/500px-McDonald%27s_Golden_Arches.svg.png&w=500&output=jpg'},{a:'Mercedes tähti',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Mercedes-Benz_Logo_2010.svg/500px-Mercedes-Benz_Logo_2010.svg.png&w=500&output=jpg'},{a:'IKEA',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/500px-Ikea_logo.svg.png&w=500&output=jpg',censor:'full'},{a:'Starbucks',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/500px-Starbucks_Corporation_Logo_2011.svg.png&w=500&output=jpg'},{a:'Google G',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/500px-Google_%22G%22_Logo.svg.png&w=500&output=jpg'},{a:'Spotify',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/500px-Spotify_logo_with_text.svg.png&w=500&output=jpg',censor:{x:40,y:10,w:58,h:80}},{a:'Youtube',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/500px-YouTube_full-color_icon_%282017%29.svg.png&w=500&output=jpg'},{a:'Instagram',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/96/Instagram.svg/500px-Instagram.svg.png&w=500&output=jpg'},{a:'Twitter X',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/500px-X_logo_2023_%28white%29.png&w=500&output=jpg'},{a:'BMW logo',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/500px-BMW.svg.png&w=500&output=jpg'},{a:'Ferrari logo',d:3,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Ferrari-Logo.svg/500px-Ferrari-Logo.svg.png&w=500&output=jpg'},{a:'Amazon',d:2,img:'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/500px-Amazon_logo.svg.png&w=500&output=jpg',censor:'full'},{a:'Coca-Cola',d:1,img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/500px-Coca-Cola_logo.svg.png',censor:'full'},{a:'Pepsi',d:1,img:''},{a:'Facebook',d:1,img:''},{a:'Netflix',d:1,img:''},{a:'Microsoft',d:1,img:''},{a:'Toyota',d:2,img:''},{a:'Audi',d:2,img:''},{a:'Puma',d:2,img:'',censor:'full'},{a:'Shell',d:2,img:''},{a:'Volkswagen',d:2,img:''},{a:'LEGO',d:1,img:'',censor:'full'},{a:'Chanel',d:2,img:''},{a:'Rolex',d:2,img:''},{a:'Playstation',d:1,img:''},{a:'TikTok',d:1,img:''},{a:'Samsung',d:1,img:'',censor:'full'},{a:'Sony',d:1,img:'',censor:'full'},{a:'Nintendo',d:1,img:'',censor:'full'},{a:'Canon',d:1,img:'',censor:'full'},{a:'Nikon',d:1,img:'',censor:'full'},{a:'Intel',d:1,img:'',censor:'full'},{a:'AMD',d:2,img:'',censor:'full'},{a:'NVIDIA',d:1,img:''},{a:'Tesla',d:1,img:''},{a:'SpaceX',d:1,img:'',censor:'full'},{a:'Uber',d:1,img:'',censor:'full'},{a:'Airbnb',d:1,img:''},{a:'Snapchat',d:1,img:''},{a:'WhatsApp',d:1,img:''},{a:'LinkedIn',d:1,img:''},{a:'Reddit',d:1,img:''},{a:'Twitch',d:1,img:''},{a:'Discord',d:1,img:''},{a:'Pinterest',d:1,img:''},{a:'Disney',d:1,img:'',censor:'full'},{a:'H&M',d:1,img:'',censor:'full'},{a:'Zara',d:1,img:'',censor:'full'},{a:'Gucci',d:1,img:''},{a:'Prada',d:2,img:'',censor:'full'},{a:'Versace',d:2,img:''},{a:'Nissan',d:1,img:''},{a:'Honda',d:1,img:''},{a:'Ford',d:1,img:'',censor:'full'},{a:'Porsche',d:1,img:'',censor:{x:10,y:4,w:80,h:24}},{a:'Louis Vuitton',d:1,img:''},]},
+  {id:'dogs',name:'Koirarodut',icon:'🐕',questions:[
+    {a:'Labradorinnoutaja',d:1,img:'',wiki:'en:Labrador Retriever'},
+    {a:'Saksanpaimenkoira',d:1,img:'',wiki:'en:German Shepherd'},
+    {a:'Chihuahua',d:1,img:'',wiki:'en:Chihuahua (dog)'},
+    {a:'Mopsi',d:1,img:'',wiki:'en:Pug'},
+    {a:'Dalmatiankoira',d:1,img:'',wiki:'en:Dalmatian dog'},
+    {a:'Kultainennoutaja',d:1,img:'',wiki:'en:Golden Retriever'},
+    {a:'Siperianhusky',d:1,img:'',wiki:'en:Siberian Husky'},
+    {a:'Suomenlapinkoira',d:1,img:'',wiki:'fi:Suomenlapinkoira|en:Finnish Lapphund'},
+    {a:'Suomenpystykorva',d:1,img:'',wiki:'fi:Suomenpystykorva|en:Finnish Spitz'},
+    {a:'Mäyräkoira',d:1,img:'',wiki:'en:Dachshund'},
+    {a:'Corgi',d:1,img:'',wiki:'en:Pembroke Welsh Corgi'},
+    {a:'Bulldoggi',d:1,img:'',wiki:'en:Bulldog'},
+    {a:'Bernhardinkoira',d:2,img:'',wiki:'en:St. Bernard (dog)'},
+    {a:'Beagle',d:2,img:'',wiki:'en:Beagle'},
+    {a:'Bokseri',d:2,img:'',wiki:'en:Boxer (dog)'},
+    {a:'Dobermanni',d:2,img:'',wiki:'en:Dobermann|en:Doberman Pinscher'},
+    {a:'Rottweiler',d:2,img:'',wiki:'en:Rottweiler'},
+    {a:'Collie',d:2,img:'',wiki:'en:Rough Collie'},
+    {a:'Shiba inu',d:2,img:'',wiki:'en:Shiba Inu'},
+    {a:'Villakoira',d:2,img:'',wiki:'en:Poodle'},
+    {a:'Chow chow',d:2,img:'',wiki:'en:Chow Chow'},
+    {a:'Ranskanbulldoggi',d:2,img:'',wiki:'en:French Bulldog'},
+    {a:'Bordercollie',d:2,img:'',wiki:'en:Border Collie'},
+    {a:'Cavalier King Charles -spanieli',d:2,img:'',wiki:'en:Cavalier King Charles Spaniel'},
+    {a:'Newfoundlandinkoira',d:2,img:'',wiki:'en:Newfoundland dog'},
+    {a:'Whippet',d:2,img:'',wiki:'en:Whippet'},
+    {a:'Suomenajokoira',d:2,img:'',wiki:'fi:Suomenajokoira|en:Finnish Hound'},
+    {a:'Samojedinkoira',d:2,img:'',wiki:'en:Samoyed dog'},
+    {a:'Alaskanmalamuutti',d:2,img:'',wiki:'en:Alaskan Malamute'},
+    {a:'Afgaaninvinttikoira',d:3,img:'',wiki:'en:Afghan Hound'},
+    {a:'Borzoi',d:3,img:'',wiki:'en:Borzoi'},
+    {a:'Sharpei',d:3,img:'',wiki:'en:Shar Pei'},
+    {a:'Basenji',d:3,img:'',wiki:'en:Basenji'},
+    {a:'Komondor',d:3,img:'',wiki:'en:Komondor'},
+    {a:'Puli',d:3,img:'',wiki:'en:Puli'},
+    {a:'Saluki',d:3,img:'',wiki:'en:Saluki'},
+    {a:'Karjalankarhukoira',d:3,img:'',wiki:'fi:Karjalankarhukoira|en:Karelian Bear Dog'},
+    {a:'Lapinporokoira',d:3,img:'',wiki:'fi:Lapinporokoira|en:Lapponian Herder'},
+    {a:'Irlanninsusikoira',d:3,img:'',wiki:'en:Irish Wolfhound'},
+    {a:'Tiibetinmastiffi',d:3,img:'',wiki:'en:Tibetan Mastiff'},
+    {a:'Rhodesianridgeback',d:3,img:'',wiki:'en:Rhodesian Ridgeback'},
+    {a:'Basset hound',d:3,img:'',wiki:'en:Basset Hound'},
+    {a:'Xoloitzcuintle',d:3,img:'',wiki:'en:Xoloitzcuintle'},
+    {a:'Lhasa apso',d:3,img:'',wiki:'en:Lhasa Apso'},
+    {a:'Norjanhirvikoira',d:3,img:'',wiki:'en:Norwegian Elkhound'},
+    {a:'Vinttikoira',d:3,img:'',wiki:'en:Greyhound'}
+  ]},
+  {id:'cats',name:'Kissarodut',icon:'🐈',questions:[
+    {a:'Siamilainen',d:1,img:'',wiki:'en:Siamese cat'},
+    {a:'Persialainen',d:1,img:'',wiki:'en:Persian cat'},
+    {a:'Maine coon',d:1,img:'',wiki:'en:Maine Coon'},
+    {a:'Sfinksi',d:1,img:'',wiki:'en:Sphynx cat'},
+    {a:'Norjanmetsäkissa',d:1,img:'',wiki:'en:Norwegian Forest cat'},
+    {a:'Bengalikissa',d:1,img:'',wiki:'en:Bengal cat'},
+    {a:'Ragdoll',d:1,img:'',wiki:'en:Ragdoll'},
+    {a:'Brittiläinen lyhytkarvainen',d:1,img:'',wiki:'en:British Shorthair'},
+    {a:'Abessinialainen',d:1,img:'',wiki:'en:Abyssinian cat'},
+    {a:'Siperiankissa',d:1,img:'',wiki:'en:Siberian cat'},
+    {a:'Scottish fold',d:2,img:'',wiki:'en:Scottish Fold'},
+    {a:'Burma',d:2,img:'',wiki:'en:Burmese cat'},
+    {a:'Devon rex',d:2,img:'',wiki:'en:Devon Rex'},
+    {a:'Cornish rex',d:2,img:'',wiki:'en:Cornish Rex'},
+    {a:'Birma',d:2,img:'',wiki:'en:Birman'},
+    {a:'Venäjänsininen',d:2,img:'',wiki:'en:Russian Blue'},
+    {a:'Savannahkissa',d:2,img:'',wiki:'en:Savannah cat'},
+    {a:'Turkinangora',d:2,img:'',wiki:'en:Turkish Angora'},
+    {a:'Egyptinmau',d:2,img:'',wiki:'en:Egyptian Mau'},
+    {a:'Exotic shorthair',d:2,img:'',wiki:'en:Exotic Shorthair'},
+    {a:'Turkinvankissa',d:2,img:'',wiki:'en:Turkish Van'},
+    {a:'Ocicat',d:2,img:'',wiki:'en:Ocicat'},
+    {a:'American shorthair',d:2,img:'',wiki:'en:American Shorthair'},
+    {a:'Balikissa',d:2,img:'',wiki:'en:Balinese cat'},
+    {a:'Munchkin',d:3,img:'',wiki:'en:Munchkin cat'},
+    {a:'Peterbald',d:3,img:'',wiki:'en:Peterbald'},
+    {a:'Selkirk rex',d:3,img:'',wiki:'en:Selkirk Rex'},
+    {a:'Bombay',d:3,img:'',wiki:'en:Bombay cat'},
+    {a:'Somali',d:3,img:'',wiki:'en:Somali cat'},
+    {a:'LaPerm',d:3,img:'',wiki:'en:LaPerm'},
+    {a:'Korat',d:3,img:'',wiki:'en:Korat'},
+    {a:'Singapura',d:3,img:'',wiki:'en:Singapura cat'},
+    {a:'Japanese bobtail',d:3,img:'',wiki:'en:Japanese Bobtail'},
+    {a:'Manx',d:3,img:'',wiki:'en:Manx cat'},
+    {a:'Toyger',d:3,img:'',wiki:'en:Toyger'}
+  ]},
+  {id:'ships',name:'Laivat',icon:'🚢',questions:[
+    {a:'Titanic',d:1,img:'',wiki:'en:RMS Titanic'},
+    {a:'Vasa-laiva',d:1,img:'',wiki:'en:Vasa (ship)'},
+    {a:'Cutty Sark',d:1,img:'',wiki:'en:Cutty Sark'},
+    {a:'Mayflower',d:1,img:'',wiki:'en:Mayflower'},
+    {a:'Santa Maria',d:1,img:'',wiki:'en:Santa María (ship)'},
+    {a:'Queen Mary 2',d:1,img:'',wiki:'en:RMS Queen Mary 2'},
+    {a:'HMS Victory',d:1,img:'',wiki:'en:HMS Victory'},
+    {a:'Viikinkilaiva',d:1,img:'',wiki:'en:Viking ships'},
+    {a:'Suomen Joutsen',d:1,img:'',wiki:'en:Suomen Joutsen'},
+    {a:'Bismarck',d:2,img:'',wiki:'en:German battleship Bismarck'},
+    {a:'Kon-Tiki',d:2,img:'',wiki:'en:Kon-Tiki'},
+    {a:'Fram',d:2,img:'',wiki:'en:Fram'},
+    {a:'Lusitania',d:2,img:'',wiki:'en:RMS Lusitania'},
+    {a:'Mary Rose',d:2,img:'',wiki:'en:Mary Rose'},
+    {a:'Pommern',d:2,img:'',wiki:'en:Pommern (ship)'},
+    {a:'Jäänmurtaja Sampo',d:2,img:'',wiki:'en:Sampo (icebreaker)'},
+    {a:'Silja Serenade',d:2,img:'',wiki:'en:MS Silja Serenade'},
+    {a:'USS Missouri',d:2,img:'',wiki:'en:USS Missouri (BB-63)'},
+    {a:'Yamato',d:2,img:'',wiki:'en:Japanese battleship Yamato'},
+    {a:'USS Nimitz',d:2,img:'',wiki:'en:USS Nimitz'},
+    {a:'Symphony of the Seas',d:2,img:'',wiki:'en:Symphony of the Seas'},
+    {a:'Golden Hind',d:2,img:'',wiki:'en:Golden Hind'},
+    {a:'HMS Beagle',d:3,img:'',wiki:'en:HMS Beagle'},
+    {a:'HMS Bounty',d:3,img:'',wiki:'en:HMS Bounty'},
+    {a:'HMS Endeavour',d:3,img:'',wiki:'en:HMS Endeavour'},
+    {a:'Amerigo Vespucci',d:3,img:'',wiki:'en:Italian training ship Amerigo Vespucci'},
+    {a:'Gorch Fock',d:3,img:'',wiki:'en:Gorch Fock (1958)'},
+    {a:'Oseberg-laiva',d:3,img:'',wiki:'en:Oseberg ship'},
+    {a:'Gokstad-laiva',d:3,img:'',wiki:'en:Gokstad ship'},
+    {a:'Knock Nevis',d:3,img:'',wiki:'en:Knock Nevis'},
+    {a:'Bluenose',d:3,img:'',wiki:'en:Bluenose'},
+    {a:'Star of India',d:3,img:'',wiki:'en:Star of India (ship)'},
+    {a:'USS Nautilus',d:3,img:'',wiki:'en:USS Nautilus (SSN-571)'},
+    {a:'Endurance',d:3,img:'',wiki:'en:Endurance (1912 ship)'},
+    {a:'HMS Dreadnought',d:3,img:'',wiki:'en:HMS Dreadnought (1906)'},
+    {a:'Batavia',d:3,img:'',wiki:'en:Batavia (ship)'}
+  ]},
+  {id:'trains',name:'Junat',icon:'🚂',questions:[
+    {a:'Höyryveturi',d:1,img:'',wiki:'en:Steam locomotive'},
+    {a:'Shinkansen',d:1,img:'',wiki:'en:Shinkansen'},
+    {a:'TGV',d:1,img:'',wiki:'en:TGV'},
+    {a:'Pendolino',d:1,img:'',wiki:'en:Pendolino'},
+    {a:'Raitiovaunu',d:1,img:'',wiki:'en:Tram'},
+    {a:'Helsingin metro',d:1,img:'',wiki:'fi:Helsingin metro|en:Helsinki Metro'},
+    {a:'Orient Express',d:1,img:'',wiki:'en:Orient Express'},
+    {a:'Dieselveturi',d:1,img:'',wiki:'en:Diesel locomotive'},
+    {a:'Hammasrata',d:1,img:'',wiki:'en:Rack railway'},
+    {a:'Eurostar',d:2,img:'',wiki:'en:Eurostar'},
+    {a:'ICE-juna',d:2,img:'',wiki:'en:Intercity-Express'},
+    {a:'Allegro',d:2,img:'',wiki:'en:Allegro (train)'},
+    {a:'Flying Scotsman',d:2,img:'',wiki:'en:Flying Scotsman (locomotive)'},
+    {a:'Mallard',d:2,img:'',wiki:'en:LNER Class A4 4468 Mallard'},
+    {a:'Transsiperian rautatie',d:2,img:'',wiki:'en:Trans-Siberian Railway'},
+    {a:'Glacier Express',d:2,img:'',wiki:'en:Glacier Express'},
+    {a:'Rocky Mountaineer',d:2,img:'',wiki:'en:Rocky Mountaineer'},
+    {a:'Sr1',d:2,img:'',wiki:'en:VR Class Sr1'},
+    {a:'Sr3',d:2,img:'',wiki:'en:VR Class Sr3'},
+    {a:'Maglev',d:2,img:'',wiki:'en:Maglev'},
+    {a:'Yksiraiteinen',d:2,img:'',wiki:'en:Monorail'},
+    {a:'Funikulaari',d:2,img:'',wiki:'en:Funicular'},
+    {a:'San Franciscon kaapeliraitiovaunu',d:2,img:'',wiki:'en:San Francisco cable car system'},
+    {a:'Bernina Express',d:3,img:'',wiki:'en:Bernina Express'},
+    {a:'Blue Train',d:3,img:'',wiki:'en:Blue Train (South Africa)'},
+    {a:'The Ghan',d:3,img:'',wiki:'en:The Ghan'},
+    {a:'Palace on Wheels',d:3,img:'',wiki:'en:Palace on Wheels'},
+    {a:'Darjeelingin höyryjuna',d:3,img:'',wiki:'en:Darjeeling Himalayan Railway'},
+    {a:'Stephensonin Rocket',d:3,img:'',wiki:'en:Stephenson\'s Rocket'},
+    {a:'Big Boy',d:3,img:'',wiki:'en:Union Pacific Big Boy'},
+    {a:'Pilatus-rautatie',d:3,img:'',wiki:'en:Pilatus Railway'},
+    {a:'Wuppertalin Schwebebahn',d:3,img:'',wiki:'en:Wuppertal Suspension Railway'},
+    {a:'Frecciarossa',d:3,img:'',wiki:'en:Frecciarossa'},
+    {a:'AVE',d:3,img:'',wiki:'en:AVE'},
+    {a:'Sapsan',d:3,img:'',wiki:'en:Sapsan'}
+  ]},
+  {id:'trees',name:'Puut ja pensaat',icon:'🌳',questions:[
+    {a:'Kuusi',d:1,img:'',wiki:'en:Norway spruce'},
+    {a:'Mänty',d:1,img:'',wiki:'en:Scots pine'},
+    {a:'Koivu',d:1,img:'',wiki:'en:Silver birch'},
+    {a:'Tammi',d:1,img:'',wiki:'en:Quercus robur'},
+    {a:'Pihlaja',d:1,img:'',wiki:'en:Sorbus aucuparia'},
+    {a:'Haapa',d:1,img:'',wiki:'en:Populus tremula'},
+    {a:'Vaahtera',d:1,img:'',wiki:'en:Acer platanoides'},
+    {a:'Hevoskastanja',d:1,img:'',wiki:'en:Aesculus hippocastanum'},
+    {a:'Kataja',d:1,img:'',wiki:'en:Juniperus communis'},
+    {a:'Kookospalmu',d:1,img:'',wiki:'en:Coconut'},
+    {a:'Lehmus',d:2,img:'',wiki:'en:Tilia cordata'},
+    {a:'Jalava',d:2,img:'',wiki:'en:Ulmus glabra'},
+    {a:'Saarni',d:2,img:'',wiki:'en:Fraxinus excelsior'},
+    {a:'Tervaleppä',d:2,img:'',wiki:'en:Alnus glutinosa'},
+    {a:'Harmaaleppä',d:2,img:'',wiki:'en:Alnus incana'},
+    {a:'Pähkinäpensas',d:2,img:'',wiki:'en:Corylus avellana'},
+    {a:'Raita',d:2,img:'',wiki:'en:Salix caprea'},
+    {a:'Lehtikuusi',d:2,img:'',wiki:'en:Larix decidua'},
+    {a:'Marjakuusi',d:2,img:'',wiki:'en:Taxus baccata'},
+    {a:'Tuomi',d:2,img:'',wiki:'en:Prunus padus'},
+    {a:'Syreeni',d:2,img:'',wiki:'en:Syringa vulgaris'},
+    {a:'Sypressi',d:2,img:'',wiki:'en:Cupressus sempervirens'},
+    {a:'Oliivipuu',d:2,img:'',wiki:'en:Olive'},
+    {a:'Eukalyptus',d:2,img:'',wiki:'en:Eucalyptus'},
+    {a:'Ginkgo',d:3,img:'',wiki:'en:Ginkgo'},
+    {a:'Banyan',d:3,img:'',wiki:'en:Ficus benghalensis'},
+    {a:'Korkkitammi',d:3,img:'',wiki:'en:Quercus suber'},
+    {a:'Apinanpuu',d:3,img:'',wiki:'en:Araucaria araucana'},
+    {a:'Joshuapuu',d:3,img:'',wiki:'en:Yucca brevifolia'},
+    {a:'Lohikäärmepuu',d:3,img:'',wiki:'en:Dracaena draco'},
+    {a:'Kaakaopuu',d:3,img:'',wiki:'en:Theobroma cacao'},
+    {a:'Kumipuu',d:3,img:'',wiki:'en:Hevea brasiliensis'},
+    {a:'Herkkukastanja',d:3,img:'',wiki:'en:Castanea sativa'},
+    {a:'Tuija',d:3,img:'',wiki:'en:Thuja occidentalis'},
+    {a:'Sembramänty',d:3,img:'',wiki:'en:Pinus cembra'},
+    {a:'Vuorimänty',d:3,img:'',wiki:'en:Pinus mugo'}
+  ]},
+  {id:'finland',name:'Suomen nähtävyydet',icon:'🇫🇮',questions:[
+    {a:'Suomenlinna',d:1,img:'',wiki:'fi:Suomenlinna|en:Suomenlinna'},
+    {a:'Helsingin tuomiokirkko',d:1,img:'',wiki:'fi:Helsingin tuomiokirkko|en:Helsinki Cathedral'},
+    {a:'Olavinlinna',d:1,img:'',wiki:'fi:Olavinlinna|en:Olavinlinna'},
+    {a:'Linnanmäki',d:1,img:'',wiki:'fi:Linnanmäki|en:Linnanmäki'},
+    {a:'Joulupukin pajakylä',d:1,img:'',wiki:'fi:Joulupukin pajakylä|en:Santa Claus Village'},
+    {a:'Sibelius-monumentti',d:1,img:'',wiki:'fi:Sibelius-monumentti|en:Sibelius Monument'},
+    {a:'Näsinneula',d:1,img:'',wiki:'fi:Näsinneula|en:Näsinneula'},
+    {a:'Uspenskin katedraali',d:1,img:'',wiki:'fi:Uspenskin katedraali|en:Uspenski Cathedral'},
+    {a:'Finlandia-talo',d:1,img:'',wiki:'fi:Finlandia-talo|en:Finlandia Hall'},
+    {a:'Turun linna',d:1,img:'',wiki:'fi:Turun linna|en:Turku Castle'},
+    {a:'Havis Amanda',d:1,img:'',wiki:'fi:Havis Amanda|en:Havis Amanda'},
+    {a:'Kiasma',d:2,img:'',wiki:'fi:Kiasma|en:Kiasma'},
+    {a:'Ateneum',d:2,img:'',wiki:'fi:Ateneum|en:Ateneum'},
+    {a:'Kansallismuseo',d:2,img:'',wiki:'fi:Kansallismuseo|en:National Museum of Finland'},
+    {a:'Eduskuntatalo',d:2,img:'',wiki:'fi:Eduskuntatalo|en:Parliament House (Finland)'},
+    {a:'Hämeen linna',d:2,img:'',wiki:'fi:Hämeen linna|en:Häme Castle'},
+    {a:'Petäjäveden vanha kirkko',d:2,img:'',wiki:'fi:Petäjäveden vanha kirkko|en:Petäjävesi Old Church'},
+    {a:'Vanha Rauma',d:2,img:'',wiki:'fi:Vanha Rauma|en:Old Rauma'},
+    {a:'Kemin lumilinna',d:2,img:'',wiki:'fi:Kemin lumilinna|en:SnowCastle of Kemi'},
+    {a:'Kolin kansallispuisto',d:2,img:'',wiki:'fi:Kolin kansallispuisto|en:Koli National Park'},
+    {a:'Nuuksion kansallispuisto',d:2,img:'',wiki:'fi:Nuuksion kansallispuisto|en:Nuuksio National Park'},
+    {a:'Punkaharju',d:2,img:'',wiki:'fi:Punkaharju|en:Punkaharju'},
+    {a:'Arktikum',d:2,img:'',wiki:'fi:Arktikum|en:Arktikum'},
+    {a:'Senaatintori',d:2,img:'',wiki:'fi:Senaatintori|en:Senate Square, Helsinki'},
+    {a:'Tampereen tuomiokirkko',d:2,img:'',wiki:'fi:Tampereen tuomiokirkko|en:Tampere Cathedral'},
+    {a:'Seurasaari',d:2,img:'',wiki:'fi:Seurasaari|en:Seurasaari'},
+    {a:'Sammallahdenmäki',d:3,img:'',wiki:'fi:Sammallahdenmäki|en:Sammallahdenmäki'},
+    {a:'Verlan tehdasmuseo',d:3,img:'',wiki:'fi:Verlan tehdasmuseo|en:Verla Groundwood and Board Mill'},
+    {a:'Ainola',d:3,img:'',wiki:'fi:Ainola|en:Ainola'},
+    {a:'Hvitträsk',d:3,img:'',wiki:'fi:Hvitträsk|en:Hvitträsk'},
+    {a:'Kultaranta',d:3,img:'',wiki:'fi:Kultaranta|en:Kultaranta'},
+    {a:'Lemmenjoen kansallispuisto',d:3,img:'',wiki:'fi:Lemmenjoen kansallispuisto|en:Lemmenjoki National Park'},
+    {a:'Halti',d:3,img:'',wiki:'fi:Halti|en:Halti'},
+    {a:'Korkeasaaren eläintarha',d:3,img:'',wiki:'en:Korkeasaari Zoo|fi:Korkeasaaren eläintarha'},
+    {a:'Puijon torni',d:3,img:'',wiki:'fi:Puijon torni|en:Puijo Tower'},
+    {a:'Oodi',d:3,img:'',wiki:'fi:Helsingin keskustakirjasto Oodi|en:Helsinki Central Library Oodi'},
+    {a:'Kansallisooppera',d:3,img:'',wiki:'fi:Suomen kansallisooppera|en:Finnish National Opera and Ballet'}
+  ]},
+  {id:'household',name:'Kodin esineet',icon:'🏠',questions:[
+    {a:'Pölynimuri',d:1,img:'',wiki:'en:Vacuum cleaner'},
+    {a:'Mikroaaltouuni',d:1,img:'',wiki:'en:Microwave oven'},
+    {a:'Leivänpaahdin',d:1,img:'',wiki:'en:Toaster'},
+    {a:'Silitysrauta',d:1,img:'',wiki:'en:Clothes iron'},
+    {a:'Ompelukone',d:1,img:'',wiki:'en:Sewing machine'},
+    {a:'Kahvinkeitin',d:1,img:'',wiki:'en:Coffeemaker'},
+    {a:'Jääkaappi',d:1,img:'',wiki:'en:Refrigerator'},
+    {a:'Pesukone',d:1,img:'',wiki:'en:Washing machine'},
+    {a:'Hiustenkuivaaja',d:1,img:'',wiki:'en:Hair dryer'},
+    {a:'Sateenvarjo',d:1,img:'',wiki:'en:Umbrella'},
+    {a:'Vohvelirauta',d:2,img:'',wiki:'en:Waffle iron'},
+    {a:'Painekattila',d:2,img:'',wiki:'en:Pressure cooker'},
+    {a:'Vedenkeitin',d:2,img:'',wiki:'en:Electric kettle'},
+    {a:'Juustohöylä',d:2,img:'',wiki:'en:Cheese slicer'},
+    {a:'Vispilä',d:2,img:'',wiki:'en:Whisk'},
+    {a:'Kaulin',d:2,img:'',wiki:'en:Rolling pin'},
+    {a:'Paistinpannu',d:2,img:'',wiki:'en:Frying pan'},
+    {a:'Astianpesukone',d:2,img:'',wiki:'en:Dishwasher'},
+    {a:'Kuivausrumpu',d:2,img:'',wiki:'en:Clothes dryer'},
+    {a:'Kaappikello',d:2,img:'',wiki:'en:Longcase clock'},
+    {a:'Tuuletin',d:2,img:'',wiki:'en:Fan (machine)'},
+    {a:'Kynttilä',d:2,img:'',wiki:'en:Candle'},
+    {a:'Kirjoituskone',d:2,img:'',wiki:'en:Typewriter'},
+    {a:'Levysoitin',d:2,img:'',wiki:'en:Phonograph'},
+    {a:'Kylpyamme',d:2,img:'',wiki:'en:Bathtub'},
+    {a:'Henkilövaaka',d:2,img:'',wiki:'en:Weighing scale'},
+    {a:'Pesulauta',d:3,img:'',wiki:'en:Washboard'},
+    {a:'Mokkapannu',d:3,img:'',wiki:'en:Moka pot'},
+    {a:'Kiuas',d:3,img:'',wiki:'en:Sauna stove'},
+    {a:'Kaakeliuuni',d:3,img:'',wiki:'en:Tiled stove'},
+    {a:'Vaateripustin',d:3,img:'',wiki:'en:Clothes hanger'},
+    {a:'Leipäkone',d:3,img:'',wiki:'en:Bread machine'},
+    {a:'Kelloradio',d:3,img:'',wiki:'en:Clock radio'},
+    {a:'Luuta',d:3,img:'',wiki:'en:Broom'},
+    {a:'Rikkalapio',d:3,img:'',wiki:'en:Dustpan'},
+    {a:'Öljylamppu',d:3,img:'',wiki:'en:Oil lamp'},
+    {a:'Kaasuliesi',d:3,img:'',wiki:'en:Gas stove'}
+  ]},
+  {id:'toys',name:'Pelit ja lelut',icon:'🎲',questions:[
+    {a:'Rubikin kuutio',d:1,img:'',wiki:'en:Rubik\'s Cube'},
+    {a:'Lego',d:1,img:'',wiki:'en:Lego'},
+    {a:'Nalle',d:1,img:'',wiki:'en:Teddy bear'},
+    {a:'Nukke',d:1,img:'',wiki:'en:Doll'},
+    {a:'Jojo',d:1,img:'',wiki:'en:Yo-yo'},
+    {a:'Leija',d:1,img:'',wiki:'en:Kite'},
+    {a:'Hyppynaru',d:1,img:'',wiki:'en:Skipping rope'},
+    {a:'Palapeli',d:1,img:'',wiki:'en:Jigsaw puzzle'},
+    {a:'Pelikortit',d:1,img:'',wiki:'en:Playing card'},
+    {a:'Noppa',d:1,img:'',wiki:'en:Dice'},
+    {a:'Hulavanne',d:1,img:'',wiki:'en:Hula hoop'},
+    {a:'Ilmapallo',d:1,img:'',wiki:'en:Balloon'},
+    {a:'Monopoli',d:2,img:'',wiki:'en:Monopoly (game)'},
+    {a:'Jenga',d:2,img:'',wiki:'en:Jenga'},
+    {a:'Mikado',d:2,img:'',wiki:'en:Pick-up sticks'},
+    {a:'Scrabble',d:2,img:'',wiki:'en:Scrabble'},
+    {a:'Domino',d:2,img:'',wiki:'en:Dominoes'},
+    {a:'Kaleidoskooppi',d:2,img:'',wiki:'en:Kaleidoscope'},
+    {a:'Frisbee',d:2,img:'',wiki:'en:Frisbee',censor:'full'},
+    {a:'Bumerangi',d:2,img:'',wiki:'en:Boomerang'},
+    {a:'Slinky',d:2,img:'',wiki:'en:Slinky'},
+    {a:'Marionetti',d:2,img:'',wiki:'en:Marionette'},
+    {a:'Nukkekoti',d:2,img:'',wiki:'en:Dollhouse'},
+    {a:'Game Boy',d:2,img:'',wiki:'en:Game Boy',censor:{x:10,y:56,w:80,h:20}},
+    {a:'Tamagotchi',d:2,img:'',wiki:'en:Tamagotchi',censor:{x:16,y:60,w:68,h:18}},
+    {a:'Angry Birds',d:2,img:'',wiki:'en:Angry Birds',censor:'full'},
+    {a:'PlayStation',d:2,img:'',wiki:'en:PlayStation (console)',censor:'full'},
+    {a:'Nintendo Switch',d:2,img:'',wiki:'en:Nintendo Switch',censor:'full'},
+    {a:'Etch A Sketch',d:3,img:'',wiki:'en:Etch A Sketch',censor:{x:6,y:79,w:88,h:14}},
+    {a:'View-Master',d:3,img:'',wiki:'en:View-Master'},
+    {a:'Kendama',d:3,img:'',wiki:'en:Kendama'},
+    {a:'Diabolo',d:3,img:'',wiki:'en:Diabolo'},
+    {a:'Matrjoshka',d:3,img:'',wiki:'en:Matryoshka doll'},
+    {a:'Mahjong',d:3,img:'',wiki:'en:Mahjong'},
+    {a:'Go-peli',d:3,img:'',wiki:'en:Go (game)'},
+    {a:'Backgammon',d:3,img:'',wiki:'en:Backgammon'},
+    {a:'Mankala',d:3,img:'',wiki:'en:Mancala'},
+    {a:'Tangram',d:3,img:'',wiki:'en:Tangram'},
+    {a:'Magic 8 -pallo',d:3,img:'',wiki:'en:Magic 8 Ball'},
+    {a:'Atari 2600',d:3,img:'',wiki:'en:Atari 2600',censor:'full'},
+    {a:'NES-konsoli',d:3,img:'',wiki:'en:Nintendo Entertainment System',censor:'full'}
+  ]}
 ];
 
 
@@ -550,11 +873,7 @@ function judgeGoPairing(){
   }
   G.catQueues={};G.catProgress={};
   G.selectedCatIds.forEach(cid=>{
-    const cat=CATS.find(c=>c.id===cid);
-    const d1=shuffle(cat.questions.filter(q=>q.d===1));
-    const d2=shuffle(cat.questions.filter(q=>q.d===2));
-    const d3=shuffle(cat.questions.filter(q=>q.d===3));
-    G.catQueues[cid]=[...d1,...d2,...d3];
+    G.catQueues[cid]=buildQueue(cid);
     G.catProgress[cid]=0;
   });
   G.pairs=generatePairs();
@@ -610,12 +929,58 @@ function runCountdown(seconds,cb){
     num.textContent=n;
   },1000);
 }
+// ─── KYSYMYSJONO: aina uusi järjestys + muisti aiemmista peleistä ──────────
+// Ennen jokainen peli alkoi samoilla helpoilla kysymyksillä (helppoja on monessa
+// kategoriassa vain 3–9), joten samat kuvat toistuivat joka pelissä. Nyt:
+//  1) vaikeustasot menevät osin päällekkäin (helpot yleensä ensin, mutta mukana on
+//     aina myös keskitason kysymyksiä) ja järjestys arvotaan joka pelissä uudelleen,
+//  2) laite muistaa viimeksi näytetyt kysymykset (localStorage) ja vie puolet
+//     kategorian koosta viimeksi näytetyistä jonon hännille → peräkkäisissä peleissä
+//     kuvat vaihtuvat,
+//  3) kun jono loppuu kesken pelin, se sekoitetaan uudelleen eikä samaa järjestystä
+//     toisteta.
+const SEEN_KEY='kuvapeli_seen_v1';
+function loadSeen(){try{const m=JSON.parse(localStorage.getItem(SEEN_KEY)||'{}');return(m&&typeof m==='object'&&!Array.isArray(m))?m:{};}catch(e){return{};}}
+function saveSeen(m){try{localStorage.setItem(SEEN_KEY,JSON.stringify(m));}catch(e){}}
+function markSeen(cid,ans){
+  try{
+    const cat=CATS.find(c=>c.id===cid);if(!cat)return;
+    const m=loadSeen();
+    const list=(Array.isArray(m[cid])?m[cid]:[]).filter(x=>x!==ans);
+    list.push(ans);
+    m[cid]=list.slice(-cat.questions.length);
+    saveSeen(m);
+  }catch(e){}
+}
+function buildQueue(cid){
+  const cat=CATS.find(c=>c.id===cid);
+  const seen=loadSeen()[cid];
+  const avoid=new Set(Array.isArray(seen)?seen.slice(-Math.floor(cat.questions.length/2)):[]);
+  const keyed=cat.questions.map(q=>({q,k:(q.d-1)*0.6+Math.random()*3+(avoid.has(q.a)?100:0)}));
+  keyed.sort((x,y)=>x.k-y.k);
+  return keyed.map(o=>o.q);
+}
 function pickQ(){
   const pair=G.pairs[G.currentPairIdx];const cid=pair.catId;
-  const queue=G.catQueues[cid];const idx=G.catProgress[cid]%queue.length;
-  G.catProgress[cid]++;const q=queue[idx];
+  if(!G.catQueues[cid]||G.catProgress[cid]>=G.catQueues[cid].length){
+    G.catQueues[cid]=buildQueue(cid);G.catProgress[cid]=0; // jono loppui → uusi sekoitus
+  }
+  const q=G.catQueues[cid][G.catProgress[cid]++];
   const cat=CATS.find(c=>c.id===cid);
-  return{a:q.a,d:q.d,img:q.img,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
+  return{a:q.a,d:q.d,img:q.img,wiki:q.wiki,censor:q.censor||null,cid,cat:cat.name,icon:cat.icon,blur:diffBlur(G.correctCount)};
+}
+// Haetaan seuraavien kysymysten kuvat valmiiksi taustalla, jotta vuoronvaihto ei odota
+// verkkohakua ja kuvattomat kysymykset huomataan jo etukäteen.
+function prefetchUpcoming(n=3){
+  try{
+    const pair=G.pairs[G.currentPairIdx];if(!pair)return;
+    const cid=pair.catId;const queue=G.catQueues[cid];if(!queue)return;
+    const cat=CATS.find(c=>c.id===cid);
+    for(let i=0;i<n;i++){
+      const q=queue[G.catProgress[cid]+i];if(!q)break;
+      resolveQuestionImage({a:q.a,img:q.img,wiki:q.wiki,cat:cat.name});
+    }
+  }catch(e){}
 }
 async function beginTurn(){
   clearInterval(G.timerInt);G.judged=false;
@@ -631,9 +996,11 @@ async function beginTurn(){
     if(img){G.currentQ.img=img;found=true;}
   }
   if(!found){G.currentQ.img='';} // viimeinen oljenkorsi: näytetään virheteksti mieluummin kuin jäädään jumiin
+  if(found) markSeen(G.currentQ.cid,G.currentQ.a);
   const pair=G.pairs[G.currentPairIdx];
-  send('question',{img:G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
+  send('question',{img:G.currentQ.img,cat:G.currentQ.cat,icon:G.currentQ.icon,blur:G.currentQ.blur,censor:G.currentQ.censor,d:G.currentQ.d,timers:[...G.timers],activeSlot:G.activeSlot,p0idx:pair.p0,p1idx:pair.p1,matchScores:[...G.matchScores],correctCount:G.correctCount});
   applyJudgeUI();startTimer();
+  prefetchUpcoming();
 }
 function startTimer(){
   clearInterval(G.timerInt);
@@ -646,6 +1013,31 @@ function startTimer(){
 }
 
 // ─── JUDGE UI ──────────────────────────────────────────────────────────────
+// ─── TEKSTISENSUURI ────────────────────────────────────────────────────────
+// Jos kuvassa itsessään lukee vastaus tekstinä (esim. tuotelogo, pelilaatikon
+// nimi), pelkkä kuvan näyttäminen paljastaisi vastauksen lukemalla. censor-kenttä
+// kysymysdatassa ratkaisee tämän kahdella tavalla:
+//   'full'          → koko kuvaa sumennetaan kevyesti (muoto/värit näkyvät, teksti ei)
+//                      käytetään kun logo ON pelkkää tekstiä (esim. IKEA, Coca-Cola)
+//   {x,y,w,h} (0-100)→ vain tämä suorakulmio sumennetaan, loppuosa pysyy terävänä
+//                      käytetään kun teksti on vain osa kuvaa (esim. Spotify-ikoni+teksti)
+function applyCensor(which,censor){
+  const img=document.getElementById(which==='player'?'playerImg':'judgeImg');
+  const box=document.getElementById(which==='player'?'playerCensor':'judgeCensor');
+  if(!img||!box)return;
+  if(censor==='full'){
+    img.style.filter='blur(15px)';
+    box.style.display='none';
+  }else if(censor&&typeof censor==='object'){
+    img.style.filter='';
+    box.style.left=censor.x+'%';box.style.top=censor.y+'%';
+    box.style.width=censor.w+'%';box.style.height=censor.h+'%';
+    box.style.display='block';
+  }else{
+    img.style.filter='';
+    box.style.display='none';
+  }
+}
 function applyJudgeUI(){
   const pair=G.pairs[G.currentPairIdx];const slots=[pair.p0,pair.p1];
   const ap=G.players[slots[G.activeSlot]];
@@ -655,7 +1047,7 @@ function applyJudgeUI(){
   const dl=diffLabel(G.correctCount);
   const de=document.getElementById('jDiff');de.textContent=dl.text;de.className='adiff '+dl.cls;
   const ji=document.getElementById('judgeImg');const jph=document.getElementById('judgeImgPh');
-  ji.style.filter=`blur(${G.currentQ.blur}px)`;
+  applyCensor('judge',G.currentQ.censor);
   loadWithFallback(ji,jph,G.currentQ.img);
   document.getElementById('btnOk').disabled=false;document.getElementById('btnSkip').disabled=false;
   document.getElementById('jScores').textContent=slots.map((pi,s)=>`${G.players[pi].name} ${G.matchScores[s]}`).join(' · ');
@@ -705,17 +1097,31 @@ function directUrlFrom(src){
   }
   return src;
 }
+function wikiImageCandidates(d){
+  // Kuva-URLit paremmuusjärjestyksessä. Wikipedian oletuspikkukuva on vain ~320 px, ja
+  // suurennettuna se näyttäisi sumealta, joten tarjotaan ensin riittävän suuri versio:
+  // pieni/keskikokoinen alkuperäinen sellaisenaan, muuten 960 px:n pikkukuva.
+  // Pieni pikkukuva jää varaksi, jos suurempi ei lataudu.
+  const th=d.thumbnail&&d.thumbnail.source,og=d.originalimage&&d.originalimage.source;
+  const ow=(d.originalimage&&d.originalimage.width)||0;
+  const out=[];
+  if(og&&ow&&ow<=1600) out.push(og);
+  else if(th&&/\/\d+px-/.test(th)) out.push(th.replace(/\/\d+px-/,'/960px-'));
+  if(th) out.push(th);
+  if(og&&(!ow||ow<=3000)) out.push(og);
+  return [...new Set(out)];
+}
 async function wikiSummary(title,lang){
-  // Palauttaa {title,extract,src} tai null. Hylkää täsmennyssivut (disambiguation)
-  // ja artikkelit ilman kuvaa – niiden pikkukuva on usein aiheeton.
+  // Palauttaa {title,extract,srcs[]} tai null. Hylkää täsmennyssivut (disambiguation)
+  // ja artikkelit ilman kuvaa – niiden kuva on usein aiheeton.
   try{
     const r=await fetch('https://'+lang+'.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(String(title).replace(/ /g,'_')));
     if(!r.ok) return null;
     const d=await r.json();
     if(d.type==='disambiguation') return null;
-    const src=(d.thumbnail&&d.thumbnail.source)||(d.originalimage&&d.originalimage.source)||null;
-    if(!src) return null;
-    return {title:d.title||String(title),extract:d.extract||'',src};
+    const srcs=wikiImageCandidates(d);
+    if(!srcs.length) return null;
+    return {title:d.title||String(title),extract:d.extract||'',srcs};
   }catch(e){return null;}
 }
 function normTitle(s){
@@ -730,7 +1136,8 @@ function titleMatches(query,found){
   if(a===b||a.includes(b)||b.includes(a)) return true;
   return normTitle(found.extract).includes(a);
 }
-async function wikiSearch(query,lang){
+async function wikiSearchSummary(query,lang){
+  // Otsikkohaku: palauttaa ensimmäisen artikkelin, jonka otsikko/tiivistelmä täsmää hakuun.
   try{
     const sr=await fetch('https://'+lang+'.wikipedia.org/w/api.php?action=opensearch&format=json&limit=3&search='+encodeURIComponent(query)+'&origin=*');
     if(!sr.ok) return null;
@@ -738,7 +1145,7 @@ async function wikiSearch(query,lang){
     const titles=(sd&&sd[1])||[];
     for(const t of titles){
       const s=await wikiSummary(t,lang);
-      if(s&&titleMatches(query,s)) return s.src;
+      if(s&&titleMatches(query,s)) return s;
     }
   }catch(e){}
   return null;
@@ -746,8 +1153,8 @@ async function wikiSearch(query,lang){
 // Kysymyskohtaiset artikkeliohjaukset muodossa 'kieli:Otsikko', useita varavaihtoehtoja
 // erotettuna |-merkillä. Käytetään ensimmäisenä silloin, kun vastauksen nimi ei täsmää
 // Wikipedia-artikkelin otsikkoon tai kun automaattihaku antoi aiemmin väärän kuvan
-// (esim. Akkuporakone → kaira). Yksittäiselle kysymykselle voi antaa saman myös
-// kentällä wiki:'en:Drill'.
+// (esim. Akkuporakone → kaira). Yksittäiselle kysymykselle ohjauksen voi antaa myös
+// suoraan datassa kentällä wiki:'en:Drill' (uudet kategoriat käyttävät tätä).
 const WIKI_HINTS={
   'Akkuporakone':'en:Drill|fi:Porakone',
   'Norppa':'fi:Saimaannorppa|en:Ringed seal',
@@ -773,18 +1180,23 @@ function wikiHintList(q){
     return m?{lang:m[1],title:m[2]}:{lang:'fi',title:s.trim()};
   });
 }
-async function fetchWikiThumbForQuestion(q){
-  // 1) käsin annetut ohjaukset, 2) täsmäartikkeli fi/en (otsikon on vastattava vastausta),
-  // 3) tiukasti suodatettu haku fi → en. Palauttaa null jos aiheeseen sopivaa ei löydy.
+async function fetchWikiThumbForQuestion(q,verify){
+  // Etsii aiheeseen sopivan kuvan Wikipediasta ja palauttaa ensimmäisen TOIMIVAKSI
+  // varmistetun osoitteen (verify(cands) → osoite tai null), tai null jos sopivaa ei löydy.
+  // Järjestys: 1) käsin annetut ohjaukset (+ otsikkohaku jos otsikon kirjoitusasu on vinossa),
+  // 2) täsmäartikkeli fi/en jonka otsikon on vastattava vastausta, 3) tiukasti suodatettu haku.
+  const tryS=async s=>s?await verify(s.srcs):null;
   for(const h of wikiHintList(q)){
-    const s=await wikiSummary(h.title,h.lang);
-    if(s) return s.src;
+    const r=await tryS((await wikiSummary(h.title,h.lang))||(await wikiSearchSummary(h.title,h.lang)));
+    if(r) return r;
   }
   const [fi,en]=await Promise.all([wikiSummary(q.a,'fi'),wikiSummary(q.a,'en')]);
-  if(fi&&titleMatches(q.a,fi)) return fi.src;
-  if(en&&titleMatches(q.a,en)) return en.src;
-  const fs=await wikiSearch(q.a,'fi'); if(fs) return fs;
-  const es=await wikiSearch(q.a,'en'); if(es) return es;
+  if(fi&&titleMatches(q.a,fi)){const r=await tryS(fi);if(r) return r;}
+  if(en&&titleMatches(q.a,en)){const r=await tryS(en);if(r) return r;}
+  for(const lang of ['fi','en']){
+    const r=await tryS(await wikiSearchSummary(q.a,lang));
+    if(r) return r;
+  }
   return null;
 }
 function commonsFilePathFrom(url){
@@ -793,13 +1205,27 @@ function commonsFilePathFrom(url){
   const m=String(url||'').match(/upload\.wikimedia\.org\/wikipedia\/commons\/(?:thumb\/)?[0-9a-f]\/[0-9a-f]{2}\/([^\/?#]+)/);
   return m?'https://commons.wikimedia.org/wiki/Special:FilePath/'+m[1]+'?width=500':null;
 }
-const IMG_CACHE=new Map(),IMG_BAD=new Set();
-async function resolveQuestionImage(q){
-  // Palauttaa TOIMIVAN kuva-URL:n tai null. Null = ei löytynyt aiheeseen sopivaa
-  // kuvaa → beginTurn ohittaa kysymyksen eikä pelaajalle näytetä rikkinäistä/väärää kuvaa.
+async function firstWorking(urls,timeoutMs){
+  // Testaa osoitteet rinnakkain (nopeampi) ja palauttaa ensimmäisen toimivan etusijajärjestyksessä.
+  const list=[...new Set((urls||[]).filter(Boolean))];
+  const ok=await Promise.all(list.map(u=>probeImage(u,timeoutMs)));
+  const i=ok.findIndex(Boolean);
+  return i>=0?list[i]:null;
+}
+const IMG_CACHE=new Map(),IMG_BAD=new Set(),IMG_PENDING=new Map();
+function resolveQuestionImage(q){
+  // Palauttaa lupauksen TOIMIVASTA kuva-URL:sta tai null:sta. Null = ei löytynyt aiheeseen
+  // sopivaa kuvaa → beginTurn ohittaa kysymyksen eikä pelaajalle näytetä rikkinäistä/väärää kuvaa.
+  // Samaan kysymykseen kohdistuvat yhtäaikaiset kutsut (esihaku + varsinainen haku) jakavat haun.
   const key=q.cat+'|'+q.a;
-  if(IMG_CACHE.has(key)) return IMG_CACHE.get(key);
-  if(IMG_BAD.has(key)) return null;
+  if(IMG_CACHE.has(key)) return Promise.resolve(IMG_CACHE.get(key));
+  if(IMG_BAD.has(key)) return Promise.resolve(null);
+  if(IMG_PENDING.has(key)) return IMG_PENDING.get(key);
+  const p=resolveQuestionImageUncached(q,key).finally(()=>IMG_PENDING.delete(key));
+  IMG_PENDING.set(key,p);
+  return p;
+}
+async function resolveQuestionImageUncached(q,key){
   const direct=directUrlFrom(q.img);
   let found=null;
   if(direct&&await probeImage(direct)) found=direct;
@@ -808,8 +1234,8 @@ async function resolveQuestionImage(q){
     if(fp&&await probeImage(fp)){found=fp;console.warn('Kovakoodattu kuva ei toiminut, mutta Commons-varaosoite toimi:',q.a);}
   }
   if(!found){
-    const live=await fetchWikiThumbForQuestion(q);
-    if(live&&await probeImage(live)){found=live;console.log('✅ Löytyi elävä varakuva:',q.a,'→',live);}
+    found=await fetchWikiThumbForQuestion(q,cands=>firstWorking(cands,7000));
+    if(found) console.log('✅ Löytyi elävä varakuva:',q.a,'→',found);
   }
   if(found) IMG_CACHE.set(key,found);
   else{IMG_BAD.add(key);console.warn('Ei aiheeseen sopivaa toimivaa kuvaa, kysymys ohitetaan:',q.a);}
@@ -858,14 +1284,14 @@ function loadWithFallback(imgEl,phEl,src){
 
 // ─── PLAYER UI ─────────────────────────────────────────────────────────────
 function applyPlayerQuestion(msg){
-  const{img,cat,icon,blur,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
+  const{img,cat,icon,blur,censor,timers,activeSlot,p0idx,p1idx,correctCount}=msg;
   G.timers=[...timers];G.activeSlot=activeSlot;
   buildTimerStrip([p0idx,p1idx]);renderTimers(timers,activeSlot);
   // Simple direct image load
   const pi=document.getElementById('playerImg'),pp=document.getElementById('playerPh');
   pp.style.display='flex';pp.textContent='⏳';
   pi.style.display='none';
-  pi.style.filter=`blur(${blur}px)`;
+  applyCensor('player',censor);
   loadWithFallback(pi,pp,img);
   document.getElementById('playerCat').textContent=icon+' '+cat;
   const dl=diffLabel(correctCount||0);
@@ -1012,11 +1438,12 @@ function onMsg(msg){
     if(!cats.length){alert('Kategoriaa ei löytynyt: '+param);return;}
     const box=document.createElement('div');
     box.style.cssText='position:fixed;inset:0;z-index:99999;background:#0f0f0f;color:#eee;overflow:auto;padding:12px;font:13px system-ui,sans-serif';
-    box.innerHTML='<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px"><b style="font-size:16px">Kuvatarkistus</b><span id="iaSum"></span><label style="cursor:pointer"><input type="checkbox" id="iaOnly"> vain haetut ja puuttuvat</label></div><div id="iaGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px"></div>';
+    box.innerHTML='<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px"><b style="font-size:16px">Kuvatarkistus</b><span id="iaSum"></span><label style="cursor:pointer"><input type="checkbox" id="iaOnly"> vain haetut ja puuttuvat</label><label style="cursor:pointer"><input type="checkbox" id="iaCensor"> vain sensuroidut</label></div><div id="iaGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px"></div>';
     document.body.appendChild(box);
-    const st=document.createElement('style');st.textContent='.ia-only .ia-ok{display:none}';document.head.appendChild(st);
-    const grid=box.querySelector('#iaGrid'),sum=box.querySelector('#iaSum'),only=box.querySelector('#iaOnly');
+    const st=document.createElement('style');st.textContent='.ia-only .ia-ok{display:none}.ia-censoronly .ia-nocensor{display:none}';document.head.appendChild(st);
+    const grid=box.querySelector('#iaGrid'),sum=box.querySelector('#iaSum'),only=box.querySelector('#iaOnly'),censorOnly=box.querySelector('#iaCensor');
     only.onchange=()=>box.classList.toggle('ia-only',only.checked);
+    censorOnly.onchange=()=>box.classList.toggle('ia-censoronly',censorOnly.checked);
     const jobs=[];
     cats.forEach(c=>{
       const hd=document.createElement('div');
@@ -1024,12 +1451,18 @@ function onMsg(msg){
       hd.textContent=c.icon+' '+c.name+' ('+c.questions.length+')';
       grid.appendChild(hd);
       c.questions.forEach(q=>{
-        const card=document.createElement('div');card.className='ia-ok';
+        const card=document.createElement('div');card.className='ia-ok'+(q.censor?'':' ia-nocensor');
         card.style.cssText='border:2px solid #444;border-radius:8px;overflow:hidden;background:#1a1a1a';
-        card.innerHTML='<div style="height:100px;display:flex;align-items:center;justify-content:center;background:#222;font-size:11px;opacity:.7;text-align:center">…</div><div style="padding:4px 6px;font-weight:600;word-break:break-word"></div>';
+        card.innerHTML='<div style="height:100px;position:relative;display:flex;align-items:center;justify-content:center;background:#222;font-size:11px;opacity:.7;text-align:center">…</div><div style="padding:4px 6px;font-weight:600;word-break:break-word"></div>';
         card.lastChild.textContent=q.a;
+        if(q.censor){
+          const badge=document.createElement('div');
+          badge.textContent=q.censor==='full'?'🌫️ koko kuva':'🌫️ laatikko';
+          badge.style.cssText='position:absolute;top:2px;left:2px;z-index:2;background:#000a;color:#ffd54a;font-size:9px;padding:1px 4px;border-radius:3px';
+          card.firstChild.appendChild(badge);
+        }
         grid.appendChild(card);
-        jobs.push({card,q:{a:q.a,img:q.img,cat:c.name}});
+        jobs.push({card,q:{a:q.a,img:q.img,wiki:q.wiki,censor:q.censor,cat:c.name}});
       });
     });
     let ok=0,live=0,miss=0,done=0;
@@ -1043,9 +1476,15 @@ function onMsg(msg){
         const slot=card.firstChild;
         if(url){
           const isLive=url!==directUrlFrom(q.img)&&!/Special:FilePath/.test(url);
-          slot.innerHTML='';slot.style.opacity=1;
+          const badge=slot.querySelector('div');slot.innerHTML='';slot.style.opacity=1;if(badge)slot.appendChild(badge);
           const im=document.createElement('img');im.src=url;im.style.cssText='width:100%;height:100%;object-fit:cover';
+          if(q.censor==='full') im.style.filter='blur(6px)'; // pienempi säde koska esikatselukuva on jo pieni
           slot.appendChild(im);
+          if(q.censor&&typeof q.censor==='object'){
+            const cb=document.createElement('div');
+            cb.style.cssText='position:absolute;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);background:#0006;left:'+q.censor.x+'%;top:'+q.censor.y+'%;width:'+q.censor.w+'%;height:'+q.censor.h+'%';
+            slot.appendChild(cb);
+          }
           if(isLive){card.style.borderColor='#e6b800';card.classList.remove('ia-ok');card.lastChild.textContent='🔎 '+q.a;live++;}
           else{card.style.borderColor='#2e7d32';ok++;}
         }else{
