@@ -5726,7 +5726,7 @@ function startTimer(){
     send('tick',{timers:[...G.timers],activeSlot:G.activeSlot});
     renderTimers(G.timers,G.activeSlot);updateJudgeTimers();
     const left=G.timers[G.activeSlot];
-    if(left>0&&left<=5){playSound('tikitys');send('sfx',{name:'tikitys'});} // tikitys vain viimeiset 5 s
+    if(left>0&&left<=10){playSound('tikitys');send('sfx',{name:'tikitys'});} // tikitys vain viimeiset 10 s
     if(left<=0){clearInterval(G.timerInt);judgeResult('timeout');}
   },1000);
 }
