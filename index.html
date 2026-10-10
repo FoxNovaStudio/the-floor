@@ -122,6 +122,15 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .jbtn .bi{font-size:22px}
 .jok{background:var(--green);color:#fff}.jskip{background:var(--gold);color:var(--black)}
 #scoreboard{padding:1.25rem;overflow-y:auto;gap:.5rem}
+#matchintro{align-items:center;justify-content:center;text-align:center;padding:1.5rem;gap:.9rem}
+.mi-round{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mi-cat{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:1.05;color:var(--gold);letter-spacing:.05em}
+.mi-cat span{display:block;font-size:64px;margin-bottom:4px}
+.mi-vs{display:flex;flex-direction:column;align-items:center;gap:.2rem;margin:.4rem 0}
+.mi-p{font-size:28px;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.mi-p i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.mi-x{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--muted);letter-spacing:.2em}
+#matchintro .sb-btn{max-width:340px;margin-top:1rem}
 .sb-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);letter-spacing:.08em}
 .sb-row{background:var(--gray);border-radius:8px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .sb-row .sn{font-weight:600;font-size:14px;display:flex;align-items:center;gap:7px}
@@ -278,6 +287,13 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     <div id="sbRows"></div>
     <div class="sb-sub" id="sbSub" style="margin-bottom:.75rem"></div>
     <button class="sb-btn" id="sbBtn">Jatka</button>
+  </div>
+
+  <div id="matchintro" class="screen">
+    <div class="mi-round" id="miRound"></div>
+    <div class="mi-cat" id="miCat"></div>
+    <div class="mi-vs" id="miVs"></div>
+    <button class="sb-btn" id="miBtn">Aloita ⏱</button>
   </div>
 
   <div id="duoname" class="screen">
@@ -6188,16 +6204,37 @@ async function judgeResult(outcome){
   winner.wins=(winner.wins||0)+1;
   G.players[slots[0]].score+=G.matchScores[0];G.players[slots[1]].score+=G.matchScores[1];
   const title=`${winner.emoji} ${winner.name} voitti!`;
-  send('scoreboard',{title,sub:'',players:G.players,isJudge:false});
-  renderScoreboard({title,sub:'',players:G.players,isJudge:true});
+  const cat0=CATS.find(c=>c.id===pair.catId);const ms=[...G.matchScores];
+  const sub=(cat0?cat0.icon+' '+cat0.name+' · ':'')+'Oikeita vastauksia: '+winnerSlot2(ms,slots)+'\n⏱ '+loser.name+' jäi ilman aikaa';
+  send('scoreboard',{title,sub,players:G.players,isJudge:false});
+  renderScoreboard({title,sub,players:G.players,isJudge:true});
 }
 
 // ─── SCOREBOARD ────────────────────────────────────────────────────────────
+function winnerSlot2(ms,slots){const a=G.players[slots[0]],b=G.players[slots[1]];return a.emoji+' '+a.name+' '+ms[0]+' – '+ms[1]+' '+b.emoji+' '+b.name;}
+function renderMatchIntro(d){
+  document.getElementById('miRound').textContent='Seuraava erä · '+d.n+'/'+d.total;
+  document.getElementById('miCat').innerHTML='<span>'+d.icon+'</span>'+esc2(d.cat);
+  const pl=x=>'<div class="mi-p"><i style="background:'+esc2(x.color||'#888')+'"></i>'+esc2(x.emoji||'')+' '+esc2(x.name)+'</div>';
+  document.getElementById('miVs').innerHTML=pl(d.a)+'<div class="mi-x">VS</div>'+pl(d.b);
+  show('matchintro');
+}
+function esc2(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function showMatchIntro(idx){
+  const pair=G.pairs[idx],cat=CATS.find(c=>c.id===pair.catId);
+  const a=G.players[pair.p0],b=G.players[pair.p1];
+  const d={n:G.pairs.filter(p=>p.done).length+1,total:G.pairs.length,icon:cat.icon,cat:cat.name,a:{name:a.name,emoji:a.emoji,color:a.color},b:{name:b.name,emoji:b.emoji,color:b.color}};
+  send('match_intro',d);
+  renderMatchIntro(d);
+  const btn=document.getElementById('miBtn');btn.style.display='block';btn.onclick=()=>startMatch(idx);
+  try{G.catProgress[pair.catId]=0;prefetchQueue(pair.catId,3);}catch(e){}
+}
 function renderScoreboard({title,sub,players,isJudge}){
   const sorted=[...players].sort((a,b)=>(b.wins||0)-(a.wins||0)||(b.score||0)-(a.score||0));
   document.getElementById('sbTitle').textContent=title;
   document.getElementById('sbRows').innerHTML=sorted.map((p,i)=>`<div class="sb-row ${i===0?'winner':''}"><span class="sn"><span style="width:10px;height:10px;border-radius:50%;background:${p.color};display:inline-block"></span>${p.emoji} ${p.name}</span><span class="sp">${p.wins||0}<span style="font-size:14px;color:var(--muted)"> v</span></span></div>`).join('');
   document.getElementById('sbSub').textContent=sub||'';
+  document.getElementById('sbSub').style.whiteSpace='pre-line';
   const btn=document.getElementById('sbBtn');
   if(isJudge){
     btn.style.display='block';
@@ -6206,7 +6243,7 @@ function renderScoreboard({title,sub,players,isJudge}){
     const nextIdx=G.pairs.findIndex(p=>!p.done);
     if(nextIdx!==-1){
       btn.textContent='Seuraava erä →';
-      btn.onclick=()=>startMatch(nextIdx);
+      btn.onclick=()=>showMatchIntro(nextIdx);
     }else{
       btn.textContent='Lopputulokset 🏆';
       btn.onclick=showFinalScoreboard;
@@ -6507,6 +6544,7 @@ function onMsg(msg){
   if(msg.type==='sfx'&&G.mode!=='duo'){if(msg.name==='stop_tikitys')stopSound('tikitys');else playSound(msg.name);}
   if(msg.type==='flash') doFlash(msg.cls,msg.txt,msg.ms);
   if(msg.type==='scoreboard'&&G.role==='player') renderScoreboard(msg);
+  if(msg.type==='match_intro'&&G.role==='player'&&msg.a&&msg.b){renderMatchIntro(msg);document.getElementById('miBtn').style.display='none';}
   if(G.role==='player'){
     if(msg.type==='duo_welcome')duoOnWelcome(msg);
     if(msg.type==='duo_players'){G.players=msg.players||[];if(document.getElementById('duowait').classList.contains('active'))duoShowWait();}
