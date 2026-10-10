@@ -168,6 +168,11 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
 .tv-bar{position:absolute;left:8px;bottom:50px;z-index:20;display:none;gap:8px}
 .tv-bar.open{display:flex}
 .tv-bar .jbtn{padding:10px 16px;flex-direction:row;font-size:14px}
+.fs-btn{position:fixed;top:8px;right:8px;z-index:30;display:none;align-items:center;justify-content:center;background:var(--gray2);color:var(--white);border:none;border-radius:999px;width:34px;height:34px;font-size:18px;line-height:1;opacity:.45;cursor:pointer;padding:0}
+.fs-btn.show{display:flex}
+.fs-btn:active{opacity:1}
+#playerscreen.active~.fs-btn{top:auto;bottom:8px}
+#judgescreen .judge-header{padding-right:52px}
 .pause-ov{position:fixed;inset:0;background:#000d;z-index:260;display:none;align-items:center;justify-content:center;text-align:center;padding:2rem;font-size:26px;line-height:1.5}
 .pause-ov.show{display:flex}
 .cat-chips{display:flex;gap:6px;overflow-x:auto;padding:.5rem 1rem;flex-shrink:0;border-bottom:1px solid var(--gray2);scrollbar-width:none}
@@ -324,6 +329,7 @@ html,body{height:100%;width:100%;background:var(--black);color:var(--white);font
     <div class="duo-hint" id="duoHint"></div>
   </div>
 
+  <button class="fs-btn" id="fsBtn" onclick="toggleFullscreen()" title="Koko näytön tila" aria-label="Koko näytön tila">⛶</button>
   <div class="pause-ov" id="pauseOv"></div>
   <div class="flash" id="flash"></div>
   <div class="countdown" id="countdownOverlay"><div id="countdownNum">3</div></div>
@@ -5362,7 +5368,7 @@ function send(type,data={}){
 }
 
 // ─── UI ────────────────────────────────────────────────────────────────────
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');try{refreshAllCensors();}catch(e){}}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');try{refreshAllCensors();}catch(e){}try{updateFsBtn();}catch(e){}}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
 function doFlash(cls,txt,ms){
   ms=Math.min(Math.max(+ms||1100,300),6000);
@@ -5771,13 +5777,13 @@ function startTimer(){
 // isolla ruudulla, joten kiinteä pikseliarvo (aiemmin 15 px) luki tabletilla ja
 // tietokoneella läpi, ja lyhyet lihavat logotekstit (IKEA, LEGO, SONY) jopa puhelimessa.
 // CENSOR_BLUR = sumennussäde suhteessa kuvan näytetyn suuremman sivun pituuteen
-// (0.08 ≈ 30 px puhelimella). Pienempi arvo = kevyempi sumennus.
+// (0.035 ≈ 13 px puhelimella). Pienempi arvo = kevyempi sumennus.
 // Laatikkosumennus EI käytä backdrop-filteriä: Chromiumissa se jättää alkuperäisen
 // tekstin haamuna läpi, kun sumennussäde on suuri laatikkoon nähden. Sen sijaan kuvasta
 // tehdään sumennettu kopio (ov), joka leikataan laatikon kokoiseksi, ja alkuperäisestä
 // kuvasta leikataan sama kohta pois (läpikuultava PNG-logo ei saa paljastaa tekstiä).
 // Laatikko-elementti (box) on enää pelkkä tummennus tämän päällä.
-const CENSOR_BLUR=0.08;
+const CENSOR_BLUR=0.035;
 const _censorReg=new Map();   // img-elementti → {box, censor, ov}
 let _censorRO=null;
 function pictureRect(img){
@@ -6292,6 +6298,29 @@ function showFinalScoreboard(){
   send('scoreboard',{title:'🏆 Lopputulos',sub:sorted[0].name+' voitti!',players:G.players,isJudge:false});
   show('scoreboard');
 }
+
+// ─── KOKO NÄYTÖN TILA (pelinjohtaja) ───────────────────────────────────────
+// Nappi näkyy vain pelinjohtajalle (G.role==='judge'), sekä tavallisessa että 2 pelaajan pelissä.
+function fsElement(){return document.fullscreenElement||document.webkitFullscreenElement||null;}
+function fsSupported(){const d=document.documentElement;return !!(d.requestFullscreen||d.webkitRequestFullscreen);}
+function toggleFullscreen(){
+  try{
+    if(fsElement()){
+      (document.exitFullscreen||document.webkitExitFullscreen).call(document);
+    }else{
+      const d=document.documentElement;
+      const r=(d.requestFullscreen||d.webkitRequestFullscreen).call(d);
+      if(r&&r.catch)r.catch(()=>showToast('Koko näytön tila ei ole käytettävissä'));
+    }
+  }catch(e){showToast('Koko näytön tila ei ole käytettävissä');}
+}
+function updateFsBtn(){
+  const b=document.getElementById('fsBtn');if(!b)return;
+  b.classList.toggle('show',G.role==='judge'&&fsSupported());
+  b.textContent=fsElement()?'✕':'⛶';
+}
+document.addEventListener('fullscreenchange',updateFsBtn);
+document.addEventListener('webkitfullscreenchange',updateFsBtn);
 
 // ─── 2 PELAAJAN TILA ───────────────────────────────────────────────────────
 // Pelinjohtajan laite on TV: se näyttää kuvan + ajastimet (EI vastausta). Kaksi pelaajaa
