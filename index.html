@@ -9563,7 +9563,7 @@ function startTimer(){
 // tehdään sumennettu kopio (ov), joka leikataan laatikon kokoiseksi, ja alkuperäisestä
 // kuvasta leikataan sama kohta pois (läpikuultava PNG-logo ei saa paljastaa tekstiä).
 // Laatikko-elementti (box) on enää pelkkä tummennus tämän päällä.
-const CENSOR_BLUR=0.052; // 0.08 × 0.65 = 35 % kevyempi sumennus
+const CENSOR_BLUR=0.032; // 0.052 → 0.032 (~40 % kevyempi sumennus)
 const _censorReg=new Map();   // img-elementti → {box, censor, ov}
 let _censorRO=null;
 function pictureRect(img){
@@ -9595,7 +9595,7 @@ function refreshCensor(img){
   const{box,censor}=st;
   const pic=censor?pictureRect(img):null;
   if(!censor||!pic){censorOff(img,st);return;}
-  const px=Math.max(4,Math.min(120,CENSOR_BLUR*Math.max(pic.width,pic.height)));
+  const px=Math.max(3,Math.min(120,CENSOR_BLUR*Math.max(pic.width,pic.height)));
   const blur='blur('+px.toFixed(1)+'px)';
   if(censor==='full'){censorOff(img,st);img.style.filter=blur;return;}
   // ── laatikot: sumennettu kopio laatikoiden kohdalle (yksi tai useampi tekstialue) ──
