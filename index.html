@@ -6,6 +6,9 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>The Floor</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -9041,11 +9044,12 @@ function fsSupported(){const d=document.documentElement;return !!(d.requestFulls
 function updateFsBtn(id){
   const b=document.getElementById('fsBtn');if(!b)return;
   const cur=id||((document.querySelector('.screen.active')||{}).id);
-  b.style.display=(G.role==='judge'&&cur!=='home'&&fsSupported())?'flex':'none';
+  b.style.display=((G.role==='judge'||G.role==='player')&&cur!=='home')?'flex':'none';
   b.classList.toggle('fs-bottom',cur==='playerscreen');
   b.textContent=fsEl()?'✕':'⛶';b.title=fsEl()?'Poistu koko näytöstä':'Koko näyttö';
 }
 function toggleFullscreen(){
+  if(!fsSupported()){showToast('iPhone: Jaa-valikko → Lisää Koti-valikkoon, niin peli aukeaa koko näytöllä');return;}
   try{
     if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
     else{const d=document.documentElement;const r=d.requestFullscreen||d.webkitRequestFullscreen;const p=r.call(d);if(p&&p.catch)p.catch(()=>showToast('Koko näyttö ei onnistu tässä selaimessa'));}
